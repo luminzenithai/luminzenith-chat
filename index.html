@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LuminZenith AI - Chat</title>
 <style>
 body{margin:0;background:#0a0a0a;color:#fff;font-family:Arial,sans-serif;display:flex;flex-direction:column;height:100vh;}
@@ -35,19 +36,13 @@ msg.value='';
 messages.innerHTML+=`<div class="msg-ai loading" id="loading">LuminZenith réfléchit...</div>`;
 messages.scrollTop=messages.scrollHeight;
 try{
-const r=await fetch('https://api.anthropic.com/v1/messages',{
+const r=await fetch('https://hook.eu1.make.com/tfhznbelwr7yic3gh7wlud08clfng9s5',{
 method:'POST',
-headers:{
-'Content-Type':'application/json',
-'x-api-key':
-'anthropic-version':'2023-06-01',
-'anthropic-dangerous-direct-browser-usage':'true'
-},
-body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1024,system:'Tu es LuminZenith AI, un assistant intelligent premium. Tu ne mentionnes jamais Claude ou Anthropic.',messages:[{role:'user',content:texte}]})
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({message:texte})
 });
-const d=await r.json();
+const rep=await r.text();
 document.getElementById('loading').remove();
-const rep=d.content[0].text;
 messages.innerHTML+=`<div class="msg-ai">${rep}</div>`;
 }catch(e){document.getElementById('loading').textContent='Erreur de connexion.';}
 messages.scrollTop=messages.scrollHeight;
