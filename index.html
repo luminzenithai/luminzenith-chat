@@ -26,26 +26,40 @@ header{background:#111;padding:15px;text-align:center;color:gold;font-size:22px;
 <button id="send" onclick="envoyer()">Envoyer</button>
 </div>
 <script>
+const historique = [];
+
 async function envoyer(){
-const msg=document.getElementById('msg');
-const messages=document.getElementById('messages');
-const texte=msg.value.trim();
-if(!texte)return;
-messages.innerHTML+=`<div class="msg-user">${texte}</div>`;
-msg.value='';
-messages.innerHTML+=`<div class="msg-ai loading" id="loading">LuminZenith réfléchit...</div>`;
-messages.scrollTop=messages.scrollHeight;
-try{
-const r=await fetch('https://hook.eu1.make.com/tfhznbelwr7yic3gh7wlud08clfng9s5',{
-method:'POST',
-headers:{'Content-Type':'application/json'},
-body:JSON.stringify({message:texte})
-});
-const rep=await r.text();
-document.getElementById('loading').remove();
-messages.innerHTML+=`<div class="msg-ai">${rep}</div>`;
-}catch(e){document.getElementById('loading').textContent='Erreur de connexion.';}
-messages.scrollTop=messages.scrollHeight;
+  const msg = document.getElementById('msg');
+  const messages = document.getElementById('messages');
+  const texte = msg.value.trim();
+  if(!texte) return;
+
+  messages.innerHTML += `<div class="msg-user">${texte}</div>`;
+  msg.value = '';
+
+  historique.push({ role: "user", content: texte });
+
+  messages.innerHTML += `<div class="msg-ai loading" id="loading">LuminZenith réfléchit...</div>`;
+  messages.scrollTop = messages.scrollHeight;
+
+  try {
+    const r = await fetch('https://hook.eu1.make.com/tfhznbelwr7yic3gh7wlud08clfng9s5', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ messages: historique })
+    });
+
+    const rep = await r.text();
+    document.getElementById('loading').remove();
+
+    historique.push({ role: "assistant", content: rep });
+
+    messages.innerHTML += `<div class="msg-ai">${rep}</div>`;
+  } catch(e) {
+    document.getElementById('loading').textContent = 'Erreur de connexion.';
+  }
+
+  messages.scrollTop = messages.scrollHeight;
 }
 </script>
 </body>
