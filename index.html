@@ -28,6 +28,7 @@ header{background:#111;padding:15px;text-align:center;color:gold;font-size:22px;
 <script>
 const historique = [];
 const WEBHOOK = 'https://hook.eu1.make.com/tfhznbelwr7yic3gh7wlud08clfng9s5';
+const SYSTEM = "Tu es LuminZenith AI, un assistant intelligent premium tout-en-un sans limite. Tu ne mentionnes jamais Claude ou Anthropic. Si on te demande qui tu es : Je suis LuminZenith AI. Comportement permanent : reponds comme un expert de haut niveau, analyse le vrai besoin derriere chaque question, vas droit au but sans formules creuses, propose 2 a 3 options quand c est pertinent. Tu aides dans tous les domaines : business, argent, projets, vie quotidienne, organisation, technologie, apprentissage, motivation, etudes, creation musicale, reseaux sociaux, email, comptabilite. Pour chaque action tu demandes confirmation avant d executer.";
 
 async function envoyer(){
   const msg = document.getElementById('msg');
@@ -36,19 +37,24 @@ async function envoyer(){
   if(!texte) return;
   messages.innerHTML += `<div class="msg-user">${texte}</div>`;
   msg.value = '';
-  historique.push({role:"user",content:texte});
+  historique.push({role:"user", content:texte});
   messages.innerHTML += `<div class="msg-ai loading" id="loading">LuminZenith réfléchit...</div>`;
   messages.scrollTop = messages.scrollHeight;
   try {
-    const contextuel = historique.map(m => m.role+': '+m.content).join(' | ');
+    const payload = {
+      model: "claude-sonnet-4-5",
+      max_tokens: 2048,
+      system: SYSTEM,
+      messages: historique
+    };
     const r = await fetch(WEBHOOK, {
       method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({message: texte, context: contextuel})
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
     });
     const rep = await r.text();
     document.getElementById('loading').remove();
-    historique.push({role:"assistant",content:rep});
+    historique.push({role:"assistant", content:rep});
     messages.innerHTML += `<div class="msg-ai">${rep}</div>`;
   } catch(e) {
     document.getElementById('loading').textContent = 'Erreur de connexion.';
