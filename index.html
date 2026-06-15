@@ -36,21 +36,19 @@ async function envoyer(){
   if(!texte) return;
   messages.innerHTML += `<div class="msg-user">${texte}</div>`;
   msg.value = '';
-  historique.push({ role: "user", content: texte });
+  historique.push({role:"user",content:texte});
   messages.innerHTML += `<div class="msg-ai loading" id="loading">LuminZenith réfléchit...</div>`;
   messages.scrollTop = messages.scrollHeight;
   try {
+    const contextuel = historique.map(m => m.role+': '+m.content).join(' | ');
     const r = await fetch(WEBHOOK, {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        message: texte,
-        history: JSON.stringify(historique)
-      })
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({message: texte, context: contextuel})
     });
     const rep = await r.text();
     document.getElementById('loading').remove();
-    historique.push({ role: "assistant", content: rep });
+    historique.push({role:"assistant",content:rep});
     messages.innerHTML += `<div class="msg-ai">${rep}</div>`;
   } catch(e) {
     document.getElementById('loading').textContent = 'Erreur de connexion.';
