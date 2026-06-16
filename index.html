@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LuminZenith AI - Chat</title>
+<title>LuminZenith AI</title>
 <style>
 body{margin:0;background:#0a0a0a;color:#fff;font-family:Arial,sans-serif;display:flex;flex-direction:column;height:100vh;}
 header{background:#111;padding:15px;text-align:center;color:gold;font-size:22px;font-weight:bold;border-bottom:2px solid gold;}
 #messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:10px;}
-.msg-user{background:#1a1a2e;padding:10px 15px;border-radius:15px;align-self:flex-end;max-width:70%;border:1px solid #333;}
-.msg-ai{background:#111;padding:10px 15px;border-radius:15px;align-self:flex-start;max-width:70%;border:1px solid gold;color:gold;}
+.msg-user{background:#1a1a2e;padding:10px 15px;border-radius:15px;align-self:flex-end;max-width:70%;border:1px solid #333;white-space:pre-wrap;}
+.msg-ai{background:#111;padding:10px 15px;border-radius:15px;align-self:flex-start;max-width:70%;border:1px solid gold;color:gold;white-space:pre-wrap;}
 #input-area{display:flex;padding:15px;background:#111;border-top:1px solid #333;gap:10px;}
 #msg{flex:1;background:#1a1a1a;border:1px solid gold;color:#fff;padding:12px;border-radius:8px;font-size:16px;}
 #send{background:gold;color:#000;border:none;padding:12px 20px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:16px;}
@@ -26,36 +26,30 @@ header{background:#111;padding:15px;text-align:center;color:gold;font-size:22px;
   <button id="send" onclick="envoyer()">Envoyer</button>
 </div>
 <script>
-const historique = [];
 const WEBHOOK = 'https://hook.eu1.make.com/tfhznbelwr7yic3gh7wlud08clfng9s5';
-const SYSTEM = "Tu es LuminZenith AI, un assistant intelligent premium tout-en-un sans limite. Tu ne mentionnes jamais Claude ou Anthropic. Si on te demande qui tu es : Je suis LuminZenith AI. Comportement permanent : reponds comme un expert de haut niveau, analyse le vrai besoin derriere chaque question, vas droit au but sans formules creuses, propose 2 a 3 options quand c est pertinent. Tu aides dans tous les domaines : business, argent, projets, vie quotidienne, organisation, technologie, apprentissage, motivation, etudes, creation musicale, reseaux sociaux, email, comptabilite. Pour chaque action tu demandes confirmation avant d executer.";
+
+function escapeHtml(t){
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
 
 async function envoyer(){
   const msg = document.getElementById('msg');
   const messages = document.getElementById('messages');
   const texte = msg.value.trim();
   if(!texte) return;
-  messages.innerHTML += `<div class="msg-user">${texte}</div>`;
+  messages.innerHTML += `<div class="msg-user">${escapeHtml(texte)}</div>`;
   msg.value = '';
-  historique.push({role:"user", content:texte});
   messages.innerHTML += `<div class="msg-ai loading" id="loading">LuminZenith réfléchit...</div>`;
   messages.scrollTop = messages.scrollHeight;
   try {
-    const payload = {
-      model: "claude-sonnet-4-5",
-      max_tokens: 2048,
-      system: SYSTEM,
-      messages: historique
-    };
     const r = await fetch(WEBHOOK, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(payload)
+      body: JSON.stringify({ message: texte })
     });
     const rep = await r.text();
     document.getElementById('loading').remove();
-    historique.push({role:"assistant", content:rep});
-    messages.innerHTML += `<div class="msg-ai">${rep}</div>`;
+    messages.innerHTML += `<div class="msg-ai">${escapeHtml(rep)}</div>`;
   } catch(e) {
     document.getElementById('loading').textContent = 'Erreur de connexion.';
   }
