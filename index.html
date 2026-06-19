@@ -2,343 +2,446 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>LuminZenith AI</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --noir: #0B0B0B;
-  --noir2: #121212;
-  --noir3: #1a1a1a;
-  --or: #C6A85E;
-  --or-rose: #E0A6A6;
-  --or-clair: #f0c97a;
-  --blanc: #EDEDED;
-  --gris: #9A9A8A;
-  --glow: 0 0 18px rgba(198,168,94,0.45);
-  --glow2: 0 0 30px rgba(198,168,94,0.25);
+:root{
+  --noir:#0B0B0B;--noir2:#111010;--or:#C6A85E;--or2:#d4b870;--or-rose:#C8856A;
+  --or-clair:#f0c97a;--blanc:#EDEDED;--gris:#8A8070;
+  --glow-or:0 0 22px rgba(198,168,94,0.55),0 0 60px rgba(198,168,94,0.15);
+  --glow-btn:0 0 18px rgba(198,168,94,0.6),0 4px 20px rgba(0,0,0,0.5);
 }
-*{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--noir);color:var(--blanc);font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column;max-width:480px;margin:0 auto;position:relative;overflow-x:hidden;}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(198,168,94,0.04) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(224,166,166,0.04) 0%,transparent 60%);pointer-events:none;z-index:0;}
-.screen{display:none;flex-direction:column;min-height:100vh;position:relative;z-index:1;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;background:var(--noir);}
+body{color:var(--blanc);font-family:'Inter',sans-serif;max-width:430px;margin:0 auto;position:relative;}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+background:radial-gradient(1px 1px at 15% 20%,rgba(198,168,94,0.8),transparent),
+radial-gradient(1px 1px at 80% 15%,rgba(198,168,94,0.6),transparent),
+radial-gradient(1px 1px at 40% 70%,rgba(198,168,94,0.4),transparent),
+radial-gradient(1px 1px at 90% 60%,rgba(200,133,106,0.5),transparent),
+radial-gradient(ellipse 70% 50% at 20% 10%,rgba(198,168,94,0.04) 0%,transparent 70%),
+radial-gradient(ellipse 60% 40% at 80% 90%,rgba(200,133,106,0.04) 0%,transparent 70%);}
+.screen{display:none;flex-direction:column;height:calc(100vh - 62px);overflow-y:auto;overflow-x:hidden;position:relative;z-index:1;-webkit-overflow-scrolling:touch;}
 .screen.active{display:flex;}
-#screen-accueil{padding:0 0 80px;}
-.header-top{display:flex;align-items:center;justify-content:space-between;padding:20px 24px 10px;}
-.header-logo{display:flex;align-items:center;gap:10px;}
-.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#C6A85E,#8a6a2e);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;color:#000;box-shadow:var(--glow);}
-.logo-text{font-family:'Poppins',sans-serif;font-weight:600;font-size:16px;color:var(--or);letter-spacing:0.3px;}
-.logo-text span{color:var(--blanc);}
-.header-icons{display:flex;gap:16px;align-items:center;}
-.hero{padding:28px 24px 20px;}
-.hero-greeting{font-size:13px;color:var(--gris);font-weight:400;margin-bottom:6px;}
-.hero-title{font-family:'Poppins',sans-serif;font-weight:600;font-size:28px;line-height:1.2;color:var(--blanc);}
-.hero-title span{color:var(--or);}
-.hero-sub{font-size:13px;color:var(--gris);margin-top:6px;}
-.input-zone{margin:0 24px 24px;position:relative;}
-.input-zone input{width:100%;background:var(--noir3);border:1px solid rgba(198,168,94,0.3);border-radius:14px;padding:14px 120px 14px 18px;color:var(--blanc);font-size:15px;font-family:'Inter',sans-serif;outline:none;transition:border 0.2s,box-shadow 0.2s;}
-.input-zone input::placeholder{color:var(--gris);}
-.input-zone input:focus{border-color:var(--or);box-shadow:var(--glow);}
-.btn-envoyer{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:linear-gradient(135deg,#C6A85E,#8a6a2e);border:none;border-radius:10px;padding:9px 14px;color:#000;font-family:'Poppins',sans-serif;font-weight:600;font-size:12px;cursor:pointer;box-shadow:var(--glow);}
-.section-title{padding:0 24px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
-.section-title span:first-child{font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;color:var(--blanc);text-transform:uppercase;letter-spacing:1px;}
-.section-title span:last-child{font-size:12px;color:var(--or);cursor:pointer;}
-.modules-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding:0 24px;margin-bottom:28px;}
-.module-card{background:var(--noir2);border:1px solid rgba(198,168,94,0.15);border-radius:16px;padding:16px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:all 0.2s;text-align:center;}
-.module-card:active{transform:scale(0.96);}
-.module-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:2px;}
-.module-icon.gold{background:linear-gradient(135deg,rgba(198,168,94,0.2),rgba(138,106,46,0.2));border:1px solid rgba(198,168,94,0.3);}
-.module-icon.rose{background:linear-gradient(135deg,rgba(224,166,166,0.2),rgba(180,120,120,0.2));border:1px solid rgba(224,166,166,0.3);}
-.module-label{font-size:11px;font-weight:500;color:var(--blanc);line-height:1.2;}
-.suggestion-card{margin:0 24px;background:linear-gradient(135deg,rgba(198,168,94,0.08),rgba(10,10,10,0));border:1px solid rgba(198,168,94,0.2);border-radius:18px;padding:18px 20px;display:flex;align-items:center;gap:14px;cursor:pointer;}
-.suggestion-star{font-size:28px;flex-shrink:0;}
-.suggestion-text p:first-child{font-family:'Poppins',sans-serif;font-weight:500;font-size:13px;color:var(--or);margin-bottom:3px;}
-.suggestion-text p:last-child{font-size:12px;color:var(--gris);}
-#screen-chat{padding:0 0 80px;}
-.chat-header{display:flex;align-items:center;gap:12px;padding:16px 24px;border-bottom:1px solid rgba(198,168,94,0.1);}
-.chat-back{background:none;border:none;color:var(--or);font-size:26px;cursor:pointer;padding:0;line-height:1;}
-.chat-header-info{flex:1;}
-.chat-header-info h2{font-family:'Poppins',sans-serif;font-weight:600;font-size:16px;color:var(--blanc);}
-.chat-header-info p{font-size:12px;color:var(--gris);}
-.chat-header-icon{width:38px;height:38px;background:linear-gradient(135deg,#C6A85E,#8a6a2e);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:var(--glow);}
-.chat-messages{flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:14px;padding-bottom:80px;}
-.msg-ai-wrap{display:flex;gap:10px;align-items:flex-end;}
-.msg-ai-avatar{width:28px;height:28px;background:linear-gradient(135deg,#C6A85E,#8a6a2e);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#000;flex-shrink:0;}
-.msg-ai{background:var(--noir2);border:1px solid rgba(198,168,94,0.2);border-radius:18px 18px 18px 4px;padding:12px 16px;max-width:82%;font-size:14px;color:var(--blanc);line-height:1.5;white-space:pre-wrap;}
-.msg-user{background:linear-gradient(135deg,rgba(198,168,94,0.15),rgba(138,106,46,0.1));border:1px solid rgba(198,168,94,0.25);border-radius:18px 18px 4px 18px;padding:12px 16px;max-width:82%;font-size:14px;color:var(--blanc);align-self:flex-end;line-height:1.5;}
-.msg-loading{color:var(--gris);font-style:italic;font-size:13px;}
-.chat-input-zone{position:fixed;bottom:64px;left:50%;transform:translateX(-50%);width:100%;max-width:480px;padding:12px 16px;background:rgba(11,11,11,0.97);border-top:1px solid rgba(198,168,94,0.1);display:flex;gap:10px;z-index:99;}
-.chat-input-zone input{flex:1;background:var(--noir3);border:1px solid rgba(198,168,94,0.25);border-radius:12px;padding:12px 16px;color:var(--blanc);font-size:14px;outline:none;font-family:'Inter',sans-serif;}
-.chat-input-zone input:focus{border-color:var(--or);}
-.chat-send{background:linear-gradient(135deg,#C6A85E,#8a6a2e);border:none;border-radius:12px;width:46px;height:46px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--glow);flex-shrink:0;font-size:18px;color:#000;}
-#screen-activite{padding:0 0 80px;}
-.activite-header{padding:20px 24px 16px;}
-.activite-header h1{font-family:'Poppins',sans-serif;font-weight:600;font-size:22px;color:var(--blanc);}
-.activite-header p{font-size:13px;color:var(--gris);margin-top:4px;}
-.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 24px;margin-bottom:20px;}
-.stat-card{background:var(--noir2);border:1px solid rgba(198,168,94,0.15);border-radius:16px;padding:16px;}
-.stat-number{font-family:'Poppins',sans-serif;font-weight:700;font-size:28px;color:var(--or);}
-.stat-label{font-size:12px;color:var(--gris);margin-top:2px;}
-.revenus-card{margin:0 24px 20px;background:linear-gradient(135deg,rgba(198,168,94,0.1),rgba(10,10,10,0));border:1px solid rgba(198,168,94,0.25);border-radius:18px;padding:20px;}
-.revenus-title{font-size:12px;color:var(--gris);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;}
-.revenus-amount{font-family:'Poppins',sans-serif;font-weight:700;font-size:36px;color:var(--or-clair);}
-.revenus-sub{font-size:13px;color:var(--gris);margin-top:4px;}
-.revenus-actions{margin-top:16px;display:flex;flex-direction:column;gap:10px;}
-.action-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--blanc);}
-.action-dot{width:8px;height:8px;border-radius:50%;background:var(--or);flex-shrink:0;}
-.btn-voir-plus{margin-top:16px;background:linear-gradient(135deg,rgba(198,168,94,0.2),rgba(138,106,46,0.2));border:1px solid rgba(198,168,94,0.3);border-radius:10px;padding:10px;width:100%;color:var(--or);font-family:'Poppins',sans-serif;font-weight:500;font-size:13px;cursor:pointer;}
-#screen-profil{padding:0 0 80px;}
-.profil-header{padding:24px 24px 20px;text-align:center;border-bottom:1px solid rgba(198,168,94,0.1);}
-.profil-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#C6A85E,#8a6a2e);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:28px;color:#000;box-shadow:0 0 30px rgba(198,168,94,0.4);}
-.profil-name{font-family:'Poppins',sans-serif;font-weight:600;font-size:20px;color:var(--blanc);}
-.profil-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(198,168,94,0.15),rgba(138,106,46,0.1));border:1px solid rgba(198,168,94,0.3);border-radius:20px;padding:4px 12px;margin-top:8px;font-size:12px;color:var(--or);font-weight:500;}
-.profil-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:20px 24px;}
-.profil-stat{background:var(--noir2);border:1px solid rgba(198,168,94,0.15);border-radius:12px;padding:14px;text-align:center;}
-.profil-stat-num{font-family:'Poppins',sans-serif;font-weight:700;font-size:22px;color:var(--or);}
-.profil-stat-label{font-size:11px;color:var(--gris);margin-top:2px;}
-.profil-menu{padding:0 24px;}
-.profil-menu-item{display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.05);cursor:pointer;}
-.profil-menu-icon{width:38px;height:38px;background:var(--noir2);border:1px solid rgba(198,168,94,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;}
-.profil-menu-label{flex:1;font-size:14px;color:var(--blanc);font-weight:500;}
-.profil-menu-arrow{color:var(--gris);font-size:18px;}
-.premium-card{margin:0 24px 20px;background:linear-gradient(135deg,rgba(198,168,94,0.12),rgba(224,166,166,0.06));border:1px solid rgba(198,168,94,0.3);border-radius:18px;padding:20px;text-align:center;}
-.premium-card h3{font-family:'Poppins',sans-serif;font-weight:600;font-size:16px;color:var(--or);margin-bottom:6px;}
-.premium-card p{font-size:13px;color:var(--gris);margin-bottom:14px;}
-.btn-premium{background:linear-gradient(135deg,#C6A85E,#8a6a2e);border:none;border-radius:12px;padding:12px 24px;color:#000;font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;cursor:pointer;width:100%;box-shadow:var(--glow);}
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(11,11,11,0.97);backdrop-filter:blur(20px);border-top:1px solid rgba(198,168,94,0.15);display:flex;align-items:center;justify-content:space-around;padding:8px 0 12px;z-index:100;}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 8px;min-width:56px;}
-.nav-icon{font-size:20px;color:var(--gris);transition:color 0.2s;}
-.nav-label{font-size:10px;color:var(--gris);font-weight:500;transition:color 0.2s;}
-.nav-item.active .nav-icon{color:var(--or);}
-.nav-item.active .nav-label{color:var(--or);}
+#screen-chat{height:100vh;overflow:hidden;padding-bottom:0;}
 ::-webkit-scrollbar{width:0;}
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 8px;flex-shrink:0;}
+.logo-wrap{display:flex;align-items:center;gap:9px;}
+.logo-img{height:38px;width:38px;object-fit:cover;border-radius:10px;box-shadow:0 0 16px rgba(198,168,94,0.5);}
+.logo-fallback{width:38px;height:38px;background:linear-gradient(135deg,#d4b060,#7a4e18);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;color:#1a0e00;box-shadow:var(--glow-or);flex-shrink:0;}
+.logo-texts .logo-name{font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;color:var(--or2);line-height:1.1;}
+.logo-texts .logo-tag{font-size:9px;color:var(--gris);letter-spacing:0.3px;}
+.top-right{display:flex;align-items:center;gap:8px;}
+.badge-prem{display:flex;align-items:center;gap:4px;background:linear-gradient(135deg,rgba(198,168,94,0.12),rgba(80,50,10,0.2));border:1px solid rgba(198,168,94,0.3);border-radius:20px;padding:3px 9px;font-size:9px;font-weight:700;color:var(--or);letter-spacing:0.6px;}
+.bell{background:none;border:none;color:var(--gris);font-size:17px;cursor:pointer;}
+.hero{padding:12px 18px 10px;}
+.hero-eye{font-size:10px;color:var(--gris);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.hero-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:28px;line-height:1.12;color:var(--blanc);}
+.hero-title em{color:var(--or2);font-style:normal;}
+.hero-sub{font-size:11px;color:var(--gris);margin-top:5px;}
+.input-wrap{padding:12px 18px 14px;position:relative;}
+.main-input{width:100%;background:rgba(255,255,255,0.035);border:1px solid rgba(198,168,94,0.22);border-radius:14px;padding:13px 130px 13px 16px;color:var(--blanc);font-size:13px;font-family:'Inter',sans-serif;outline:none;transition:border .25s,box-shadow .25s;}
+.main-input::placeholder{color:var(--gris);}
+.main-input:focus{border-color:rgba(198,168,94,0.55);box-shadow:0 0 20px rgba(198,168,94,0.12);}
+.btn-send-home{position:absolute;right:26px;top:50%;transform:translateY(-50%);background:linear-gradient(135deg,#d4b060,#8a5820,#c8a050);border:none;border-radius:10px;padding:9px 15px;color:#1a0e00;font-family:'Poppins',sans-serif;font-weight:700;font-size:11px;cursor:pointer;letter-spacing:0.8px;white-space:nowrap;box-shadow:var(--glow-btn);}
+.btn-send-home:active{transform:translateY(-50%) scale(0.95);}
+.sec-hd{display:flex;align-items:center;justify-content:space-between;padding:2px 18px 10px;}
+.sec-hd-t{font-family:'Poppins',sans-serif;font-weight:600;font-size:10px;color:var(--blanc);text-transform:uppercase;letter-spacing:1.3px;}
+.sec-hd-l{font-size:10px;color:var(--or);letter-spacing:0.5px;cursor:pointer;}
+.mods-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;padding:0 18px;margin-bottom:16px;}
+.mod{background:rgba(255,255,255,0.025);border:1px solid rgba(198,168,94,0.1);border-radius:14px;padding:13px 8px 11px;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;text-align:center;transition:border-color .2s,transform .15s;position:relative;overflow:hidden;}
+.mod:active{transform:scale(0.94);border-color:rgba(198,168,94,0.4);}
+.mod-ico{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.mod-ico.gold{background:radial-gradient(circle,rgba(198,168,94,0.2),rgba(80,50,0,0.3));border:1px solid rgba(198,168,94,0.3);box-shadow:0 0 14px rgba(198,168,94,0.2);}
+.mod-ico.rose{background:radial-gradient(circle,rgba(200,133,106,0.2),rgba(80,30,10,0.3));border:1px solid rgba(200,133,106,0.25);box-shadow:0 0 14px rgba(200,133,106,0.15);}
+.mod-label{font-family:'Poppins',sans-serif;font-weight:500;font-size:9.5px;color:var(--blanc);line-height:1.3;}
+.sug{margin:0 18px 18px;background:linear-gradient(135deg,rgba(198,168,94,0.06),rgba(0,0,0,0) 70%);border:1px solid rgba(198,168,94,0.16);border-radius:18px;padding:15px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;}
+.sug:active{border-color:rgba(198,168,94,0.4);}
+.sug-star{width:40px;height:40px;flex-shrink:0;background:radial-gradient(circle,rgba(198,168,94,0.3),rgba(80,50,0,0.4));border:1px solid rgba(198,168,94,0.35);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px rgba(198,168,94,0.35);font-size:18px;color:var(--or2);}
+.sug-label{font-family:'Poppins',sans-serif;font-weight:500;font-size:11px;color:var(--or);margin-bottom:3px;}
+.sug-desc{font-size:11px;color:var(--gris);line-height:1.4;}
+.sug-cta{margin-top:6px;font-family:'Poppins',sans-serif;font-weight:600;font-size:11px;color:var(--or2);}
+.chat-hd{display:flex;align-items:center;gap:11px;padding:12px 18px;border-bottom:1px solid rgba(198,168,94,0.08);flex-shrink:0;background:var(--noir);position:relative;z-index:10;}
+.back-btn{background:none;border:none;color:var(--or);font-size:26px;line-height:1;cursor:pointer;padding:0;flex-shrink:0;}
+.chat-hd-info{flex:1;}
+.chat-hd-info h2{font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;color:var(--blanc);}
+.chat-hd-info p{font-size:10px;color:var(--gris);}
+.chat-hd-ico{width:34px;height:34px;background:linear-gradient(135deg,#d4b060,#7a4e18);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:var(--glow-or);flex-shrink:0;}
+.chat-body{flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:11px;-webkit-overflow-scrolling:touch;}
+.bubble-row{display:flex;gap:7px;align-items:flex-end;}
+.bubble-av{width:24px;height:24px;flex-shrink:0;background:linear-gradient(135deg,#d4b060,#7a4e18);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#1a0e00;}
+.bubble-ai{background:rgba(255,255,255,0.035);border:1px solid rgba(198,168,94,0.15);border-radius:14px 14px 14px 3px;padding:10px 13px;max-width:82%;font-size:13px;color:var(--blanc);line-height:1.55;white-space:pre-wrap;}
+.bubble-user{background:linear-gradient(135deg,rgba(198,168,94,0.13),rgba(80,40,5,0.15));border:1px solid rgba(198,168,94,0.2);border-radius:14px 14px 3px 14px;padding:10px 13px;max-width:82%;font-size:13px;color:var(--blanc);line-height:1.55;align-self:flex-end;}
+.bubble-loading{color:var(--gris);font-style:italic;font-size:12px;}
+.chat-input-row{display:flex;gap:8px;padding:9px 14px 11px;background:rgba(11,11,11,0.97);border-top:1px solid rgba(198,168,94,0.08);flex-shrink:0;}
+.chat-input-row input{flex:1;background:rgba(255,255,255,0.035);border:1px solid rgba(198,168,94,0.2);border-radius:11px;padding:10px 13px;color:var(--blanc);font-size:13px;font-family:'Inter',sans-serif;outline:none;}
+.chat-input-row input:focus{border-color:rgba(198,168,94,0.45);}
+.chat-send-btn{background:linear-gradient(135deg,#d4b060,#7a4e18);border:none;border-radius:11px;width:42px;height:42px;flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#1a0e00;box-shadow:var(--glow-btn);}
+.chat-send-btn:active{transform:scale(0.94);}
+.scr-hd{padding:16px 18px 10px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;}
+.scr-hd h1{font-family:'Poppins',sans-serif;font-weight:600;font-size:20px;}
+.scr-hd span{color:var(--or);font-size:20px;cursor:pointer;}
+.search-bar{margin:0 18px 12px;background:rgba(255,255,255,0.03);border:1px solid rgba(198,168,94,0.12);border-radius:11px;padding:9px 14px;display:flex;align-items:center;gap:8px;color:var(--gris);font-size:12px;}
+.filters{display:flex;gap:7px;padding:0 18px;margin-bottom:12px;flex-shrink:0;}
+.flt{padding:5px 13px;border-radius:20px;font-size:10px;font-weight:500;border:1px solid rgba(198,168,94,0.15);background:transparent;color:var(--gris);cursor:pointer;}
+.flt.on{background:linear-gradient(135deg,rgba(198,168,94,0.18),rgba(80,40,5,0.15));border-color:var(--or);color:var(--or);}
+.conv-list{flex:1;overflow-y:auto;padding:0 18px;-webkit-overflow-scrolling:touch;}
+.conv{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;}
+.conv-av{width:42px;height:42px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;position:relative;}
+.conv-av.lz{background:linear-gradient(135deg,#d4b060,#7a4e18);color:#1a0e00;box-shadow:0 0 12px rgba(198,168,94,0.4);}
+.conv-av.em{background:linear-gradient(135deg,#C8856A,#7a3020);color:#fff;}
+.conv-av.gc{background:linear-gradient(135deg,#5E7AC6,#203080);color:#fff;}
+.conv-av.no{background:linear-gradient(135deg,#6AC87A,#206030);color:#fff;}
+.conv-av.sa{background:linear-gradient(135deg,#C86A8A,#702040);color:#fff;}
+.notif-dot{position:absolute;top:-2px;right:-2px;width:16px;height:16px;border-radius:50%;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.conv-info{flex:1;min-width:0;}
+.conv-nm{font-weight:600;font-size:13px;color:var(--blanc);margin-bottom:2px;}
+.conv-prev{font-size:11px;color:var(--gris);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.conv-t{font-size:10px;color:var(--gris);flex-shrink:0;}
+.msg-opt{margin:10px 18px;background:rgba(198,168,94,0.05);border:1px solid rgba(198,168,94,0.13);border-radius:11px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+.msg-opt span:first-child{font-size:12px;color:var(--blanc);}
+.msg-opt span:last-child{color:var(--or);font-size:16px;}
+.appels-hd{padding:16px 18px 10px;flex-shrink:0;}
+.appels-hd h1{font-family:'Poppins',sans-serif;font-weight:600;font-size:20px;}
+.call-card{margin:0 18px 16px;background:linear-gradient(135deg,rgba(198,168,94,0.07),rgba(0,0,0,0.6));border:1px solid rgba(198,168,94,0.18);border-radius:20px;padding:22px 18px;text-align:center;}
+.call-card h2{font-family:'Poppins',sans-serif;font-weight:600;font-size:20px;color:var(--blanc);margin-bottom:4px;}
+.call-card p{font-size:11px;color:var(--gris);margin-bottom:18px;}
+.call-btns{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+.call-btn{background:rgba(255,255,255,0.025);border:1px solid rgba(198,168,94,0.2);border-radius:13px;padding:15px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:all .2s;}
+.call-btn:active{transform:scale(0.95);border-color:var(--or);}
+.call-ico{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#d4b060,#7a4e18);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:var(--glow-or);}
+.call-btn-lbl{font-family:'Poppins',sans-serif;font-weight:600;font-size:12px;color:var(--blanc);letter-spacing:0.5px;}
+.call-hint{margin:0 18px 16px;font-size:11px;color:var(--gris);text-align:center;padding:10px;background:rgba(255,255,255,0.02);border-radius:10px;border:1px solid rgba(255,255,255,0.04);}
+.recents-hd{padding:4px 18px 10px;flex-shrink:0;display:flex;justify-content:space-between;align-items:center;}
+.recents-hd h3{font-family:'Poppins',sans-serif;font-weight:600;font-size:11px;color:var(--blanc);text-transform:uppercase;letter-spacing:1px;}
+.recents-hd span{font-size:10px;color:var(--or);cursor:pointer;}
+.recent-row{display:flex;align-items:center;gap:11px;padding:10px 18px;border-bottom:1px solid rgba(255,255,255,0.04);}
+.recent-av{width:38px;height:38px;border-radius:50%;background:rgba(198,168,94,0.1);border:1px solid rgba(198,168,94,0.18);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.recent-info{flex:1;}
+.recent-nm{font-size:13px;font-weight:500;color:var(--blanc);}
+.recent-meta{font-size:10px;color:var(--gris);}
+.recent-time{font-size:10px;color:var(--or);}
+.activ-hd{padding:16px 18px 10px;flex-shrink:0;}
+.activ-hd h1{font-family:'Poppins',sans-serif;font-weight:600;font-size:20px;}
+.activ-hd p{font-size:11px;color:var(--gris);margin-top:3px;}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 18px;margin-bottom:12px;}
+.stat-box{background:rgba(255,255,255,0.025);border:1px solid rgba(198,168,94,0.1);border-radius:14px;padding:13px;}
+.stat-n{font-family:'Poppins',sans-serif;font-weight:700;font-size:28px;color:var(--or2);}
+.stat-l{font-size:10px;color:var(--gris);margin-top:2px;}
+.rev-box{margin:0 18px 12px;background:linear-gradient(135deg,rgba(198,168,94,0.08),rgba(0,0,0,0.7));border:1px solid rgba(198,168,94,0.2);border-radius:18px;padding:16px;}
+.rev-ey{font-size:9px;color:var(--gris);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:3px;}
+.rev-n{font-family:'Poppins',sans-serif;font-weight:700;font-size:38px;color:var(--or-clair);}
+.rev-s{font-size:11px;color:var(--gris);margin-top:2px;margin-bottom:12px;}
+.act-list{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+.act-row{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--blanc);}
+.act-dot{width:6px;height:6px;border-radius:50%;background:var(--or);flex-shrink:0;}
+.btn-voir{background:linear-gradient(135deg,rgba(198,168,94,0.14),rgba(80,40,5,0.1));border:1px solid rgba(198,168,94,0.25);border-radius:10px;padding:10px;width:100%;color:var(--or);font-family:'Poppins',sans-serif;font-weight:500;font-size:12px;cursor:pointer;}
+.profil-hd{padding:20px 18px 16px;text-align:center;border-bottom:1px solid rgba(198,168,94,0.07);flex-shrink:0;}
+.profil-av{width:74px;height:74px;border-radius:50%;background:linear-gradient(135deg,#d4b060,#7a4e18);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:26px;color:#1a0e00;box-shadow:0 0 32px rgba(198,168,94,0.45);}
+.profil-nm{font-family:'Poppins',sans-serif;font-weight:600;font-size:18px;color:var(--blanc);}
+.profil-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,rgba(198,168,94,0.1),rgba(80,40,5,0.12));border:1px solid rgba(198,168,94,0.25);border-radius:20px;padding:3px 11px;margin-top:8px;font-size:10px;color:var(--or);font-weight:700;letter-spacing:0.4px;}
+.profil-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 18px;}
+.kpi{background:rgba(255,255,255,0.025);border:1px solid rgba(198,168,94,0.09);border-radius:12px;padding:12px;text-align:center;}
+.kpi-n{font-family:'Poppins',sans-serif;font-weight:700;font-size:22px;color:var(--or2);}
+.kpi-l{font-size:10px;color:var(--gris);margin-top:2px;}
+.progress-wrap{margin:0 18px 12px;}
+.progress-labels{display:flex;justify-content:space-between;margin-bottom:5px;}
+.progress-labels span{font-size:10px;color:var(--gris);}
+.progress-labels span:last-child{color:var(--or);font-weight:600;}
+.progress-bg{height:5px;background:rgba(255,255,255,0.06);border-radius:3px;}
+.progress-fill{height:5px;width:73%;background:linear-gradient(90deg,#C6A85E,#E0A6A6);border-radius:3px;box-shadow:0 0 8px rgba(198,168,94,0.4);}
+.prem-box{margin:0 18px 12px;background:linear-gradient(135deg,rgba(198,168,94,0.09),rgba(200,133,106,0.04));border:1px solid rgba(198,168,94,0.25);border-radius:18px;padding:16px;text-align:center;}
+.prem-box h3{font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;color:var(--or);margin-bottom:4px;}
+.prem-box p{font-size:11px;color:var(--gris);margin-bottom:13px;}
+.btn-prem{background:linear-gradient(135deg,#d4b060,#7a4e18,#d4b060);border:none;border-radius:11px;padding:12px 18px;color:#1a0e00;font-family:'Poppins',sans-serif;font-weight:700;font-size:12px;cursor:pointer;width:100%;box-shadow:var(--glow-btn);letter-spacing:0.5px;}
+.menu-list{padding:0 18px 16px;}
+.menu-row{display:flex;align-items:center;gap:11px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;}
+.menu-row:last-child{border:none;}
+.menu-ico{width:34px;height:34px;background:rgba(255,255,255,0.025);border:1px solid rgba(198,168,94,0.1);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.menu-lbl{flex:1;font-size:13px;color:var(--blanc);font-weight:500;}
+.menu-arr{color:var(--gris);font-size:15px;}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:62px;background:rgba(10,8,5,0.97);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-top:1px solid rgba(198,168,94,0.1);display:flex;align-items:center;justify-content:space-around;padding:6px 0 10px;z-index:100;}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:2px 10px;min-width:52px;background:none;border:none;}
+.nav-ico{font-size:18px;color:var(--gris);transition:color .2s,filter .2s;}
+.nav-lbl{font-size:9px;color:var(--gris);font-weight:500;transition:color .2s;}
+.nav-btn.on .nav-ico{color:var(--or);filter:drop-shadow(0 0 5px rgba(198,168,94,0.7));}
+.nav-btn.on .nav-lbl{color:var(--or);}
 </style>
 </head>
 <body>
 
+<!-- ACCUEIL -->
 <div class="screen active" id="screen-accueil">
-  <div class="header-top">
-    <div class="header-logo">
-      <div class="logo-icon">LZ</div>
-      <div class="logo-text">LuminZenith <span>AI</span></div>
+  <div class="top-bar">
+    <div class="logo-wrap">
+      <img src="./ChatGPT%20Image%2019%20juin%202026%2020_17_17.png" class="logo-img" alt="LZ" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="logo-fallback" style="display:none">LZ</div>
+      <div class="logo-texts">
+        <div class="logo-name">LuminZenith AI</div>
+        <div class="logo-tag">LA LUMIÈRE AU SOMMET</div>
+      </div>
+    </div>
+    <div class="top-right">
+      <div class="badge-prem">✦ PREMIUM</div>
+      <button class="bell">🔔</button>
     </div>
   </div>
   <div class="hero">
-    <div class="hero-greeting">Bonjour 👋</div>
-    <div class="hero-title">Que veux-tu faire<br><span>aujourd'hui ?</span></div>
+    <div class="hero-eye">BONJOUR ALEXANDRE</div>
+    <div class="hero-title">Que veux-tu faire<br><em>aujourd'hui ?</em></div>
     <div class="hero-sub">Tout est réuni. Tout devient possible.</div>
   </div>
-  <div class="input-zone">
-    <input type="text" id="home-input" placeholder="Demande-moi ce que tu veux..." onkeypress="if(event.key==='Enter')ouvrirChat()">
-    <button class="btn-envoyer" onclick="ouvrirChat()">ENVOYER ✦</button>
+  <div class="input-wrap">
+    <input class="main-input" id="home-input" type="text" placeholder="Demande-moi ce que tu veux..." onkeypress="if(event.key==='Enter')ouvrirChat()">
+    <button class="btn-send-home" onclick="ouvrirChat()">ENVOYER ✦</button>
   </div>
-  <div class="section-title">
-    <span>Actions Rapides</span>
-    <span>Voir tout</span>
+  <div class="sec-hd">
+    <span class="sec-hd-t">Actions Rapides</span>
+    <span class="sec-hd-l">VOIR TOUT</span>
   </div>
-  <div class="modules-grid">
-    <div class="module-card" onclick="ouvrirModule('💰','Gagner de l\'argent','Tu es expert en business, revenus, stratégie financière et monétisation. Aide à générer des revenus concrets.')">
-      <div class="module-icon gold">💰</div>
-      <div class="module-label">Gagner de l'argent</div>
+  <div class="mods-grid">
+    <div class="mod" onclick="ouvrirModule('💰','Gagner de l\'argent','Expert en business, monétisation, revenus et stratégie financière.')">
+      <div class="mod-ico gold">💰</div>
+      <div class="mod-label">Gagner de l'argent</div>
     </div>
-    <div class="module-card" onclick="ouvrirModule('🎵','Créer','Tu es expert en création musicale, prompts Suno, toplines, structure de morceaux et production.')">
-      <div class="module-icon rose">🎵</div>
-      <div class="module-label">Créer</div>
+    <div class="mod" onclick="ouvrirModule('🎵','Créer','Expert en création musicale, prompts Suno V5.5 à 432Hz, toplines et production.')">
+      <div class="mod-ico rose">🎵</div>
+      <div class="mod-label">Créer</div>
     </div>
-    <div class="module-card" onclick="ouvrirModule('📈','Développer','Tu es expert en croissance, stratégie business, développement de projet et scale.')">
-      <div class="module-icon gold">📈</div>
-      <div class="module-label">Développer</div>
+    <div class="mod" onclick="ouvrirModule('📈','Développer','Expert en croissance business, stratégie de développement et scale.')">
+      <div class="mod-ico gold">📈</div>
+      <div class="mod-label">Développer</div>
     </div>
-    <div class="module-card" onclick="ouvrirModule('✉️','Messages','Tu es expert en rédaction email, messages professionnels, communication et copywriting.')">
-      <div class="module-icon rose">✉️</div>
-      <div class="module-label">Messages</div>
+    <div class="mod" onclick="changerEcran('messages')">
+      <div class="mod-ico rose">✉️</div>
+      <div class="mod-label">Messages</div>
     </div>
-    <div class="module-card" onclick="ouvrirModule('📱','Réseaux','Tu es expert en contenu viral, posts Instagram, scripts TikTok, stratégie réseaux sociaux.')">
-      <div class="module-icon gold">📱</div>
-      <div class="module-label">Réseaux</div>
+    <div class="mod" onclick="changerEcran('appels')">
+      <div class="mod-ico gold">📞</div>
+      <div class="mod-label">Appels / Visio</div>
     </div>
-    <div class="module-card" onclick="ouvrirModule('📚','Étudier','Tu es expert en aide scolaire, explications claires, méthodes d\'apprentissage et révisions.')">
-      <div class="module-icon rose">📚</div>
-      <div class="module-label">Étudier</div>
+    <div class="mod" onclick="ouvrirModule('📚','Étudier','Expert en aide scolaire, explications claires et méthodes d\'apprentissage.')">
+      <div class="mod-ico rose">📚</div>
+      <div class="mod-label">Étudier</div>
     </div>
   </div>
-  <div class="suggestion-card" onclick="ouvrirModule('✦','Assistant','Tu es un assistant premium polyvalent. Aide sur tous les sujets avec expertise.')">
-    <div class="suggestion-star">✦</div>
-    <div class="suggestion-text">
-      <p>Suggestion du jour</p>
-      <p>Lance ta première offre en 3 étapes avec ton IA</p>
+  <div class="sug" onclick="ouvrirModule('✦','Assistant','Tu es LuminZenith AI, assistant premium polyvalent.')">
+    <div class="sug-star">✦</div>
+    <div>
+      <div class="sug-label">SUGGESTION DU JOUR</div>
+      <div class="sug-desc">Lance ta première offre en 3 étapes avec ton IA</div>
+      <div class="sug-cta">Découvrir →</div>
     </div>
   </div>
 </div>
 
-<div class="screen" id="screen-chat">
-  <div class="chat-header">
-    <button class="chat-back" onclick="retourAccueil()">‹</button>
-    <div class="chat-header-info">
+<!-- CHAT -->
+<div class="screen" id="screen-chat" style="height:100vh;padding-bottom:0;">
+  <div class="chat-hd">
+    <button class="back-btn" onclick="retourAccueil()">‹</button>
+    <div class="chat-hd-info">
       <h2 id="chat-titre">Assistant IA</h2>
-      <p>LuminZenith AI · En ligne</p>
+      <p>LuminZenith AI · En ligne ✦</p>
     </div>
-    <div class="chat-header-icon" id="chat-icone">✦</div>
+    <div class="chat-hd-ico" id="chat-icone">✦</div>
   </div>
-  <div class="chat-messages" id="chat-messages">
-    <div class="msg-ai-wrap">
-      <div class="msg-ai-avatar">LZ</div>
-      <div class="msg-ai">Bonjour ! Je suis LuminZenith AI. Comment puis-je t'aider aujourd'hui ?</div>
+  <div class="chat-body" id="chat-body" style="flex:1;overflow-y:auto;padding-bottom:14px;">
+    <div class="bubble-row">
+      <div class="bubble-av">LZ</div>
+      <div class="bubble-ai">Bonjour ! Je suis LuminZenith AI. Comment puis-je t'aider aujourd'hui ? ✦</div>
     </div>
   </div>
-  <div class="chat-input-zone">
+  <div class="chat-input-row">
     <input type="text" id="chat-input" placeholder="Écris ton message..." onkeypress="if(event.key==='Enter')envoyer()">
-    <button class="chat-send" onclick="envoyer()">➤</button>
+    <button class="chat-send-btn" onclick="envoyer()">➤</button>
   </div>
 </div>
 
+<!-- MESSAGES -->
+<div class="screen" id="screen-messages">
+  <div class="scr-hd"><h1>Messages</h1><span>✏</span></div>
+  <div class="search-bar">🔍 Rechercher...</div>
+  <div class="filters">
+    <button class="flt on">Tous</button>
+    <button class="flt">Non lus</button>
+    <button class="flt">Groupes</button>
+    <button class="flt">IA</button>
+  </div>
+  <div class="conv-list">
+    <div class="conv" onclick="ouvrirModule('🤖','LuminZenith AI','Tu es LuminZenith AI, assistant premium polyvalent.')">
+      <div class="conv-av lz">LZ<div class="notif-dot" style="background:var(--or-rose);color:#fff;">1</div></div>
+      <div class="conv-info"><div class="conv-nm">LuminZenith AI</div><div class="conv-prev">Voici ton plan d'action personnalisé...</div></div>
+      <div class="conv-t">10:32</div>
+    </div>
+    <div class="conv">
+      <div class="conv-av em">E</div>
+      <div class="conv-info"><div class="conv-nm">Emma</div><div class="conv-prev">On se retrouve demain 14h pour le projet !</div></div>
+      <div class="conv-t">09:15</div>
+    </div>
+    <div class="conv">
+      <div class="conv-av gc">GC<div class="notif-dot" style="background:var(--or);color:#000;">12</div></div>
+      <div class="conv-info"><div class="conv-nm">Groupe Créateurs</div><div class="conv-prev">Lucas : Nouveau son dispo... 🎵</div></div>
+      <div class="conv-t">Hier</div>
+    </div>
+    <div class="conv">
+      <div class="conv-av no">N</div>
+      <div class="conv-info"><div class="conv-nm">Noah</div><div class="conv-prev">Stratégie business validée ✅</div></div>
+      <div class="conv-t">Hier</div>
+    </div>
+    <div class="conv">
+      <div class="conv-av sa">S</div>
+      <div class="conv-info"><div class="conv-nm">Sarah</div><div class="conv-prev">Merci pour l'aide 🙏</div></div>
+      <div class="conv-t">Lundi</div>
+    </div>
+  </div>
+  <div class="msg-opt" onclick="ouvrirModule('✦','Optimiser un message','Expert en communication et copywriting.')">
+    <span>✦ Optimiser un message</span><span>›</span>
+  </div>
+</div>
+
+<!-- APPELS -->
+<div class="screen" id="screen-appels">
+  <div class="appels-hd"><h1>Appels</h1></div>
+  <div class="call-card">
+    <h2>Appeler ou démarrer une visio</h2>
+    <p>Connexions sécurisées · Résumé IA après chaque appel</p>
+    <div class="call-btns">
+      <div class="call-btn" onclick="alert('Appel audio — Bientôt disponible ✦')">
+        <div class="call-ico">📞</div>
+        <div class="call-btn-lbl">APPEL</div>
+      </div>
+      <div class="call-btn" onclick="alert('Visio — Bientôt disponible ✦')">
+        <div class="call-ico">📹</div>
+        <div class="call-btn-lbl">VISIO</div>
+      </div>
+    </div>
+  </div>
+  <div class="call-hint">✦ Résumé intelligent de vos derniers appels</div>
+  <div class="recents-hd"><h3>Récents</h3><span>VOIR TOUT</span></div>
+  <div class="recent-row"><div class="recent-av">👤</div><div class="recent-info"><div class="recent-nm">Lucas Martin</div><div class="recent-meta">Appel vidéo · 32:15</div></div><div class="recent-time">10:45</div></div>
+  <div class="recent-row"><div class="recent-av">👥</div><div class="recent-info"><div class="recent-nm">Equipe Projet</div><div class="recent-meta">Visio · Terminée</div></div><div class="recent-time">Hier</div></div>
+  <div class="recent-row"><div class="recent-av">👤</div><div class="recent-info"><div class="recent-nm">Emma</div><div class="recent-meta">Appel manqué</div></div><div class="recent-time" style="color:var(--or-rose);">Lundi</div></div>
+</div>
+
+<!-- ACTIVITE -->
 <div class="screen" id="screen-activite">
-  <div class="activite-header">
-    <h1>Activité</h1>
-    <p>Ton potentiel cette semaine</p>
+  <div class="activ-hd"><h1>Activité</h1><p>Ton potentiel cette semaine</p></div>
+  <div class="stats-grid">
+    <div class="stat-box"><div class="stat-n">120</div><div class="stat-l">Abonnés possibles</div></div>
+    <div class="stat-box"><div class="stat-n">87%</div><div class="stat-l">Taux de réussite</div></div>
   </div>
-  <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-number">120</div>
-      <div class="stat-label">Abonnés possibles</div>
+  <div class="rev-box">
+    <div class="rev-ey">Tu peux générer</div>
+    <div class="rev-n">200 €</div>
+    <div class="rev-s">cette semaine avec LuminZenith</div>
+    <div class="act-list">
+      <div class="act-row"><div class="act-dot"></div>+ 3 Actions recommandées disponibles</div>
+      <div class="act-row"><div class="act-dot"></div>Progresse vers tes objectifs</div>
+      <div class="act-row"><div class="act-dot"></div>Nouveau contenu viral suggéré</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-number">87%</div>
-      <div class="stat-label">Taux de réussite</div>
-    </div>
-  </div>
-  <div class="revenus-card">
-    <div class="revenus-title">Tu peux générer</div>
-    <div class="revenus-amount">200 €</div>
-    <div class="revenus-sub">cette semaine avec LuminZenith</div>
-    <div class="revenus-actions">
-      <div class="action-item"><div class="action-dot"></div>+ 3 Actions recommandées disponibles</div>
-      <div class="action-item"><div class="action-dot"></div>Progresse vers tes objectifs</div>
-      <div class="action-item"><div class="action-dot"></div>Nouveau contenu viral suggéré</div>
-    </div>
-    <button class="btn-voir-plus" onclick="ouvrirModule('📈','Développer','Tu es expert en croissance, stratégie business, développement de projet et scale.')">Voir plus →</button>
+    <button class="btn-voir" onclick="ouvrirModule('📈','Développer','Expert en croissance business.')">Voir plus →</button>
   </div>
 </div>
 
+<!-- PROFIL -->
 <div class="screen" id="screen-profil">
-  <div class="profil-header">
-    <div class="profil-avatar">A</div>
-    <div class="profil-name">Alexandre</div>
-    <div class="profil-badge">💎 Membre Premium</div>
+  <div class="profil-hd">
+    <div class="profil-av">A</div>
+    <div class="profil-nm">Alexandre</div>
+    <div class="profil-badge">💎 MEMBRE PREMIUM</div>
   </div>
-  <div class="profil-stats">
-    <div class="profil-stat">
-      <div class="profil-stat-num">12</div>
-      <div class="profil-stat-label">Objectifs en cours</div>
-    </div>
-    <div class="profil-stat">
-      <div class="profil-stat-num">73%</div>
-      <div class="profil-stat-label">Progression</div>
-    </div>
+  <div class="profil-kpis">
+    <div class="kpi"><div class="kpi-n">12</div><div class="kpi-l">Objectifs en cours</div></div>
+    <div class="kpi"><div class="kpi-n">87%</div><div class="kpi-l">Taux de réussite</div></div>
   </div>
-  <div class="premium-card">
+  <div class="progress-wrap">
+    <div class="progress-labels"><span>PROGRESSION</span><span>73%</span></div>
+    <div class="progress-bg"><div class="progress-fill"></div></div>
+  </div>
+  <div class="prem-box">
     <h3>✦ Centre Premium</h3>
     <p>Débloque tout le potentiel de LuminZenith AI</p>
-    <button class="btn-premium">DÉBLOQUER LUMINZENITH</button>
+    <button class="btn-prem">DÉBLOQUER LUMINZENITH</button>
   </div>
-  <div class="profil-menu">
-    <div class="profil-menu-item"><div class="profil-menu-icon">🎯</div><div class="profil-menu-label">Mes Objectifs</div><div class="profil-menu-arrow">›</div></div>
-    <div class="profil-menu-item"><div class="profil-menu-icon">📊</div><div class="profil-menu-label">Mes Statistiques</div><div class="profil-menu-arrow">›</div></div>
-    <div class="profil-menu-item"><div class="profil-menu-icon">⚙️</div><div class="profil-menu-label">Paramètres</div><div class="profil-menu-arrow">›</div></div>
-    <div class="profil-menu-item"><div class="profil-menu-icon">💎</div><div class="profil-menu-label">Centre Premium</div><div class="profil-menu-arrow">›</div></div>
+  <div class="menu-list">
+    <div class="menu-row"><div class="menu-ico">🎯</div><div class="menu-lbl">Mes Objectifs</div><div class="menu-arr">›</div></div>
+    <div class="menu-row"><div class="menu-ico">📊</div><div class="menu-lbl">Mes Statistiques</div><div class="menu-arr">›</div></div>
+    <div class="menu-row"><div class="menu-ico">⚙️</div><div class="menu-lbl">Paramètres</div><div class="menu-arr">›</div></div>
+    <div class="menu-row"><div class="menu-ico">💎</div><div class="menu-lbl">Centre Premium</div><div class="menu-arr">›</div></div>
   </div>
 </div>
 
+<!-- NAV -->
 <nav class="bottom-nav">
-  <div class="nav-item active" id="nav-accueil" onclick="changerEcran('accueil')">
-    <div class="nav-icon">⌂</div>
-    <div class="nav-label">Accueil</div>
-  </div>
-  <div class="nav-item" id="nav-messages" onclick="ouvrirModule('✉️','Messages','Tu es expert en rédaction email, messages professionnels, communication et copywriting.')">
-    <div class="nav-icon">✉</div>
-    <div class="nav-label">Messages</div>
-  </div>
-  <div class="nav-item" id="nav-appels" onclick="alert('Appels et Visio — Bientôt disponible ✦')">
-    <div class="nav-icon">📞</div>
-    <div class="nav-label">Appels</div>
-  </div>
-  <div class="nav-item" id="nav-activite" onclick="changerEcran('activite')">
-    <div class="nav-icon">◈</div>
-    <div class="nav-label">Activité</div>
-  </div>
-  <div class="nav-item" id="nav-profil" onclick="changerEcran('profil')">
-    <div class="nav-icon">◉</div>
-    <div class="nav-label">Profil</div>
-  </div>
+  <button class="nav-btn on" id="nav-accueil" onclick="changerEcran('accueil')"><span class="nav-ico">⌂</span><span class="nav-lbl">Accueil</span></button>
+  <button class="nav-btn" id="nav-messages" onclick="changerEcran('messages')"><span class="nav-ico">✉</span><span class="nav-lbl">Messages</span></button>
+  <button class="nav-btn" id="nav-appels" onclick="changerEcran('appels')"><span class="nav-ico">📞</span><span class="nav-lbl">Appels</span></button>
+  <button class="nav-btn" id="nav-activite" onclick="changerEcran('activite')"><span class="nav-ico">◈</span><span class="nav-lbl">Activité</span></button>
+  <button class="nav-btn" id="nav-profil" onclick="changerEcran('profil')"><span class="nav-ico">◉</span><span class="nav-lbl">Profil</span></button>
 </nav>
 
 <script>
-const WORKER = 'https://luminzenithai-api.luminzenithai.workers.dev';
-const historique = [];
-let systemActuel = "Tu es LuminZenith AI, un assistant intelligent premium tout-en-un sans limite. Tu ne mentionnes jamais Claude ou Anthropic. Si on te demande qui tu es : Je suis LuminZenith AI. Comportement permanent : reponds comme un expert de haut niveau, vas droit au but, propose 2 a 3 options quand pertinent.";
+const WORKER='https://luminzenithai-api.luminzenithai.workers.dev';
+const hist=[];
+let sys="Tu es LuminZenith AI, un assistant intelligent premium tout-en-un sans limite. Tu ne mentionnes jamais Claude ou Anthropic. Si on te demande qui tu es : Je suis LuminZenith AI. Comportement permanent : reponds comme un expert de haut niveau, vas droit au but, propose 2 a 3 options quand pertinent.";
 
-function changerEcran(nom) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + nom).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  const nav = document.getElementById('nav-' + nom);
-  if(nav) nav.classList.add('active');
+function changerEcran(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+n).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
+  const nav=document.getElementById('nav-'+n);
+  if(nav)nav.classList.add('on');
+  if(n!=='chat')hist.length=0;
 }
 
-function ouvrirChat() {
-  const input = document.getElementById('home-input');
-  const texte = input.value.trim();
-  systemActuel = "Tu es LuminZenith AI, un assistant intelligent premium tout-en-un sans limite. Tu ne mentionnes jamais Claude ou Anthropic. Comportement permanent : reponds comme un expert de haut niveau, vas droit au but, propose 2 a 3 options quand pertinent.";
+function ouvrirChat(){
+  const input=document.getElementById('home-input');
+  const texte=input.value.trim();
+  sys="Tu es LuminZenith AI, assistant premium polyvalent. Reponds comme un expert de haut niveau, vas droit au but.";
   changerEcran('chat');
-  document.getElementById('chat-titre').textContent = 'Assistant IA';
-  document.getElementById('chat-icone').textContent = '✦';
-  document.getElementById('chat-messages').innerHTML = '<div class="msg-ai-wrap"><div class="msg-ai-avatar">LZ</div><div class="msg-ai">Bonjour ! Je suis LuminZenith AI. Comment puis-je t\'aider aujourd\'hui ?</div></div>';
-  historique.length = 0;
-  if(texte) {
-    input.value = '';
-    document.getElementById('chat-input').value = texte;
-    envoyer();
-  }
+  document.getElementById('chat-titre').textContent='Assistant IA';
+  document.getElementById('chat-icone').textContent='✦';
+  resetChat("Bonjour ! Je suis LuminZenith AI. Comment puis-je t'aider aujourd'hui ? ✦");
+  if(texte){input.value='';document.getElementById('chat-input').value=texte;envoyer();}
 }
 
-function ouvrirModule(icone, titre, systeme) {
-  systemActuel = "Tu es LuminZenith AI, un assistant intelligent premium tout-en-un sans limite. Tu ne mentionnes jamais Claude ou Anthropic. Module actif : " + titre + ". " + systeme + " Comportement permanent : reponds comme un expert de haut niveau, vas droit au but, propose 2 a 3 options quand pertinent.";
+function ouvrirModule(ico,titre,systeme){
+  sys="Tu es LuminZenith AI, un assistant intelligent premium tout-en-un sans limite. Tu ne mentionnes jamais Claude ou Anthropic. Module actif : "+titre+". "+systeme+" Comportement permanent : reponds comme un expert de haut niveau, vas droit au but, propose 2 a 3 options quand pertinent.";
   changerEcran('chat');
-  document.getElementById('chat-titre').textContent = titre;
-  document.getElementById('chat-icone').textContent = icone;
-  document.getElementById('chat-messages').innerHTML = '<div class="msg-ai-wrap"><div class="msg-ai-avatar">LZ</div><div class="msg-ai">Module <strong>' + titre + '</strong> activé ✦\n\nJe suis prêt. Dis-moi ce dont tu as besoin !</div></div>';
-  historique.length = 0;
+  document.getElementById('chat-titre').textContent=titre;
+  document.getElementById('chat-icone').textContent=ico;
+  resetChat("Module <strong>"+titre+"</strong> activé ✦\n\nJe suis prêt. Dis-moi ce dont tu as besoin !");
 }
 
-function retourAccueil() {
-  changerEcran('accueil');
-  historique.length = 0;
+function resetChat(msg){
+  hist.length=0;
+  document.getElementById('chat-body').innerHTML='<div class="bubble-row"><div class="bubble-av">LZ</div><div class="bubble-ai">'+msg+'</div></div>';
 }
 
-async function envoyer() {
-  const input = document.getElementById('chat-input');
-  const zone = document.getElementById('chat-messages');
-  const texte = input.value.trim();
-  if(!texte) return;
-  zone.innerHTML += '<div class="msg-user">' + texte + '</div>';
-  input.value = '';
-  historique.push({role:'user', content: texte});
-  zone.innerHTML += '<div class="msg-ai-wrap"><div class="msg-ai-avatar">LZ</div><div class="msg-ai msg-loading" id="loading">LuminZenith réfléchit...</div></div>';
-  zone.scrollTop = zone.scrollHeight;
-  try {
-    const r = await fetch(WORKER, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ messages: historique, system: systemActuel })
-    });
-    const rep = await r.text();
-    document.getElementById('loading').closest('.msg-ai-wrap').remove();
-    historique.push({role:'assistant', content: rep});
-    zone.innerHTML += '<div class="msg-ai-wrap"><div class="msg-ai-avatar">LZ</div><div class="msg-ai">' + rep + '</div></div>';
-  } catch(e) {
-    document.getElementById('loading').textContent = 'Erreur de connexion.';
+function retourAccueil(){changerEcran('accueil');hist.length=0;}
+
+async function envoyer(){
+  const input=document.getElementById('chat-input');
+  const zone=document.getElementById('chat-body');
+  const texte=input.value.trim();
+  if(!texte)return;
+  zone.innerHTML+='<div class="bubble-user">'+texte+'</div>';
+  input.value='';
+  hist.push({role:'user',content:texte});
+  zone.innerHTML+='<div class="bubble-row" id="load-row"><div class="bubble-av">LZ</div><div class="bubble-ai bubble-loading">LuminZenith réfléchit...</div></div>';
+  zone.scrollTop=zone.scrollHeight;
+  try{
+    const r=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:hist,system:sys})});
+    const rep=await r.text();
+    document.getElementById('load-row').remove();
+    hist.push({role:'assistant',content:rep});
+    zone.innerHTML+='<div class="bubble-row"><div class="bubble-av">LZ</div><div class="bubble-ai">'+rep+'</div></div>';
+  }catch(e){
+    const lr=document.getElementById('load-row');
+    if(lr)lr.querySelector('.bubble-ai').textContent='Erreur de connexion.';
   }
-  zone.scrollTop = zone.scrollHeight;
+  zone.scrollTop=zone.scrollHeight;
 }
 </script>
 </body>
