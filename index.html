@@ -2,56 +2,339 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>LuminZenith AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
+:root {
+  --noir: #0B0B0B;
+  --noir2: #121212;
+  --noir3: #1a1a1a;
+  --or: #C6A85E;
+  --or-rose: #E0A6A6;
+  --or-clair: #f0c97a;
+  --blanc: #EDEDED;
+  --gris: #9A9A8A;
+  --glow: 0 0 18px rgba(198,168,94,0.45);
+  --glow2: 0 0 30px rgba(198,168,94,0.25);
+}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:#0a0a0a;color:#fff;font-family:Arial,sans-serif;display:flex;flex-direction:column;height:100vh;}
-header{background:#111;padding:15px;text-align:center;color:gold;font-size:22px;font-weight:bold;border-bottom:2px solid gold;}
-#messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;}
-.msg-user{background:#1a1a2e;padding:12px 16px;border-radius:15px;align-self:flex-end;max-width:75%;border:1px solid #333;word-wrap:break-word;}
-.msg-ai{background:#111;padding:12px 16px;border-radius:15px;align-self:flex-start;max-width:75%;border:1px solid gold;color:gold;word-wrap:break-word;white-space:pre-wrap;}
-.loading{color:#666;font-style:italic;}
-#input-area{display:flex;padding:15px;background:#111;border-top:1px solid #333;gap:10px;}
-#msg{flex:1;background:#1a1a1a;border:1px solid gold;color:#fff;padding:12px;border-radius:8px;font-size:16px;outline:none;}
-#send{background:gold;color:#000;border:none;padding:12px 20px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:16px;}
+body{background:var(--noir);color:var(--blanc);font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column;max-width:480px;margin:0 auto;position:relative;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(198,168,94,0.04) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(224,166,166,0.04) 0%,transparent 60%);pointer-events:none;z-index:0;}
+.screen{display:none;flex-direction:column;min-height:100vh;position:relative;z-index:1;}
+.screen.active{display:flex;}
+#screen-accueil{padding:0 0 80px;}
+.header-top{display:flex;align-items:center;justify-content:space-between;padding:20px 24px 10px;}
+.header-logo{display:flex;align-items:center;gap:10px;}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#C6A85E,#8a6a2e);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;color:#000;box-shadow:var(--glow);}
+.logo-text{font-family:'Poppins',sans-serif;font-weight:600;font-size:16px;color:var(--or);letter-spacing:0.3px;}
+.logo-text span{color:var(--blanc);}
+.header-icons{display:flex;gap:16px;align-items:center;}
+.hero{padding:28px 24px 20px;}
+.hero-greeting{font-size:13px;color:var(--gris);font-weight:400;margin-bottom:6px;}
+.hero-title{font-family:'Poppins',sans-serif;font-weight:600;font-size:28px;line-height:1.2;color:var(--blanc);}
+.hero-title span{color:var(--or);}
+.hero-sub{font-size:13px;color:var(--gris);margin-top:6px;}
+.input-zone{margin:0 24px 24px;position:relative;}
+.input-zone input{width:100%;background:var(--noir3);border:1px solid rgba(198,168,94,0.3);border-radius:14px;padding:14px 120px 14px 18px;color:var(--blanc);font-size:15px;font-family:'Inter',sans-serif;outline:none;transition:border 0.2s,box-shadow 0.2s;}
+.input-zone input::placeholder{color:var(--gris);}
+.input-zone input:focus{border-color:var(--or);box-shadow:var(--glow);}
+.btn-envoyer{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:linear-gradient(135deg,#C6A85E,#8a6a2e);border:none;border-radius:10px;padding:9px 14px;color:#000;font-family:'Poppins',sans-serif;font-weight:600;font-size:12px;cursor:pointer;box-shadow:var(--glow);}
+.section-title{padding:0 24px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
+.section-title span:first-child{font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;color:var(--blanc);text-transform:uppercase;letter-spacing:1px;}
+.section-title span:last-child{font-size:12px;color:var(--or);cursor:pointer;}
+.modules-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding:0 24px;margin-bottom:28px;}
+.module-card{background:var(--noir2);border:1px solid rgba(198,168,94,0.15);border-radius:16px;padding:16px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:all 0.2s;text-align:center;}
+.module-card:active{transform:scale(0.96);}
+.module-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:2px;}
+.module-icon.gold{background:linear-gradient(135deg,rgba(198,168,94,0.2),rgba(138,106,46,0.2));border:1px solid rgba(198,168,94,0.3);}
+.module-icon.rose{background:linear-gradient(135deg,rgba(224,166,166,0.2),rgba(180,120,120,0.2));border:1px solid rgba(224,166,166,0.3);}
+.module-label{font-size:11px;font-weight:500;color:var(--blanc);line-height:1.2;}
+.suggestion-card{margin:0 24px;background:linear-gradient(135deg,rgba(198,168,94,0.08),rgba(10,10,10,0));border:1px solid rgba(198,168,94,0.2);border-radius:18px;padding:18px 20px;display:flex;align-items:center;gap:14px;cursor:pointer;}
+.suggestion-star{font-size:28px;flex-shrink:0;}
+.suggestion-text p:first-child{font-family:'Poppins',sans-serif;font-weight:500;font-size:13px;color:var(--or);margin-bottom:3px;}
+.suggestion-text p:last-child{font-size:12px;color:var(--gris);}
+#screen-chat{padding:0 0 80px;}
+.chat-header{display:flex;align-items:center;gap:12px;padding:16px 24px;border-bottom:1px solid rgba(198,168,94,0.1);}
+.chat-back{background:none;border:none;color:var(--or);font-size:26px;cursor:pointer;padding:0;line-height:1;}
+.chat-header-info{flex:1;}
+.chat-header-info h2{font-family:'Poppins',sans-serif;font-weight:600;font-size:16px;color:var(--blanc);}
+.chat-header-info p{font-size:12px;color:var(--gris);}
+.chat-header-icon{width:38px;height:38px;background:linear-gradient(135deg,#C6A85E,#8a6a2e);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:var(--glow);}
+.chat-messages{flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:14px;padding-bottom:80px;}
+.msg-ai-wrap{display:flex;gap:10px;align-items:flex-end;}
+.msg-ai-avatar{width:28px;height:28px;background:linear-gradient(135deg,#C6A85E,#8a6a2e);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#000;flex-shrink:0;}
+.msg-ai{background:var(--noir2);border:1px solid rgba(198,168,94,0.2);border-radius:18px 18px 18px 4px;padding:12px 16px;max-width:82%;font-size:14px;color:var(--blanc);line-height:1.5;white-space:pre-wrap;}
+.msg-user{background:linear-gradient(135deg,rgba(198,168,94,0.15),rgba(138,106,46,0.1));border:1px solid rgba(198,168,94,0.25);border-radius:18px 18px 4px 18px;padding:12px 16px;max-width:82%;font-size:14px;color:var(--blanc);align-self:flex-end;line-height:1.5;}
+.msg-loading{color:var(--gris);font-style:italic;font-size:13px;}
+.chat-input-zone{position:fixed;bottom:64px;left:50%;transform:translateX(-50%);width:100%;max-width:480px;padding:12px 16px;background:rgba(11,11,11,0.97);border-top:1px solid rgba(198,168,94,0.1);display:flex;gap:10px;z-index:99;}
+.chat-input-zone input{flex:1;background:var(--noir3);border:1px solid rgba(198,168,94,0.25);border-radius:12px;padding:12px 16px;color:var(--blanc);font-size:14px;outline:none;font-family:'Inter',sans-serif;}
+.chat-input-zone input:focus{border-color:var(--or);}
+.chat-send{background:linear-gradient(135deg,#C6A85E,#8a6a2e);border:none;border-radius:12px;width:46px;height:46px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--glow);flex-shrink:0;font-size:18px;color:#000;}
+#screen-activite{padding:0 0 80px;}
+.activite-header{padding:20px 24px 16px;}
+.activite-header h1{font-family:'Poppins',sans-serif;font-weight:600;font-size:22px;color:var(--blanc);}
+.activite-header p{font-size:13px;color:var(--gris);margin-top:4px;}
+.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 24px;margin-bottom:20px;}
+.stat-card{background:var(--noir2);border:1px solid rgba(198,168,94,0.15);border-radius:16px;padding:16px;}
+.stat-number{font-family:'Poppins',sans-serif;font-weight:700;font-size:28px;color:var(--or);}
+.stat-label{font-size:12px;color:var(--gris);margin-top:2px;}
+.revenus-card{margin:0 24px 20px;background:linear-gradient(135deg,rgba(198,168,94,0.1),rgba(10,10,10,0));border:1px solid rgba(198,168,94,0.25);border-radius:18px;padding:20px;}
+.revenus-title{font-size:12px;color:var(--gris);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;}
+.revenus-amount{font-family:'Poppins',sans-serif;font-weight:700;font-size:36px;color:var(--or-clair);}
+.revenus-sub{font-size:13px;color:var(--gris);margin-top:4px;}
+.revenus-actions{margin-top:16px;display:flex;flex-direction:column;gap:10px;}
+.action-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--blanc);}
+.action-dot{width:8px;height:8px;border-radius:50%;background:var(--or);flex-shrink:0;}
+.btn-voir-plus{margin-top:16px;background:linear-gradient(135deg,rgba(198,168,94,0.2),rgba(138,106,46,0.2));border:1px solid rgba(198,168,94,0.3);border-radius:10px;padding:10px;width:100%;color:var(--or);font-family:'Poppins',sans-serif;font-weight:500;font-size:13px;cursor:pointer;}
+#screen-profil{padding:0 0 80px;}
+.profil-header{padding:24px 24px 20px;text-align:center;border-bottom:1px solid rgba(198,168,94,0.1);}
+.profil-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#C6A85E,#8a6a2e);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:28px;color:#000;box-shadow:0 0 30px rgba(198,168,94,0.4);}
+.profil-name{font-family:'Poppins',sans-serif;font-weight:600;font-size:20px;color:var(--blanc);}
+.profil-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(198,168,94,0.15),rgba(138,106,46,0.1));border:1px solid rgba(198,168,94,0.3);border-radius:20px;padding:4px 12px;margin-top:8px;font-size:12px;color:var(--or);font-weight:500;}
+.profil-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:20px 24px;}
+.profil-stat{background:var(--noir2);border:1px solid rgba(198,168,94,0.15);border-radius:12px;padding:14px;text-align:center;}
+.profil-stat-num{font-family:'Poppins',sans-serif;font-weight:700;font-size:22px;color:var(--or);}
+.profil-stat-label{font-size:11px;color:var(--gris);margin-top:2px;}
+.profil-menu{padding:0 24px;}
+.profil-menu-item{display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.05);cursor:pointer;}
+.profil-menu-icon{width:38px;height:38px;background:var(--noir2);border:1px solid rgba(198,168,94,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.profil-menu-label{flex:1;font-size:14px;color:var(--blanc);font-weight:500;}
+.profil-menu-arrow{color:var(--gris);font-size:18px;}
+.premium-card{margin:0 24px 20px;background:linear-gradient(135deg,rgba(198,168,94,0.12),rgba(224,166,166,0.06));border:1px solid rgba(198,168,94,0.3);border-radius:18px;padding:20px;text-align:center;}
+.premium-card h3{font-family:'Poppins',sans-serif;font-weight:600;font-size:16px;color:var(--or);margin-bottom:6px;}
+.premium-card p{font-size:13px;color:var(--gris);margin-bottom:14px;}
+.btn-premium{background:linear-gradient(135deg,#C6A85E,#8a6a2e);border:none;border-radius:12px;padding:12px 24px;color:#000;font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;cursor:pointer;width:100%;box-shadow:var(--glow);}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(11,11,11,0.97);backdrop-filter:blur(20px);border-top:1px solid rgba(198,168,94,0.15);display:flex;align-items:center;justify-content:space-around;padding:8px 0 12px;z-index:100;}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 8px;min-width:56px;}
+.nav-icon{font-size:20px;color:var(--gris);transition:color 0.2s;}
+.nav-label{font-size:10px;color:var(--gris);font-weight:500;transition:color 0.2s;}
+.nav-item.active .nav-icon{color:var(--or);}
+.nav-item.active .nav-label{color:var(--or);}
+::-webkit-scrollbar{width:0;}
 </style>
 </head>
 <body>
-<header>✦ LuminZenith AI</header>
-<div id="messages">
-  <div class="msg-ai">Bonjour ! Je suis LuminZenith AI. Comment puis-je vous aider aujourd'hui ?</div>
+
+<div class="screen active" id="screen-accueil">
+  <div class="header-top">
+    <div class="header-logo">
+      <div class="logo-icon">LZ</div>
+      <div class="logo-text">LuminZenith <span>AI</span></div>
+    </div>
+  </div>
+  <div class="hero">
+    <div class="hero-greeting">Bonjour 👋</div>
+    <div class="hero-title">Que veux-tu faire<br><span>aujourd'hui ?</span></div>
+    <div class="hero-sub">Tout est réuni. Tout devient possible.</div>
+  </div>
+  <div class="input-zone">
+    <input type="text" id="home-input" placeholder="Demande-moi ce que tu veux..." onkeypress="if(event.key==='Enter')ouvrirChat()">
+    <button class="btn-envoyer" onclick="ouvrirChat()">ENVOYER ✦</button>
+  </div>
+  <div class="section-title">
+    <span>Actions Rapides</span>
+    <span>Voir tout</span>
+  </div>
+  <div class="modules-grid">
+    <div class="module-card" onclick="ouvrirModule('💰','Gagner de l\'argent','Tu es expert en business, revenus, stratégie financière et monétisation. Aide à générer des revenus concrets.')">
+      <div class="module-icon gold">💰</div>
+      <div class="module-label">Gagner de l'argent</div>
+    </div>
+    <div class="module-card" onclick="ouvrirModule('🎵','Créer','Tu es expert en création musicale, prompts Suno, toplines, structure de morceaux et production.')">
+      <div class="module-icon rose">🎵</div>
+      <div class="module-label">Créer</div>
+    </div>
+    <div class="module-card" onclick="ouvrirModule('📈','Développer','Tu es expert en croissance, stratégie business, développement de projet et scale.')">
+      <div class="module-icon gold">📈</div>
+      <div class="module-label">Développer</div>
+    </div>
+    <div class="module-card" onclick="ouvrirModule('✉️','Messages','Tu es expert en rédaction email, messages professionnels, communication et copywriting.')">
+      <div class="module-icon rose">✉️</div>
+      <div class="module-label">Messages</div>
+    </div>
+    <div class="module-card" onclick="ouvrirModule('📱','Réseaux','Tu es expert en contenu viral, posts Instagram, scripts TikTok, stratégie réseaux sociaux.')">
+      <div class="module-icon gold">📱</div>
+      <div class="module-label">Réseaux</div>
+    </div>
+    <div class="module-card" onclick="ouvrirModule('📚','Étudier','Tu es expert en aide scolaire, explications claires, méthodes d\'apprentissage et révisions.')">
+      <div class="module-icon rose">📚</div>
+      <div class="module-label">Étudier</div>
+    </div>
+  </div>
+  <div class="suggestion-card" onclick="ouvrirModule('✦','Assistant','Tu es un assistant premium polyvalent. Aide sur tous les sujets avec expertise.')">
+    <div class="suggestion-star">✦</div>
+    <div class="suggestion-text">
+      <p>Suggestion du jour</p>
+      <p>Lance ta première offre en 3 étapes avec ton IA</p>
+    </div>
+  </div>
 </div>
-<div id="input-area">
-  <input id="msg" type="text" placeholder="Écrivez votre message..." onkeypress="if(event.key==='Enter')envoyer()">
-  <button id="send" onclick="envoyer()">Envoyer</button>
+
+<div class="screen" id="screen-chat">
+  <div class="chat-header">
+    <button class="chat-back" onclick="retourAccueil()">‹</button>
+    <div class="chat-header-info">
+      <h2 id="chat-titre">Assistant IA</h2>
+      <p>LuminZenith AI · En ligne</p>
+    </div>
+    <div class="chat-header-icon" id="chat-icone">✦</div>
+  </div>
+  <div class="chat-messages" id="chat-messages">
+    <div class="msg-ai-wrap">
+      <div class="msg-ai-avatar">LZ</div>
+      <div class="msg-ai">Bonjour ! Je suis LuminZenith AI. Comment puis-je t'aider aujourd'hui ?</div>
+    </div>
+  </div>
+  <div class="chat-input-zone">
+    <input type="text" id="chat-input" placeholder="Écris ton message..." onkeypress="if(event.key==='Enter')envoyer()">
+    <button class="chat-send" onclick="envoyer()">➤</button>
+  </div>
 </div>
+
+<div class="screen" id="screen-activite">
+  <div class="activite-header">
+    <h1>Activité</h1>
+    <p>Ton potentiel cette semaine</p>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number">120</div>
+      <div class="stat-label">Abonnés possibles</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">87%</div>
+      <div class="stat-label">Taux de réussite</div>
+    </div>
+  </div>
+  <div class="revenus-card">
+    <div class="revenus-title">Tu peux générer</div>
+    <div class="revenus-amount">200 €</div>
+    <div class="revenus-sub">cette semaine avec LuminZenith</div>
+    <div class="revenus-actions">
+      <div class="action-item"><div class="action-dot"></div>+ 3 Actions recommandées disponibles</div>
+      <div class="action-item"><div class="action-dot"></div>Progresse vers tes objectifs</div>
+      <div class="action-item"><div class="action-dot"></div>Nouveau contenu viral suggéré</div>
+    </div>
+    <button class="btn-voir-plus" onclick="ouvrirModule('📈','Développer','Tu es expert en croissance, stratégie business, développement de projet et scale.')">Voir plus →</button>
+  </div>
+</div>
+
+<div class="screen" id="screen-profil">
+  <div class="profil-header">
+    <div class="profil-avatar">A</div>
+    <div class="profil-name">Alexandre</div>
+    <div class="profil-badge">💎 Membre Premium</div>
+  </div>
+  <div class="profil-stats">
+    <div class="profil-stat">
+      <div class="profil-stat-num">12</div>
+      <div class="profil-stat-label">Objectifs en cours</div>
+    </div>
+    <div class="profil-stat">
+      <div class="profil-stat-num">73%</div>
+      <div class="profil-stat-label">Progression</div>
+    </div>
+  </div>
+  <div class="premium-card">
+    <h3>✦ Centre Premium</h3>
+    <p>Débloque tout le potentiel de LuminZenith AI</p>
+    <button class="btn-premium">DÉBLOQUER LUMINZENITH</button>
+  </div>
+  <div class="profil-menu">
+    <div class="profil-menu-item"><div class="profil-menu-icon">🎯</div><div class="profil-menu-label">Mes Objectifs</div><div class="profil-menu-arrow">›</div></div>
+    <div class="profil-menu-item"><div class="profil-menu-icon">📊</div><div class="profil-menu-label">Mes Statistiques</div><div class="profil-menu-arrow">›</div></div>
+    <div class="profil-menu-item"><div class="profil-menu-icon">⚙️</div><div class="profil-menu-label">Paramètres</div><div class="profil-menu-arrow">›</div></div>
+    <div class="profil-menu-item"><div class="profil-menu-icon">💎</div><div class="profil-menu-label">Centre Premium</div><div class="profil-menu-arrow">›</div></div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <div class="nav-item active" id="nav-accueil" onclick="changerEcran('accueil')">
+    <div class="nav-icon">⌂</div>
+    <div class="nav-label">Accueil</div>
+  </div>
+  <div class="nav-item" id="nav-messages" onclick="ouvrirModule('✉️','Messages','Tu es expert en rédaction email, messages professionnels, communication et copywriting.')">
+    <div class="nav-icon">✉</div>
+    <div class="nav-label">Messages</div>
+  </div>
+  <div class="nav-item" id="nav-appels" onclick="alert('Appels et Visio — Bientôt disponible ✦')">
+    <div class="nav-icon">📞</div>
+    <div class="nav-label">Appels</div>
+  </div>
+  <div class="nav-item" id="nav-activite" onclick="changerEcran('activite')">
+    <div class="nav-icon">◈</div>
+    <div class="nav-label">Activité</div>
+  </div>
+  <div class="nav-item" id="nav-profil" onclick="changerEcran('profil')">
+    <div class="nav-icon">◉</div>
+    <div class="nav-label">Profil</div>
+  </div>
+</nav>
+
 <script>
 const WORKER = 'https://luminzenithai-api.luminzenithai.workers.dev';
 const historique = [];
+let systemActuel = "Tu es LuminZenith AI, un assistant intelligent premium tout-en-un sans limite. Tu ne mentionnes jamais Claude ou Anthropic. Si on te demande qui tu es : Je suis LuminZenith AI. Comportement permanent : reponds comme un expert de haut niveau, vas droit au but, propose 2 a 3 options quand pertinent.";
 
-async function envoyer(){
-  const input = document.getElementById('msg');
-  const zone = document.getElementById('messages');
+function changerEcran(nom) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + nom).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const nav = document.getElementById('nav-' + nom);
+  if(nav) nav.classList.add('active');
+}
+
+function ouvrirChat() {
+  const input = document.getElementById('home-input');
+  const texte = input.value.trim();
+  systemActuel = "Tu es LuminZenith AI, un assistant intelligent premium tout-en-un sans limite. Tu ne mentionnes jamais Claude ou Anthropic. Comportement permanent : reponds comme un expert de haut niveau, vas droit au but, propose 2 a 3 options quand pertinent.";
+  changerEcran('chat');
+  document.getElementById('chat-titre').textContent = 'Assistant IA';
+  document.getElementById('chat-icone').textContent = '✦';
+  document.getElementById('chat-messages').innerHTML = '<div class="msg-ai-wrap"><div class="msg-ai-avatar">LZ</div><div class="msg-ai">Bonjour ! Je suis LuminZenith AI. Comment puis-je t\'aider aujourd\'hui ?</div></div>';
+  historique.length = 0;
+  if(texte) {
+    input.value = '';
+    document.getElementById('chat-input').value = texte;
+    envoyer();
+  }
+}
+
+function ouvrirModule(icone, titre, systeme) {
+  systemActuel = "Tu es LuminZenith AI, un assistant intelligent premium tout-en-un sans limite. Tu ne mentionnes jamais Claude ou Anthropic. Module actif : " + titre + ". " + systeme + " Comportement permanent : reponds comme un expert de haut niveau, vas droit au but, propose 2 a 3 options quand pertinent.";
+  changerEcran('chat');
+  document.getElementById('chat-titre').textContent = titre;
+  document.getElementById('chat-icone').textContent = icone;
+  document.getElementById('chat-messages').innerHTML = '<div class="msg-ai-wrap"><div class="msg-ai-avatar">LZ</div><div class="msg-ai">Module <strong>' + titre + '</strong> activé ✦\n\nJe suis prêt. Dis-moi ce dont tu as besoin !</div></div>';
+  historique.length = 0;
+}
+
+function retourAccueil() {
+  changerEcran('accueil');
+  historique.length = 0;
+}
+
+async function envoyer() {
+  const input = document.getElementById('chat-input');
+  const zone = document.getElementById('chat-messages');
   const texte = input.value.trim();
   if(!texte) return;
-
-  zone.innerHTML += `<div class="msg-user">${texte}</div>`;
+  zone.innerHTML += '<div class="msg-user">' + texte + '</div>';
   input.value = '';
-  historique.push({role:'user', content:texte});
-  zone.innerHTML += `<div class="msg-ai loading" id="loading">LuminZenith réfléchit...</div>`;
+  historique.push({role:'user', content: texte});
+  zone.innerHTML += '<div class="msg-ai-wrap"><div class="msg-ai-avatar">LZ</div><div class="msg-ai msg-loading" id="loading">LuminZenith réfléchit...</div></div>';
   zone.scrollTop = zone.scrollHeight;
-
   try {
     const r = await fetch(WORKER, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ messages: historique })
+      body: JSON.stringify({ messages: historique, system: systemActuel })
     });
     const rep = await r.text();
-    document.getElementById('loading').remove();
-    historique.push({role:'assistant', content:rep});
-    zone.innerHTML += `<div class="msg-ai">${rep}</div>`;
+    document.getElementById('loading').closest('.msg-ai-wrap').remove();
+    historique.push({role:'assistant', content: rep});
+    zone.innerHTML += '<div class="msg-ai-wrap"><div class="msg-ai-avatar">LZ</div><div class="msg-ai">' + rep + '</div></div>';
   } catch(e) {
     document.getElementById('loading').textContent = 'Erreur de connexion.';
   }
