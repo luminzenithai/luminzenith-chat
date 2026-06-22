@@ -2,457 +2,713 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LuminZenith AI</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{
-  --noir:#000000;--noir2:#0A0A0A;--or:#FFD700;--or2:#FFF8DC;--or-rose:#FF8C9F;
-  --or-clair:#FFE8B6;--blanc:#FFFFFF;--gris:#CCCCCC;
-  --glow-or:0 0 50px rgba(255,215,0,0.9),0 0 120px rgba(255,215,0,0.6);
-  --glow-btn:0 0 40px rgba(255,215,0,0.8),0 8px 40px rgba(255,215,0,0.5);
-}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html,body{height:100%;overflow:hidden;background:var(--noir);}
-body{color:var(--blanc);font-family:'Inter',sans-serif;max-width:430px;margin:0 auto;position:relative;}
-body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-background:radial-gradient(1px 1px at 15% 20%,rgba(255,215,0,0.9),transparent),
-radial-gradient(1px 1px at 80% 15%,rgba(255,215,0,0.7),transparent),
-radial-gradient(1px 1px at 40% 70%,rgba(255,215,0,0.5),transparent),
-radial-gradient(1px 1px at 90% 60%,rgba(255,140,159,0.6),transparent),
-radial-gradient(ellipse 70% 50% at 20% 10%,rgba(255,215,0,0.08) 0%,transparent 70%),
-radial-gradient(ellipse 60% 40% at 80% 90%,rgba(255,140,159,0.06) 0%,transparent 70%);}
-.screen{display:none;flex-direction:column;height:calc(100vh - 62px);overflow-y:auto;overflow-x:hidden;position:relative;z-index:1;-webkit-overflow-scrolling:touch;}
-.screen.active{display:flex;}
-#screen-chat{height:100vh;overflow:hidden;padding-bottom:0;}
-::-webkit-scrollbar{width:0;}
-.top-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 8px;flex-shrink:0;}
-.logo-wrap{display:flex;align-items:center;gap:9px;}
-.logo-img{height:38px;width:38px;object-fit:cover;border-radius:10px;box-shadow:0 0 25px rgba(255,215,0,0.6);}
-.logo-fallback{width:38px;height:38px;background:linear-gradient(135deg,#FFD700,#FFA500);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;color:#000;box-shadow:var(--glow-or);flex-shrink:0;}
-.logo-texts .logo-name{font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;color:var(--or2);line-height:1.1;text-shadow:0 0 15px rgba(255,215,0,0.4);}
-.logo-texts .logo-tag{font-size:9px;color:var(--gris);letter-spacing:0.3px;text-shadow:0 0 10px rgba(255,215,0,0.2);}
-.top-right{display:flex;align-items:center;gap:8px;}
-.badge-prem{display:flex;align-items:center;gap:4px;background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(100,70,0,0.2));border:1.5px solid rgba(255,215,0,0.4);border-radius:20px;padding:3px 9px;font-size:9px;font-weight:700;color:var(--or);letter-spacing:0.6px;box-shadow:0 0 20px rgba(255,215,0,0.25);}
-.bell{background:none;border:none;color:var(--gris);font-size:17px;cursor:pointer;}
-.hero{padding:20px 18px 16px;text-align:center;}
-.hero-figure{width:100%;max-width:280px;margin:0 auto 24px;display:flex;align-items:center;justify-content:center;position:relative;}
-.hero-figure-glow{position:absolute;width:320px;height:320px;background:radial-gradient(circle,rgba(255,215,0,0.6),rgba(255,215,0,0.2) 50%,transparent);border-radius:50%;filter:blur(60px);animation:pulse 3s ease-in-out infinite;}
-.hero-figure-img{width:100%;height:auto;max-width:260px;position:relative;z-index:2;filter:drop-shadow(0 0 80px rgba(255,215,0,0.8)) drop-shadow(0 0 150px rgba(255,215,0,0.5));animation:float 3s ease-in-out infinite;}
-@keyframes pulse{0%,100%{filter:blur(60px) brightness(1);}50%{filter:blur(80px) brightness(1.2);}}
-@keyframes float{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-20px) scale(1.02);}}
-@keyframes glow-pulse{0%,100%{box-shadow:0 0 20px rgba(255,215,0,0.3);}50%{box-shadow:0 0 40px rgba(255,215,0,0.6);}}
-.hero-eye{font-size:10px;color:var(--gris);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
-.hero-title{font-family:'Poppins',sans-serif;font-weight:800;font-size:32px;line-height:1.15;color:var(--blanc);text-shadow:0 0 30px rgba(255,215,0,0.35);}
-.hero-title em{color:var(--or);font-style:normal;text-shadow:0 0 25px rgba(255,215,0,0.5);}
-.hero-sub{font-size:12px;color:var(--gris);margin-top:6px;}
-.input-wrap{padding:16px 18px 14px;position:relative;}
-.main-input{width:100%;background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,215,0,0.3);border-radius:14px;padding:13px 130px 13px 16px;color:var(--blanc);font-size:13px;font-family:'Inter',sans-serif;outline:none;transition:border .25s,box-shadow .25s;}
-.main-input::placeholder{color:var(--gris);}
-.main-input:focus{border-color:rgba(255,215,0,0.7);box-shadow:0 0 30px rgba(255,215,0,0.25);}
-.btn-send-home{position:absolute;right:26px;top:50%;transform:translateY(-50%);background:linear-gradient(135deg,#FFD700,#FFA500,#FFD700);border:none;border-radius:10px;padding:9px 15px;color:#000;font-family:'Poppins',sans-serif;font-weight:700;font-size:11px;cursor:pointer;letter-spacing:0.8px;white-space:nowrap;box-shadow:var(--glow-btn);}
-.btn-send-home:active{transform:translateY(-50%) scale(0.95);}
-.sec-hd{display:flex;align-items:center;justify-content:space-between;padding:2px 18px 12px;}
-.sec-hd-t{font-family:'Poppins',sans-serif;font-weight:700;font-size:10px;color:var(--blanc);text-transform:uppercase;letter-spacing:1.3px;text-shadow:0 0 10px rgba(255,215,0,0.3);}
-.sec-hd-l{font-size:10px;color:var(--or);letter-spacing:0.5px;cursor:pointer;font-weight:600;}
-.mods-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 18px;margin-bottom:16px;}
-.mod{background:rgba(255,215,0,0.04);border:1.5px solid rgba(255,215,0,0.25);border-radius:14px;padding:14px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;text-align:center;transition:all .2s;position:relative;overflow:hidden;animation:glow-pulse 3s ease-in-out infinite;}
-.mod:active{transform:scale(0.94);border-color:rgba(255,215,0,0.6);}
-.mod-ico{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;}
-.mod-ico.gold{background:radial-gradient(circle,rgba(255,215,0,0.25),rgba(100,70,0,0.4));border:1.5px solid rgba(255,215,0,0.4);box-shadow:0 0 25px rgba(255,215,0,0.5);}
-.mod-ico.rose{background:radial-gradient(circle,rgba(255,140,159,0.25),rgba(100,30,20,0.4));border:1.5px solid rgba(255,140,159,0.35);box-shadow:0 0 25px rgba(255,140,159,0.4);}
-.mod-label{font-family:'Poppins',sans-serif;font-weight:600;font-size:10px;color:var(--or-clair);line-height:1.3;text-shadow:0 0 10px rgba(255,215,0,0.3);}
-.sug{margin:0 18px 18px;background:linear-gradient(135deg,rgba(255,215,0,0.08),rgba(0,0,0,0) 70%);border:1.5px solid rgba(255,215,0,0.25);border-radius:18px;padding:15px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;box-shadow:0 0 30px rgba(255,215,0,0.15);}
-.sug:active{border-color:rgba(255,215,0,0.5);}
-.sug-star{width:40px;height:40px;flex-shrink:0;background:radial-gradient(circle,rgba(255,215,0,0.35),rgba(100,70,0,0.5));border:1.5px solid rgba(255,215,0,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 25px rgba(255,215,0,0.5);font-size:18px;color:var(--or);}
-.sug-label{font-family:'Poppins',sans-serif;font-weight:600;font-size:11px;color:var(--or);margin-bottom:3px;text-shadow:0 0 10px rgba(255,215,0,0.35);}
-.sug-desc{font-size:11px;color:var(--gris);line-height:1.4;}
-.sug-cta{margin-top:6px;font-family:'Poppins',sans-serif;font-weight:700;font-size:11px;color:var(--or);text-shadow:0 0 8px rgba(255,215,0,0.3);}
-.chat-hd{display:flex;align-items:center;gap:11px;padding:12px 18px;border-bottom:1px solid rgba(255,215,0,0.15);flex-shrink:0;background:var(--noir);position:relative;z-index:10;}
-.back-btn{background:none;border:none;color:var(--or);font-size:26px;line-height:1;cursor:pointer;padding:0;flex-shrink:0;filter:drop-shadow(0 0 10px rgba(255,215,0,0.4));}
-.chat-hd-info{flex:1;}
-.chat-hd-info h2{font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;color:var(--blanc);text-shadow:0 0 15px rgba(255,215,0,0.3);}
-.chat-hd-info p{font-size:10px;color:var(--gris);}
-.chat-hd-ico{width:34px;height:34px;background:linear-gradient(135deg,#FFD700,#FFA500);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:var(--glow-or);flex-shrink:0;}
-.chat-body{flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:11px;-webkit-overflow-scrolling:touch;}
-.bubble-row{display:flex;gap:7px;align-items:flex-end;}
-.bubble-av{width:24px;height:24px;flex-shrink:0;background:linear-gradient(135deg,#FFD700,#FFA500);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#000;box-shadow:0 0 15px rgba(255,215,0,0.4);}
-.bubble-ai{background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.2);border-radius:14px 14px 14px 3px;padding:10px 13px;max-width:82%;font-size:13px;color:var(--blanc);line-height:1.55;white-space:pre-wrap;}
-.bubble-user{background:linear-gradient(135deg,rgba(255,215,0,0.18),rgba(100,70,0,0.2));border:1px solid rgba(255,215,0,0.3);border-radius:14px 14px 3px 14px;padding:10px 13px;max-width:82%;font-size:13px;color:var(--blanc);line-height:1.55;align-self:flex-end;}
-.bubble-loading{color:var(--gris);font-style:italic;font-size:12px;}
-.chat-input-row{display:flex;gap:8px;padding:9px 14px 11px;background:rgba(0,0,0,0.98);border-top:1px solid rgba(255,215,0,0.12);flex-shrink:0;}
-.chat-input-row input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,215,0,0.25);border-radius:11px;padding:10px 13px;color:var(--blanc);font-size:13px;font-family:'Inter',sans-serif;outline:none;}
-.chat-input-row input:focus{border-color:rgba(255,215,0,0.55);box-shadow:0 0 20px rgba(255,215,0,0.2);}
-.chat-send-btn{background:linear-gradient(135deg,#FFD700,#FFA500);border:none;border-radius:11px;width:42px;height:42px;flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#000;box-shadow:var(--glow-btn);}
-.chat-send-btn:active{transform:scale(0.94);}
-.scr-hd{padding:16px 18px 10px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;}
-.scr-hd h1{font-family:'Poppins',sans-serif;font-weight:700;font-size:20px;text-shadow:0 0 15px rgba(255,215,0,0.3);}
-.scr-hd span{color:var(--or);font-size:20px;cursor:pointer;}
-.search-bar{margin:0 18px 12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,215,0,0.15);border-radius:11px;padding:9px 14px;display:flex;align-items:center;gap:8px;color:var(--gris);font-size:12px;}
-.filters{display:flex;gap:7px;padding:0 18px;margin-bottom:12px;flex-shrink:0;}
-.flt{padding:5px 13px;border-radius:20px;font-size:10px;font-weight:600;border:1px solid rgba(255,215,0,0.2);background:transparent;color:var(--gris);cursor:pointer;}
-.flt.on{background:linear-gradient(135deg,rgba(255,215,0,0.25),rgba(100,70,0,0.2));border-color:var(--or);color:var(--or);box-shadow:0 0 15px rgba(255,215,0,0.3);}
-.conv-list{flex:1;overflow-y:auto;padding:0 18px;-webkit-overflow-scrolling:touch;}
-.conv{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;}
-.conv-av{width:42px;height:42px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:13px;position:relative;}
-.conv-av.lz{background:linear-gradient(135deg,#FFD700,#FFA500);color:#000;box-shadow:0 0 20px rgba(255,215,0,0.6);}
-.conv-av.em{background:linear-gradient(135deg,#FF8C9F,#FF5A7A);color:#fff;}
-.conv-av.gc{background:linear-gradient(135deg,#5E7AC6,#203080);color:#fff;}
-.conv-av.no{background:linear-gradient(135deg,#6AC87A,#206030);color:#fff;}
-.conv-av.sa{background:linear-gradient(135deg,#C86A8A,#702040);color:#fff;}
-.notif-dot{position:absolute;top:-2px;right:-2px;width:16px;height:16px;border-radius:50%;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;}
-.conv-info{flex:1;min-width:0;}
-.conv-nm{font-weight:700;font-size:13px;color:var(--blanc);margin-bottom:2px;}
-.conv-prev{font-size:11px;color:var(--gris);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.conv-t{font-size:10px;color:var(--gris);flex-shrink:0;}
-.msg-opt{margin:10px 18px;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.2);border-radius:11px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;box-shadow:0 0 20px rgba(255,215,0,0.1);}
-.msg-opt span:first-child{font-size:12px;color:var(--blanc);}
-.msg-opt span:last-child{color:var(--or);font-size:16px;}
-.appels-hd{padding:16px 18px 10px;flex-shrink:0;}
-.appels-hd h1{font-family:'Poppins',sans-serif;font-weight:700;font-size:20px;text-shadow:0 0 15px rgba(255,215,0,0.3);}
-.call-card{margin:0 18px 16px;background:linear-gradient(135deg,rgba(255,215,0,0.08),rgba(0,0,0,0.7));border:1.5px solid rgba(255,215,0,0.25);border-radius:20px;padding:22px 18px;text-align:center;box-shadow:0 0 30px rgba(255,215,0,0.15);}
-.call-card h2{font-family:'Poppins',sans-serif;font-weight:700;font-size:20px;color:var(--blanc);margin-bottom:4px;text-shadow:0 0 15px rgba(255,215,0,0.3);}
-.call-card p{font-size:11px;color:var(--gris);margin-bottom:18px;}
-.call-btns{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
-.call-btn{background:rgba(255,255,255,0.03);border:1.5px solid rgba(255,215,0,0.25);border-radius:13px;padding:15px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:all .2s;}
-.call-btn:active{transform:scale(0.95);border-color:var(--or);box-shadow:0 0 20px rgba(255,215,0,0.35);}
-.call-ico{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#FFD700,#FFA500);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:var(--glow-or);color:#000;}
-.call-btn-lbl{font-family:'Poppins',sans-serif;font-weight:700;font-size:12px;color:var(--blanc);letter-spacing:0.5px;text-shadow:0 0 8px rgba(255,215,0,0.25);}
-.call-hint{margin:0 18px 16px;font-size:11px;color:var(--gris);text-align:center;padding:10px;background:rgba(255,215,0,0.03);border-radius:10px;border:1px solid rgba(255,215,0,0.1);}
-.recents-hd{padding:4px 18px 10px;flex-shrink:0;display:flex;justify-content:space-between;align-items:center;}
-.recents-hd h3{font-family:'Poppins',sans-serif;font-weight:700;font-size:11px;color:var(--blanc);text-transform:uppercase;letter-spacing:1px;text-shadow:0 0 10px rgba(255,215,0,0.25);}
-.recents-hd span{font-size:10px;color:var(--or);cursor:pointer;font-weight:600;}
-.recent-row{display:flex;align-items:center;gap:11px;padding:10px 18px;border-bottom:1px solid rgba(255,255,255,0.04);}
-.recent-av{width:38px;height:38px;border-radius:50%;background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.25);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
-.recent-info{flex:1;}
-.recent-nm{font-size:13px;font-weight:600;color:var(--blanc);}
-.recent-meta{font-size:10px;color:var(--gris);}
-.recent-time{font-size:10px;color:var(--or);font-weight:600;}
-.activ-hd{padding:16px 18px 10px;flex-shrink:0;}
-.activ-hd h1{font-family:'Poppins',sans-serif;font-weight:700;font-size:20px;text-shadow:0 0 15px rgba(255,215,0,0.3);}
-.activ-hd p{font-size:11px;color:var(--gris);margin-top:3px;}
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 18px;margin-bottom:12px;}
-.stat-box{background:rgba(255,215,0,0.05);border:1.5px solid rgba(255,215,0,0.2);border-radius:14px;padding:13px;box-shadow:0 0 20px rgba(255,215,0,0.1);}
-.stat-n{font-family:'Poppins',sans-serif;font-weight:800;font-size:28px;color:var(--or);text-shadow:0 0 20px rgba(255,215,0,0.35);}
-.stat-l{font-size:10px;color:var(--gris);margin-top:2px;}
-.rev-box{margin:0 18px 12px;background:linear-gradient(135deg,rgba(255,215,0,0.09),rgba(0,0,0,0.8));border:1.5px solid rgba(255,215,0,0.25);border-radius:18px;padding:16px;box-shadow:0 0 30px rgba(255,215,0,0.15);}
-.rev-ey{font-size:9px;color:var(--gris);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:3px;}
-.rev-n{font-family:'Poppins',sans-serif;font-weight:800;font-size:40px;color:var(--or);text-shadow:0 0 25px rgba(255,215,0,0.4);}
-.rev-s{font-size:11px;color:var(--gris);margin-top:2px;margin-bottom:12px;}
-.act-list{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
-.act-row{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--blanc);}
-.act-dot{width:6px;height:6px;border-radius:50%;background:var(--or);flex-shrink:0;box-shadow:0 0 8px rgba(255,215,0,0.5);}
-.btn-voir{background:linear-gradient(135deg,rgba(255,215,0,0.16),rgba(100,70,0,0.15));border:1.5px solid rgba(255,215,0,0.3);border-radius:10px;padding:10px;width:100%;color:var(--or);font-family:'Poppins',sans-serif;font-weight:600;font-size:12px;cursor:pointer;box-shadow:0 0 15px rgba(255,215,0,0.15);}
-.profil-hd{padding:20px 18px 16px;text-align:center;border-bottom:1px solid rgba(255,215,0,0.1);flex-shrink:0;}
-.profil-av{width:74px;height:74px;border-radius:50%;background:linear-gradient(135deg,#FFD700,#FFA500);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:800;font-size:26px;color:#000;box-shadow:0 0 40px rgba(255,215,0,0.7);}
-.profil-nm{font-family:'Poppins',sans-serif;font-weight:700;font-size:18px;color:var(--blanc);text-shadow:0 0 15px rgba(255,215,0,0.3);}
-.profil-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,rgba(255,215,0,0.12),rgba(100,70,0,0.15));border:1.5px solid rgba(255,215,0,0.3);border-radius:20px;padding:3px 11px;margin-top:8px;font-size:10px;color:var(--or);font-weight:700;letter-spacing:0.4px;box-shadow:0 0 15px rgba(255,215,0,0.2);}
-.profil-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 18px;}
-.kpi{background:rgba(255,215,0,0.04);border:1.5px solid rgba(255,215,0,0.2);border-radius:12px;padding:12px;text-align:center;box-shadow:0 0 15px rgba(255,215,0,0.08);}
-.kpi-n{font-family:'Poppins',sans-serif;font-weight:800;font-size:22px;color:var(--or);text-shadow:0 0 15px rgba(255,215,0,0.3);}
-.kpi-l{font-size:10px;color:var(--gris);margin-top:2px;}
-.progress-wrap{margin:0 18px 12px;}
-.progress-labels{display:flex;justify-content:space-between;margin-bottom:5px;}
-.progress-labels span{font-size:10px;color:var(--gris);}
-.progress-labels span:last-child{color:var(--or);font-weight:700;text-shadow:0 0 8px rgba(255,215,0,0.3);}
-.progress-bg{height:5px;background:rgba(255,215,0,0.1);border-radius:3px;}
-.progress-fill{height:5px;width:73%;background:linear-gradient(90deg,#FFD700,#FF8C9F);border-radius:3px;box-shadow:0 0 15px rgba(255,215,0,0.5);}
-.prem-box{margin:0 18px 12px;background:linear-gradient(135deg,rgba(255,215,0,0.1),rgba(255,140,159,0.05));border:1.5px solid rgba(255,215,0,0.3);border-radius:18px;padding:16px;text-align:center;box-shadow:0 0 25px rgba(255,215,0,0.12);}
-.prem-box h3{font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;color:var(--or);margin-bottom:4px;text-shadow:0 0 12px rgba(255,215,0,0.3);}
-.prem-box p{font-size:11px;color:var(--gris);margin-bottom:13px;}
-.btn-prem{background:linear-gradient(135deg,#FFD700,#FFA500,#FFD700);border:none;border-radius:11px;padding:12px 18px;color:#000;font-family:'Poppins',sans-serif;font-weight:700;font-size:12px;cursor:pointer;width:100%;box-shadow:var(--glow-btn);letter-spacing:0.5px;}
-.menu-list{padding:0 18px 16px;}
-.menu-row{display:flex;align-items:center;gap:11px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;}
-.menu-row:last-child{border:none;}
-.menu-ico{width:34px;height:34px;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.15);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
-.menu-lbl{flex:1;font-size:13px;color:var(--blanc);font-weight:600;}
-.menu-arr{color:var(--gris);font-size:15px;}
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:62px;background:rgba(0,0,0,0.98);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-top:1.5px solid rgba(255,215,0,0.15);display:flex;align-items:center;justify-content:space-around;padding:6px 0 10px;z-index:100;}
-.nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:2px 10px;min-width:52px;background:none;border:none;}
-.nav-ico{font-size:18px;color:var(--gris);transition:color .2s,filter .2s;}
-.nav-lbl{font-size:9px;color:var(--gris);font-weight:600;transition:color .2s;}
-.nav-btn.on .nav-ico{color:var(--or);filter:drop-shadow(0 0 8px rgba(255,215,0,0.7));}
-.nav-btn.on .nav-lbl{color:var(--or);text-shadow:0 0 10px rgba(255,215,0,0.3);}
+html,body{height:100%;overflow:hidden;}
+:root{
+  --noir:#000000;
+  --noir2:#0A0A0A;
+  --noir3:#111111;
+  --or:#FFD700;
+  --or2:#FFF8DC;
+  --or-rose:#FF8C9F;
+  --or-clair:#FFE8B6;
+  --blanc:#FFFFFF;
+  --gris:#AAAAAA;
+  --gris2:#666666;
+  --border:rgba(255,215,0,0.15);
+  --border2:rgba(255,215,0,0.3);
+  --glow:0 0 30px rgba(255,215,0,0.6),0 0 60px rgba(255,215,0,0.2);
+  --glow-btn:0 0 25px rgba(255,215,0,0.7),0 4px 20px rgba(0,0,0,0.5);
+}
+body{
+  background:var(--noir);
+  color:var(--blanc);
+  font-family:'Inter',sans-serif;
+  display:flex;
+  height:100vh;
+  overflow:hidden;
+  position:relative;
+}
+
+/* ÉTOILES */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(1px 1px at 8% 12%,rgba(255,215,0,0.9),transparent),
+    radial-gradient(1px 1px at 25% 8%,rgba(255,215,0,0.7),transparent),
+    radial-gradient(1.5px 1.5px at 72% 6%,rgba(255,140,159,0.8),transparent),
+    radial-gradient(1px 1px at 88% 18%,rgba(255,215,0,0.9),transparent),
+    radial-gradient(1px 1px at 15% 35%,rgba(255,215,0,0.5),transparent),
+    radial-gradient(1px 1px at 92% 42%,rgba(255,140,159,0.6),transparent),
+    radial-gradient(1.5px 1.5px at 5% 65%,rgba(255,215,0,0.7),transparent),
+    radial-gradient(1px 1px at 48% 72%,rgba(255,215,0,0.4),transparent),
+    radial-gradient(1px 1px at 78% 80%,rgba(255,215,0,0.5),transparent),
+    radial-gradient(1.5px 1.5px at 32% 88%,rgba(255,140,159,0.6),transparent),
+    radial-gradient(1px 1px at 60% 92%,rgba(255,215,0,0.4),transparent),
+    radial-gradient(ellipse 80% 40% at 50% 0%,rgba(255,215,0,0.06) 0%,transparent 60%);
+}
+
+/* HALO ANIMÉ */
+body::after{
+  content:'';position:fixed;top:-20%;left:-20%;width:140%;height:140%;
+  pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse at 50% 25%,rgba(255,215,0,0.06) 0%,transparent 55%);
+  filter:blur(80px);
+  animation:floatGlow 10s ease-in-out infinite;
+}
+@keyframes floatGlow{0%,100%{transform:translate(0,0);}50%{transform:translate(-20px,15px);}}
+@keyframes pulseGlow{
+  0%,100%{box-shadow:0 0 15px rgba(255,215,0,0.4),0 0 30px rgba(255,215,0,0.1);}
+  50%{box-shadow:0 0 35px rgba(255,215,0,0.8),0 0 70px rgba(255,215,0,0.2),0 0 100px rgba(255,215,0,0.05);}
+}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+@keyframes glowPulse{0%,100%{opacity:0.6;}50%{opacity:1;}}
+
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(255,215,0,0.2);border-radius:2px;}
+
+/* ============================================
+   LAYOUT 3 COLONNES
+   ============================================ */
+.layout{display:flex;height:100vh;width:100%;position:relative;z-index:1;}
+
+/* ===== SIDEBAR GAUCHE 220px ===== */
+.sidebar{
+  width:220px;flex-shrink:0;
+  background:rgba(5,4,2,0.98);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  overflow-y:auto;padding:20px 0;
+}
+
+.sb-logo{padding:0 16px 18px;border-bottom:1px solid var(--border);}
+.sb-logo-img{
+  width:48px;height:48px;border-radius:12px;overflow:hidden;
+  border:2px solid rgba(255,215,0,0.5);
+  box-shadow:0 0 20px rgba(255,215,0,0.5);
+  background:rgba(20,15,0,0.9);
+  display:flex;align-items:center;justify-content:center;
+  animation:pulseGlow 4s ease-in-out infinite;
+  margin-bottom:10px;
+}
+.sb-logo-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.sb-logo-fb{font-family:'Poppins',sans-serif;font-weight:800;font-size:16px;color:var(--or);}
+.sb-name{font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;color:var(--or);line-height:1.1;}
+.sb-name span{color:var(--blanc);}
+.sb-tagline{font-size:8px;color:var(--gris2);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+
+.sb-nav{padding:14px 0;flex:1;}
+.sb-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 16px;cursor:pointer;
+  font-size:13px;color:var(--gris);font-weight:500;
+  transition:all .2s;border-left:3px solid transparent;
+  margin-bottom:1px;
+}
+.sb-item:hover{color:var(--blanc);background:rgba(255,215,0,0.04);}
+.sb-item.on{color:var(--or);background:rgba(255,215,0,0.07);border-left-color:var(--or);}
+.sb-item-ico{font-size:16px;width:20px;text-align:center;}
+
+.sb-potential{margin:10px 12px 0;background:linear-gradient(160deg,rgba(20,15,2,0.95),rgba(8,6,0,0.98));border:1px solid var(--border);border-radius:12px;padding:12px;}
+.sb-pot-eye{font-size:8px;color:var(--gris2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;font-weight:600;}
+.sb-pot-sm{font-size:10px;color:var(--gris);margin-bottom:2px;}
+.sb-pot-n{font-family:'Poppins',sans-serif;font-weight:800;font-size:26px;color:var(--or);line-height:1;text-shadow:0 0 15px rgba(255,215,0,0.4);}
+.sb-pot-period{font-size:9px;color:var(--gris2);margin-bottom:8px;}
+.sb-pot-row{display:flex;gap:8px;margin-bottom:8px;}
+.sb-stat{flex:1;background:rgba(255,215,0,0.04);border:1px solid var(--border);border-radius:7px;padding:7px;}
+.sb-stat-n{font-family:'Poppins',sans-serif;font-weight:700;font-size:13px;color:var(--or);}
+.sb-stat-l{font-size:8px;color:var(--gris2);margin-top:1px;line-height:1.3;}
+.sb-voir{background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.22);border-radius:16px;padding:6px 12px;color:var(--or);font-family:'Poppins',sans-serif;font-weight:600;font-size:10px;cursor:pointer;width:100%;transition:.2s;}
+.sb-voir:hover{background:rgba(255,215,0,0.15);}
+
+.sb-premium{margin:10px 12px 0;background:linear-gradient(160deg,rgba(20,15,2,0.95),rgba(8,6,0,0.98));border:1px solid rgba(255,215,0,0.2);border-radius:12px;padding:12px;text-align:center;}
+.sb-prem-ico{font-size:18px;margin-bottom:5px;}
+.sb-prem-t{font-family:'Poppins',sans-serif;font-weight:700;font-size:11px;color:var(--or);margin-bottom:2px;}
+.sb-prem-s{font-size:9px;color:var(--gris2);margin-bottom:7px;line-height:1.4;}
+.sb-prem-btn{background:linear-gradient(135deg,#FFD700,#FFA500);border:none;border-radius:14px;padding:7px 12px;color:#000;font-family:'Poppins',sans-serif;font-weight:700;font-size:9px;cursor:pointer;width:100%;box-shadow:0 0 12px rgba(255,215,0,0.3);}
+
+/* ===== CENTRE ===== */
+.main-center{
+  flex:1;min-width:0;
+  display:flex;flex-direction:column;
+  height:100vh;overflow:hidden;
+  border-right:1px solid var(--border);
+}
+
+/* HERO CENTRAL */
+.hero-center{
+  flex-shrink:0;
+  display:flex;flex-direction:column;align-items:center;
+  padding:14px 20px 8px;
+  text-align:center;
+  position:relative;
+}
+.hero-logo-wrap{position:relative;margin-bottom:8px;}
+.hero-logo-glow{
+  position:absolute;width:180px;height:180px;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(255,215,0,0.5),rgba(255,215,0,0.15) 50%,transparent);
+  border-radius:50%;filter:blur(40px);
+  animation:glowPulse 3s ease-in-out infinite;
+}
+.hero-logo-img{
+  width:72px;height:72px;border-radius:16px;overflow:hidden;
+  border:2px solid rgba(255,215,0,0.6);
+  box-shadow:0 0 25px rgba(255,215,0,0.6),0 0 50px rgba(255,215,0,0.15);
+  background:rgba(20,15,0,0.9);
+  display:flex;align-items:center;justify-content:center;
+  animation:pulseGlow 4s ease-in-out infinite;
+  position:relative;z-index:1;
+}
+.hero-logo-img img{width:100%;height:100%;object-fit:cover;display:block;animation:float 3s ease-in-out infinite;}
+.hero-logo-fb{font-family:'Poppins',sans-serif;font-weight:800;font-size:22px;color:var(--or);}
+.hero-name{font-family:'Poppins',sans-serif;font-weight:800;font-size:20px;color:var(--blanc);text-shadow:0 0 20px rgba(255,215,0,0.3);margin-bottom:2px;}
+.hero-name em{font-style:normal;color:var(--or);text-shadow:0 0 20px rgba(255,215,0,0.5);}
+.hero-tagline{font-size:9px;color:var(--gris2);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+.hero-q{font-family:'Poppins',sans-serif;font-weight:600;font-size:15px;color:var(--blanc);}
+
+/* MODULES HORIZONTAUX */
+.mods-row{
+  display:flex;gap:7px;padding:8px 16px;
+  overflow-x:auto;flex-shrink:0;
+  scrollbar-width:none;
+}
+.mods-row::-webkit-scrollbar{display:none;}
+.mod{
+  flex-shrink:0;min-width:100px;
+  background:rgba(255,215,0,0.04);
+  border:1px solid rgba(255,215,0,0.18);
+  border-radius:12px;padding:10px 8px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  cursor:pointer;text-align:center;transition:all .2s;
+}
+.mod:hover{border-color:rgba(255,215,0,0.4);box-shadow:0 0 15px rgba(255,215,0,0.15);transform:translateY(-2px);}
+.mod:active{transform:scale(0.95);}
+.mod-ico{
+  width:40px;height:40px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+  background:rgba(20,15,2,0.9);
+  border:1px solid rgba(255,215,0,0.25);
+  box-shadow:0 0 10px rgba(255,215,0,0.15);
+}
+.mod-ico.r{border-color:rgba(255,140,159,0.25);box-shadow:0 0 10px rgba(255,140,159,0.15);}
+.mod-name{font-family:'Poppins',sans-serif;font-weight:600;font-size:9px;color:var(--or-clair);line-height:1.3;}
+
+/* CHAT ZONE */
+.chat-zone{flex:1;overflow-y:auto;padding:10px 16px;display:flex;flex-direction:column;gap:12px;}
+
+/* BULLE IA */
+.brow{display:flex;gap:9px;align-items:flex-start;animation:fadeUp .3s ease;}
+.bav{
+  width:30px;height:30px;flex-shrink:0;
+  border-radius:8px;overflow:hidden;
+  border:1.5px solid rgba(255,215,0,0.45);
+  background:rgba(20,15,0,0.9);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 8px rgba(255,215,0,0.3);
+}
+.bav img{width:100%;height:100%;object-fit:cover;}
+.bav-lz{font-family:'Poppins',sans-serif;font-weight:800;font-size:8px;color:var(--or);}
+.bai-wrap{flex:1;max-width:78%;}
+.bai-hd{display:flex;align-items:center;gap:7px;margin-bottom:5px;}
+.bai-nm{font-family:'Poppins',sans-serif;font-weight:700;font-size:11px;color:var(--or);}
+.bai-bdg{background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.28);border-radius:5px;padding:1px 6px;font-size:8px;font-weight:700;color:var(--or);letter-spacing:0.4px;}
+.bai{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,215,0,0.14);
+  border-radius:4px 13px 13px 13px;
+  padding:11px 13px;
+  font-size:13px;color:var(--blanc);line-height:1.6;white-space:pre-wrap;
+}
+.bai-time{font-size:9px;color:var(--gris2);margin-top:4px;text-align:right;}
+.quick-btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px;}
+.qbtn{
+  display:flex;align-items:center;gap:4px;
+  background:rgba(255,215,0,0.07);
+  border:1px solid rgba(255,215,0,0.22);
+  border-radius:16px;padding:5px 11px;
+  font-size:11px;color:var(--or);cursor:pointer;
+  font-family:'Poppins',sans-serif;font-weight:600;
+  white-space:nowrap;transition:.15s;
+}
+.qbtn:hover{background:rgba(255,215,0,0.15);}
+.qbtn:active{background:rgba(255,215,0,0.2);}
+
+/* BULLE USER */
+.buser-wrap{display:flex;justify-content:flex-end;align-items:flex-end;gap:8px;animation:fadeUp .3s ease;}
+.buser{
+  background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(100,70,0,0.2));
+  border:1px solid rgba(255,215,0,0.25);
+  border-radius:13px 4px 13px 13px;
+  padding:11px 13px;max-width:72%;
+  font-size:13px;color:var(--blanc);line-height:1.6;
+}
+.buser-av{width:26px;height:26px;flex-shrink:0;border-radius:50%;background:linear-gradient(135deg,#FFD700,#FFA500);display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:10px;color:#000;}
+.bloading{color:var(--gris2);font-style:italic;font-size:12px;}
+
+/* SUGGESTION */
+.sug-bar{
+  flex-shrink:0;margin:0 16px 8px;
+  background:linear-gradient(135deg,rgba(255,215,0,0.06),rgba(0,0,0,0) 80%);
+  border:1px solid rgba(255,215,0,0.18);
+  border-radius:12px;padding:11px 13px;
+  display:flex;align-items:center;gap:11px;cursor:pointer;transition:.2s;
+}
+.sug-bar:hover{border-color:rgba(255,215,0,0.35);}
+.sug-bar:active{transform:scale(0.98);}
+.sug-star{font-size:20px;flex-shrink:0;filter:drop-shadow(0 0 6px rgba(255,215,0,0.7));}
+.sug-txt{flex:1;}
+.sug-label{font-family:'Poppins',sans-serif;font-weight:700;font-size:10px;color:var(--or);margin-bottom:2px;}
+.sug-desc{font-size:11px;color:var(--gris2);}
+.sug-btn{flex-shrink:0;background:linear-gradient(135deg,#FFD700,#FFA500);border:none;border-radius:16px;padding:6px 14px;color:#000;font-family:'Poppins',sans-serif;font-weight:700;font-size:10px;cursor:pointer;box-shadow:0 0 12px rgba(255,215,0,0.35);white-space:nowrap;}
+
+/* INPUT */
+.input-zone{flex-shrink:0;padding:8px 16px 12px;background:rgba(0,0,0,0.95);border-top:1px solid var(--border);}
+.input-row{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.04);
+  border:1.5px solid rgba(255,215,0,0.22);
+  border-radius:24px;padding:6px 8px 6px 14px;
+  margin-bottom:6px;
+}
+.input-row input{flex:1;background:transparent;border:none;outline:none;color:var(--blanc);font-size:13px;font-family:'Inter',sans-serif;padding:4px 0;}
+.input-row input::placeholder{color:var(--gris2);}
+.inp-ico{color:var(--gris2);font-size:17px;cursor:pointer;flex-shrink:0;padding:3px;}
+/* BOUTON ENVOYER — rectangle doré */
+.btn-send{
+  background:linear-gradient(135deg,#FFD700,#FFA500,#FFD700);
+  border:none;border-radius:8px;
+  padding:11px 22px;
+  color:#000;font-family:'Poppins',sans-serif;font-weight:700;font-size:12px;
+  letter-spacing:0.8px;cursor:pointer;white-space:nowrap;
+  box-shadow:0 0 20px rgba(255,215,0,0.5),0 4px 14px rgba(0,0,0,0.4);
+  display:flex;align-items:center;gap:5px;flex-shrink:0;
+  transition:all .2s;
+}
+.btn-send:hover{box-shadow:0 0 28px rgba(255,215,0,0.7),0 6px 18px rgba(0,0,0,0.4);transform:translateY(-1px);}
+.btn-send:active{transform:scale(0.96);}
+.input-extras{display:flex;gap:8px;align-items:center;}
+.conv-hist-btn{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.14);
+  border-radius:16px;padding:5px 12px;
+  font-size:11px;color:var(--gris);cursor:pointer;transition:.2s;
+}
+.conv-hist-btn:hover{color:var(--or);border-color:rgba(255,215,0,0.28);}
+
+/* ===== PANEL DROIT 260px ===== */
+.panel-right{
+  width:260px;flex-shrink:0;
+  background:rgba(4,3,1,0.99);
+  border-left:1px solid var(--border);
+  display:flex;flex-direction:column;
+  overflow-y:auto;padding:16px 0;
+}
+
+.pr-vision{margin:0 14px 14px;background:rgba(255,215,0,0.07);border:1px solid rgba(255,215,0,0.22);border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:7px;}
+.pr-vision-ico{font-size:14px;}
+.pr-vision-txt{font-family:'Poppins',sans-serif;font-weight:700;font-size:10px;color:var(--or);letter-spacing:0.3px;}
+
+.pr-profil{display:flex;flex-direction:column;align-items:center;padding:0 14px 14px;border-bottom:1px solid var(--border);}
+.pr-av-wrap{position:relative;margin-bottom:8px;}
+.pr-av{
+  width:60px;height:60px;border-radius:50%;
+  background:rgba(20,15,0,0.9);
+  border:2px solid rgba(255,215,0,0.5);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Poppins',sans-serif;font-weight:800;font-size:22px;color:var(--or);
+  box-shadow:0 0 20px rgba(255,215,0,0.4);
+  animation:pulseGlow 4s ease-in-out infinite;
+  overflow:hidden;
+}
+.pr-av-star{position:absolute;bottom:-3px;right:-3px;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#FFD700,#FFA500);display:flex;align-items:center;justify-content:center;font-size:8px;border:2px solid var(--noir);box-shadow:0 0 5px rgba(255,215,0,0.5);}
+.pr-name{font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;color:var(--blanc);}
+.pr-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25);border-radius:10px;padding:3px 9px;margin-top:5px;font-size:9px;color:var(--or);font-weight:700;}
+.pr-kpis{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px;width:100%;}
+.pr-kpi{background:rgba(255,215,0,0.04);border:1px solid var(--border);border-radius:8px;padding:8px;}
+.pr-kpi-lbl{font-size:8px;color:var(--gris2);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:2px;}
+.pr-kpi-n{font-family:'Poppins',sans-serif;font-weight:800;font-size:17px;color:var(--or);}
+.pr-prog-wrap{width:100%;margin-top:8px;}
+.pr-prog-lbl{display:flex;justify-content:space-between;font-size:8px;color:var(--gris2);margin-bottom:3px;}
+.pr-prog-lbl span:last-child{color:var(--or);font-weight:700;}
+.pr-prog-bg{height:3px;background:rgba(255,215,0,0.08);border-radius:2px;overflow:hidden;}
+.pr-prog-fill{height:3px;background:linear-gradient(90deg,#FFD700,#FF8C9F);border-radius:2px;}
+
+.pr-section{padding:12px 14px 0;}
+.pr-sec-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:8px;color:var(--gris2);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px;}
+.pr-param{display:flex;align-items:center;gap:8px;padding:7px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:8px;cursor:pointer;font-size:11px;color:var(--gris);margin-bottom:6px;transition:.15s;}
+.pr-param:hover{color:var(--blanc);border-color:var(--border);}
+.pr-stat-box{background:rgba(255,215,0,0.04);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:6px;}
+.pr-stat-lbl{font-size:8px;color:var(--gris2);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:2px;}
+.pr-stat-n{font-family:'Poppins',sans-serif;font-weight:800;font-size:18px;color:var(--or);}
+.pr-stat-bar{height:2px;background:rgba(255,215,0,0.06);border-radius:2px;margin-top:5px;overflow:hidden;}
+.pr-stat-fill{height:2px;background:linear-gradient(90deg,#FFD700,#FF8C9F);border-radius:2px;}
+
+/* ===== MODAL HISTORIQUE ===== */
+.hist-modal{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.88);backdrop-filter:blur(14px);align-items:center;justify-content:center;}
+.hist-modal.open{display:flex;}
+.hist-box{background:linear-gradient(160deg,#0d0a02,#050400);border:1.5px solid rgba(255,215,0,0.28);border-radius:18px;padding:20px;width:90%;max-width:480px;max-height:75vh;display:flex;flex-direction:column;gap:12px;box-shadow:0 0 40px rgba(255,215,0,0.15);}
+.hist-hd{display:flex;align-items:center;justify-content:space-between;}
+.hist-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;color:var(--or);}
+.hist-close{background:none;border:none;color:var(--gris);font-size:22px;cursor:pointer;line-height:1;}
+.hist-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:7px;}
+.hist-item{background:rgba(255,215,0,0.04);border:1px solid rgba(255,215,0,0.13);border-radius:11px;padding:12px;cursor:pointer;transition:.15s;}
+.hist-item:hover{border-color:rgba(255,215,0,0.35);background:rgba(255,215,0,0.08);}
+.hist-item-mod{font-size:9px;color:var(--or);font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:2px;}
+.hist-item-title{font-weight:600;font-size:12px;color:var(--blanc);margin-bottom:2px;}
+.hist-item-preview{font-size:10px;color:var(--gris2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hist-item-date{font-size:9px;color:var(--gris2);margin-top:4px;}
+.hist-empty{text-align:center;color:var(--gris2);font-size:13px;padding:24px;line-height:1.6;}
+.hist-footer{display:flex;gap:8px;}
+.hist-clear{background:rgba(200,80,80,0.1);border:1px solid rgba(200,80,80,0.2);border-radius:10px;padding:8px 14px;color:#e08080;font-size:11px;cursor:pointer;flex:1;}
+.hist-close-btn{background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.22);border-radius:10px;padding:8px 14px;color:var(--or);font-size:11px;cursor:pointer;flex:1;font-family:'Poppins',sans-serif;font-weight:600;}
+
+/* ===== RESPONSIVE MOBILE ===== */
+@media(max-width:900px){
+  .sidebar{display:none;}
+  .panel-right{display:none;}
+  .main-center{border-right:none;}
+  .bottom-nav{display:flex!important;}
+}
+.bottom-nav{
+  display:none;
+  position:fixed;bottom:10px;left:50%;transform:translateX(-50%);
+  width:95%;max-width:410px;height:64px;
+  border-radius:22px;
+  background:rgba(0,0,0,0.92);
+  backdrop-filter:blur(30px);
+  border:1px solid var(--border);
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+  align-items:center;justify-content:space-around;
+  padding:5px 0 8px;z-index:100;
+}
+.nb{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;min-width:54px;background:none;border:none;padding:4px 8px;position:relative;transition:.2s;}
+.nb.on{transform:translateY(-4px);}
+.nb.on::before{content:'';position:absolute;top:-7px;width:26px;height:2.5px;background:var(--or);border-radius:2px;box-shadow:0 0 7px rgba(255,215,0,0.8);}
+.ni{font-size:18px;color:var(--gris2);transition:all .2s;}
+.nl{font-size:9px;color:var(--gris2);font-weight:500;transition:color .2s;}
+.nb.on .ni{color:var(--or);filter:drop-shadow(0 0 5px rgba(255,215,0,0.8));}
+.nb.on .nl{color:var(--or);}
 </style>
 </head>
 <body>
+<div class="layout">
 
-<!-- ACCUEIL -->
-<div class="screen active" id="screen-accueil">
-  <div class="top-bar">
-    <div class="logo-wrap">
-      <img src="./ChatGPT%20Image%2019%20juin%202026%2020_17_17.png" class="logo-img" alt="LZ" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="logo-fallback" style="display:none">LZ</div>
-      <div class="logo-texts">
-        <div class="logo-name">LuminZenith AI</div>
-        <div class="logo-tag">LA LUMIÈRE AU SOMMET</div>
+  <!-- ===== SIDEBAR GAUCHE ===== -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-img">
+        <img src="./LZ.png" alt="LZ" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=sb-logo-fb>LZ</span>'">
+      </div>
+      <div class="sb-name">LuminZenith <span>AI</span></div>
+      <div class="sb-tagline">La lumière au sommet</div>
+    </div>
+
+    <nav class="sb-nav">
+      <div class="sb-item on" onclick="sbNav(this)"><span class="sb-item-ico">⌂</span>Accueil</div>
+      <div class="sb-item" onclick="sbNav(this)"><span class="sb-item-ico">💬</span>Messages</div>
+      <div class="sb-item" onclick="sbNav(this)"><span class="sb-item-ico">📞</span>Appels / Visio</div>
+      <div class="sb-item" onclick="sbNav(this)"><span class="sb-item-ico">⚡</span>Activité</div>
+      <div class="sb-item" onclick="sbNav(this)"><span class="sb-item-ico">👤</span>Profil</div>
+    </nav>
+
+    <div class="sb-potential">
+      <div class="sb-pot-eye">Ton potentiel</div>
+      <div class="sb-pot-sm">Tu peux générer</div>
+      <div class="sb-pot-n">200 €</div>
+      <div class="sb-pot-period">cette semaine</div>
+      <div class="sb-pot-row">
+        <div class="sb-stat"><div class="sb-stat-n">+120</div><div class="sb-stat-l">Nouveaux abonnés possibles</div></div>
+        <div class="sb-stat"><div class="sb-stat-n">+3</div><div class="sb-stat-l">Actions recommandées</div></div>
+      </div>
+      <button class="sb-voir" onclick="ouvrirModule('📈','Développer','Expert en croissance business, stratégie de développement, scale et acquisition.')">Voir plus</button>
+    </div>
+
+    <div class="sb-premium">
+      <div class="sb-prem-ico">💎</div>
+      <div class="sb-prem-t">Membre Premium</div>
+      <div class="sb-prem-s">Accès illimité à toutes les fonctionnalités</div>
+      <button class="sb-prem-btn">Centre Premium</button>
+    </div>
+  </aside>
+
+  <!-- ===== CENTRE ===== -->
+  <main class="main-center">
+
+    <!-- HERO -->
+    <div class="hero-center">
+      <div class="hero-logo-wrap">
+        <div class="hero-logo-glow"></div>
+        <div class="hero-logo-img">
+          <img src="./LZ.png" alt="LZ" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=hero-logo-fb>LZ</span>'">
+        </div>
+      </div>
+      <div class="hero-name">LuminZenith <em>AI</em></div>
+      <div class="hero-tagline">La lumière au sommet</div>
+      <div class="hero-q">Que veux-tu faire aujourd'hui ?</div>
+    </div>
+
+    <!-- MODULES HORIZONTAUX -->
+    <div class="mods-row">
+      <div class="mod" onclick="ouvrirModule('💰','Gagner de l\'argent','Expert en business, monétisation, facturation et comptabilité. Génère des revenus concrets.')">
+        <div class="mod-ico">💰</div>
+        <div class="mod-name">Business & Compta</div>
+      </div>
+      <div class="mod" onclick="ouvrirModule('📱','Réseaux Sociaux','Expert en réseaux sociaux, stratégie de contenu, viralité et croissance.')">
+        <div class="mod-ico r">📱</div>
+        <div class="mod-name">Réseaux Sociaux</div>
+      </div>
+      <div class="mod" onclick="ouvrirModule('📈','Investissement','Expert en investissement, trading, crypto et stratégie patrimoniale.')">
+        <div class="mod-ico">📈</div>
+        <div class="mod-name">Investissement & Trading</div>
+      </div>
+      <div class="mod" onclick="ouvrirModule('🎨','Création & Design','Expert en création visuelle, design, branding et contenu créatif.')">
+        <div class="mod-ico r">🎨</div>
+        <div class="mod-name">Création & Design</div>
+      </div>
+      <div class="mod" onclick="ouvrirModule('⚡','Automatisation','Expert en automatisation, workflows no-code, Make.com, Zapier et productivité IA.')">
+        <div class="mod-ico">⚡</div>
+        <div class="mod-name">Automatisation & flux de travail</div>
+      </div>
+      <div class="mod" onclick="ouvrirModule('🎵','Musique','Expert en création musicale, prompts Suno V5.5 à 432Hz, toplines et production INEDIE.')">
+        <div class="mod-ico r">🎵</div>
+        <div class="mod-name">Musique & Contenu</div>
+      </div>
+      <div class="mod" onclick="ouvrirModule('📚','Étudier','Expert en aide scolaire sixième, explications claires et méthodes d\'apprentissage.')">
+        <div class="mod-ico">📚</div>
+        <div class="mod-name">Étudier</div>
       </div>
     </div>
-    <div class="top-right">
-      <div class="badge-prem">✦ PREMIUM</div>
-      <button class="bell">🔔</button>
-    </div>
-  </div>
-  <div class="hero">
-    <div class="hero-figure">
-      <div class="hero-figure-glow"></div>
-      <img src="./LZ.png" alt="LuminZenith" class="hero-figure-img" onerror="this.style.display='none'">
-    </div>
-    <div class="hero-eye">BONJOUR ALEXANDRE</div>
-    <div class="hero-title">Que veux-tu faire<br><em>aujourd'hui ?</em></div>
-    <div class="hero-sub">Tout est réuni. Tout devient possible.</div>
-  </div>
-  <div class="input-wrap">
-    <input class="main-input" id="home-input" type="text" placeholder="Demande-moi ce que tu veux..." onkeypress="if(event.key==='Enter')ouvrirChat()">
-    <button class="btn-send-home" onclick="ouvrirChat()">ENVOYER ✦</button>
-  </div>
-  <div class="sec-hd">
-    <span class="sec-hd-t">Actions Rapides</span>
-    <span class="sec-hd-l">VOIR TOUT</span>
-  </div>
-  <div class="mods-grid">
-    <div class="mod" onclick="ouvrirModule('💰','Gagner de l\'argent','Expert en business, monétisation, revenus et stratégie financière.')">
-      <div class="mod-ico gold">💰</div>
-      <div class="mod-label">Gagner de l'argent</div>
-    </div>
-    <div class="mod" onclick="ouvrirModule('🎵','Créer','Expert en création musicale, prompts Suno V5.5 à 432Hz, toplines et production.')">
-      <div class="mod-ico rose">🎵</div>
-      <div class="mod-label">Créer</div>
-    </div>
-    <div class="mod" onclick="ouvrirModule('📈','Développer','Expert en croissance business, stratégie de développement et scale.')">
-      <div class="mod-ico gold">📈</div>
-      <div class="mod-label">Développer</div>
-    </div>
-    <div class="mod" onclick="changerEcran('messages')">
-      <div class="mod-ico rose">✉️</div>
-      <div class="mod-label">Messages</div>
-    </div>
-    <div class="mod" onclick="changerEcran('appels')">
-      <div class="mod-ico gold">📞</div>
-      <div class="mod-label">Appels / Visio</div>
-    </div>
-    <div class="mod" onclick="ouvrirModule('📚','Étudier','Expert en aide scolaire, explications claires et méthodes d\'apprentissage.')">
-      <div class="mod-ico rose">📚</div>
-      <div class="mod-label">Étudier</div>
-    </div>
-  </div>
-  <div class="sug" onclick="ouvrirModule('✦','Assistant','Tu es LuminZenith AI, assistant premium polyvalent.')">
-    <div class="sug-star">✦</div>
-    <div>
-      <div class="sug-label">SUGGESTION DU JOUR</div>
-      <div class="sug-desc">Lance ta première offre en 3 étapes avec ton IA</div>
-      <div class="sug-cta">Découvrir →</div>
-    </div>
-  </div>
-</div>
 
-<!-- CHAT -->
-<div class="screen" id="screen-chat" style="height:100vh;padding-bottom:0;">
-  <div class="chat-hd">
-    <button class="back-btn" onclick="retourAccueil()">‹</button>
-    <div class="chat-hd-info">
-      <h2 id="chat-titre">Assistant IA</h2>
-      <p>LuminZenith AI · En ligne ✦</p>
-    </div>
-    <div class="chat-hd-ico" id="chat-icone">✦</div>
-  </div>
-  <div class="chat-body" id="chat-body" style="flex:1;overflow-y:auto;padding-bottom:14px;">
-    <div class="bubble-row">
-      <div class="bubble-av">LZ</div>
-      <div class="bubble-ai">Bonjour ! Je suis LuminZenith AI. Comment puis-je t'aider aujourd'hui ? ✦</div>
-    </div>
-  </div>
-  <div class="chat-input-row">
-    <input type="text" id="chat-input" placeholder="Écris ton message..." onkeypress="if(event.key==='Enter')envoyer()">
-    <button class="chat-send-btn" onclick="envoyer()">➤</button>
-  </div>
-</div>
+    <!-- CHAT -->
+    <div class="chat-zone" id="chat-zone"></div>
 
-<!-- MESSAGES -->
-<div class="screen" id="screen-messages">
-  <div class="scr-hd"><h1>Messages</h1><span>✏</span></div>
-  <div class="search-bar">🔍 Rechercher...</div>
-  <div class="filters">
-    <button class="flt on">Tous</button>
-    <button class="flt">Non lus</button>
-    <button class="flt">Groupes</button>
-    <button class="flt">IA</button>
-  </div>
-  <div class="conv-list">
-    <div class="conv" onclick="ouvrirModule('🤖','LuminZenith AI','Tu es LuminZenith AI, assistant premium polyvalent.')">
-      <div class="conv-av lz">LZ<div class="notif-dot" style="background:var(--or-rose);color:#fff;">1</div></div>
-      <div class="conv-info"><div class="conv-nm">LuminZenith AI</div><div class="conv-prev">Voici ton plan d'action personnalisé...</div></div>
-      <div class="conv-t">10:32</div>
-    </div>
-    <div class="conv">
-      <div class="conv-av em">E</div>
-      <div class="conv-info"><div class="conv-nm">Emma</div><div class="conv-prev">On se retrouve demain 14h pour le projet !</div></div>
-      <div class="conv-t">09:15</div>
-    </div>
-    <div class="conv">
-      <div class="conv-av gc">GC<div class="notif-dot" style="background:var(--or);color:#000;">12</div></div>
-      <div class="conv-info"><div class="conv-nm">Groupe Créateurs</div><div class="conv-prev">Lucas : Nouveau son dispo... 🎵</div></div>
-      <div class="conv-t">Hier</div>
-    </div>
-    <div class="conv">
-      <div class="conv-av no">N</div>
-      <div class="conv-info"><div class="conv-nm">Noah</div><div class="conv-prev">Stratégie business validée ✅</div></div>
-      <div class="conv-t">Hier</div>
-    </div>
-    <div class="conv">
-      <div class="conv-av sa">S</div>
-      <div class="conv-info"><div class="conv-nm">Sarah</div><div class="conv-prev">Merci pour l'aide 🙏</div></div>
-      <div class="conv-t">Lundi</div>
-    </div>
-  </div>
-  <div class="msg-opt" onclick="ouvrirModule('✦','Optimiser un message','Expert en communication et copywriting.')">
-    <span>✦ Optimiser un message</span><span>›</span>
-  </div>
-</div>
-
-<!-- APPELS -->
-<div class="screen" id="screen-appels">
-  <div class="appels-hd"><h1>Appels</h1></div>
-  <div class="call-card">
-    <h2>Appeler ou démarrer une visio</h2>
-    <p>Connexions sécurisées · Résumé IA après chaque appel</p>
-    <div class="call-btns">
-      <div class="call-btn" onclick="alert('Appel audio — Bientôt disponible ✦')">
-        <div class="call-ico">📞</div>
-        <div class="call-btn-lbl">APPEL</div>
+    <!-- SUGGESTION -->
+    <div class="sug-bar" onclick="ouvrirModule('✦','Assistant','Tu es LuminZenith AI, assistant premium polyvalent. Reponds comme un expert.')">
+      <span class="sug-star">✦</span>
+      <div class="sug-txt">
+        <div class="sug-label">SUGGESTION DU JOUR</div>
+        <div class="sug-desc">Lance ta première offre premium en 3 étapes avec ton IA</div>
       </div>
-      <div class="call-btn" onclick="alert('Visio — Bientôt disponible ✦')">
-        <div class="call-ico">📹</div>
-        <div class="call-btn-lbl">VISIO</div>
+      <button class="sug-btn">Découvrir</button>
+    </div>
+
+    <!-- INPUT -->
+    <div class="input-zone">
+      <div class="input-row">
+        <span class="inp-ico">📎</span>
+        <input type="text" id="chat-input" placeholder="Écris ton message..." onkeypress="if(event.key==='Enter')envoyer()">
+        <span class="inp-ico">😊</span>
+        <button class="btn-send" onclick="envoyer()">➤ ENVOYER ✦</button>
+      </div>
+      <div class="input-extras">
+        <button class="conv-hist-btn" onclick="ouvrirHistorique()">📂 Conversation avec les exportateurs</button>
       </div>
     </div>
-  </div>
-  <div class="call-hint">✦ Résumé intelligent de vos derniers appels</div>
-  <div class="recents-hd"><h3>Récents</h3><span>VOIR TOUT</span></div>
-  <div class="recent-row"><div class="recent-av">👤</div><div class="recent-info"><div class="recent-nm">Lucas Martin</div><div class="recent-meta">Appel vidéo · 32:15</div></div><div class="recent-time">10:45</div></div>
-  <div class="recent-row"><div class="recent-av">👥</div><div class="recent-info"><div class="recent-nm">Equipe Projet</div><div class="recent-meta">Visio · Terminée</div></div><div class="recent-time">Hier</div></div>
-  <div class="recent-row"><div class="recent-av">👤</div><div class="recent-info"><div class="recent-nm">Emma</div><div class="recent-meta">Appel manqué</div></div><div class="recent-time" style="color:var(--or-rose);">Lundi</div></div>
-</div>
 
-<!-- ACTIVITE -->
-<div class="screen" id="screen-activite">
-  <div class="activ-hd"><h1>Activité</h1><p>Ton potentiel cette semaine</p></div>
-  <div class="stats-grid">
-    <div class="stat-box"><div class="stat-n">120</div><div class="stat-l">Abonnés possibles</div></div>
-    <div class="stat-box"><div class="stat-n">87%</div><div class="stat-l">Taux de réussite</div></div>
-  </div>
-  <div class="rev-box">
-    <div class="rev-ey">Tu peux générer</div>
-    <div class="rev-n">200 €</div>
-    <div class="rev-s">cette semaine avec LuminZenith</div>
-    <div class="act-list">
-      <div class="act-row"><div class="act-dot"></div>+ 3 Actions recommandées disponibles</div>
-      <div class="act-row"><div class="act-dot"></div>Progresse vers tes objectifs</div>
-      <div class="act-row"><div class="act-dot"></div>Nouveau contenu viral suggéré</div>
+  </main>
+
+  <!-- ===== PANEL DROIT ===== -->
+  <aside class="panel-right">
+    <div class="pr-vision">
+      <span class="pr-vision-ico">💎</span>
+      <span class="pr-vision-txt">VISION : 1 MILLIARD</span>
     </div>
-    <button class="btn-voir" onclick="ouvrirModule('📈','Développer','Expert en croissance business.')">Voir plus →</button>
-  </div>
+
+    <div class="pr-profil">
+      <div class="pr-av-wrap">
+        <div class="pr-av">A<div class="pr-av-star">✦</div></div>
+      </div>
+      <div class="pr-name">Alexandre</div>
+      <div class="pr-badge">💎 MEMBRE PREMIUM</div>
+      <div class="pr-kpis">
+        <div class="pr-kpi"><div class="pr-kpi-lbl">Taux réussite</div><div class="pr-kpi-n">87%</div></div>
+        <div class="pr-kpi"><div class="pr-kpi-lbl">Objectifs</div><div class="pr-kpi-n">12</div></div>
+      </div>
+      <div class="pr-prog-wrap">
+        <div class="pr-prog-lbl"><span>PROGRESSION</span><span>73%</span></div>
+        <div class="pr-prog-bg"><div class="pr-prog-fill" style="width:73%;"></div></div>
+      </div>
+    </div>
+
+    <div class="pr-section">
+      <div class="pr-sec-title">Paramètres</div>
+      <div class="pr-param">⚙️ Paramètres du compte</div>
+    </div>
+
+    <div class="pr-section">
+      <div class="pr-sec-title">Cette semaine</div>
+      <div class="pr-stat-box">
+        <div class="pr-stat-lbl">Requêtes aujourd'hui</div>
+        <div class="pr-stat-n">24</div>
+        <div class="pr-stat-bar"><div class="pr-stat-fill" style="width:60%;"></div></div>
+      </div>
+      <div class="pr-stat-box">
+        <div class="pr-stat-lbl">Crédits restants</div>
+        <div class="pr-stat-n">1,250</div>
+        <div class="pr-stat-bar"><div class="pr-stat-fill" style="width:83%;"></div></div>
+      </div>
+      <div class="pr-stat-box">
+        <div class="pr-stat-lbl">Objectif semaine</div>
+        <div class="pr-stat-n">75%</div>
+        <div class="pr-stat-bar"><div class="pr-stat-fill" style="width:75%;"></div></div>
+      </div>
+    </div>
+
+    <div class="pr-section">
+      <div class="pr-sec-title">Mes conversations</div>
+      <div class="pr-param" onclick="ouvrirHistorique()">📂 Voir l'historique</div>
+    </div>
+  </aside>
+
 </div>
 
-<!-- PROFIL -->
-<div class="screen" id="screen-profil">
-  <div class="profil-hd">
-    <div class="profil-av">A</div>
-    <div class="profil-nm">Alexandre</div>
-    <div class="profil-badge">💎 MEMBRE PREMIUM</div>
-  </div>
-  <div class="profil-kpis">
-    <div class="kpi"><div class="kpi-n">12</div><div class="kpi-l">Objectifs en cours</div></div>
-    <div class="kpi"><div class="kpi-n">87%</div><div class="kpi-l">Taux de réussite</div></div>
-  </div>
-  <div class="progress-wrap">
-    <div class="progress-labels"><span>PROGRESSION</span><span>73%</span></div>
-    <div class="progress-bg"><div class="progress-fill"></div></div>
-  </div>
-  <div class="prem-box">
-    <h3>✦ Centre Premium</h3>
-    <p>Débloque tout le potentiel de LuminZenith AI</p>
-    <button class="btn-prem">DÉBLOQUER LUMINZENITH</button>
-  </div>
-  <div class="menu-list">
-    <div class="menu-row"><div class="menu-ico">🎯</div><div class="menu-lbl">Mes Objectifs</div><div class="menu-arr">›</div></div>
-    <div class="menu-row"><div class="menu-ico">📊</div><div class="menu-lbl">Mes Statistiques</div><div class="menu-arr">›</div></div>
-    <div class="menu-row"><div class="menu-ico">⚙️</div><div class="menu-lbl">Paramètres</div><div class="menu-arr">›</div></div>
-    <div class="menu-row"><div class="menu-ico">💎</div><div class="menu-lbl">Centre Premium</div><div class="menu-arr">›</div></div>
-  </div>
-</div>
-
-<!-- NAV -->
-<nav class="bottom-nav">
-  <button class="nav-btn on" id="nav-accueil" onclick="changerEcran('accueil')"><span class="nav-ico">⌂</span><span class="nav-lbl">Accueil</span></button>
-  <button class="nav-btn" id="nav-messages" onclick="changerEcran('messages')"><span class="nav-ico">✉</span><span class="nav-lbl">Messages</span></button>
-  <button class="nav-btn" id="nav-appels" onclick="changerEcran('appels')"><span class="nav-ico">📞</span><span class="nav-lbl">Appels</span></button>
-  <button class="nav-btn" id="nav-activite" onclick="changerEcran('activite')"><span class="nav-ico">◈</span><span class="nav-lbl">Activité</span></button>
-  <button class="nav-btn" id="nav-profil" onclick="changerEcran('profil')"><span class="nav-ico">◉</span><span class="nav-lbl">Profil</span></button>
+<!-- BOTTOM NAV MOBILE -->
+<nav class="bottom-nav" id="bnav">
+  <button class="nb on" onclick="nbClick(this)"><span class="ni">⌂</span><span class="nl">Accueil</span></button>
+  <button class="nb" onclick="nbClick(this)"><span class="ni">💬</span><span class="nl">Messages</span></button>
+  <button class="nb" onclick="nbClick(this)"><span class="ni">📞</span><span class="nl">Appels</span></button>
+  <button class="nb" onclick="nbClick(this)"><span class="ni">⚡</span><span class="nl">Activité</span></button>
+  <button class="nb" onclick="nbClick(this)"><span class="ni">👤</span><span class="nl">Profil</span></button>
 </nav>
+
+<!-- MODAL HISTORIQUE -->
+<div class="hist-modal" id="hist-modal">
+  <div class="hist-box">
+    <div class="hist-hd">
+      <div class="hist-title">📂 Mes Conversations</div>
+      <button class="hist-close" onclick="fermerHist()">✕</button>
+    </div>
+    <div class="hist-list" id="hist-list"></div>
+    <div class="hist-footer">
+      <button class="hist-clear" onclick="clearHist()">🗑 Tout effacer</button>
+      <button class="hist-close-btn" onclick="fermerHist()">Fermer</button>
+    </div>
+  </div>
+</div>
 
 <script>
 const WORKER='https://luminzenithai-api.luminzenithai.workers.dev';
-const hist=[];
-let sys="Tu es LuminZenith AI, un assistant intelligent premium tout-en-un sans limite. Tu ne mentionnes jamais Claude ou Anthropic. Si on te demande qui tu es : Je suis LuminZenith AI. Comportement permanent : reponds comme un expert de haut niveau, vas droit au but, propose 2 a 3 options quand pertinent.";
+const LOGO='./LZ.png';
+let hist=[];
+let currentModule='Assistant';
+let sys="Tu es LuminZenith AI, un assistant intelligent premium tout-en-un sans limite. Tu ne mentionnes jamais Claude ou Anthropic. Si on te demande qui tu es : Je suis LuminZenith AI. Comportement permanent : reponds comme un expert de haut niveau, vas droit au but, propose 2 a 3 options quand pertinent. Tu aides dans tous les domaines : business, comptabilite, aide scolaire, redaction, email, reseaux sociaux, musique, strategie, organisation, productivite.";
 
-function changerEcran(n){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('screen-'+n).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
-  const nav=document.getElementById('nav-'+n);
-  if(nav)nav.classList.add('on');
-  if(n!=='chat')hist.length=0;
-}
+function now(){return new Date().toLocaleTimeString('fr',{hour:'2-digit',minute:'2-digit'});}
+function mkBav(){return '<div class="bav"><img src="'+LOGO+'" alt="LZ" onerror="this.parentElement.innerHTML=\'<span class=bav-lz>LZ</span>\'"></div>';}
 
-function ouvrirChat(){
-  const input=document.getElementById('home-input');
-  const texte=input.value.trim();
-  sys="Tu es LuminZenith AI, assistant premium polyvalent. Reponds comme un expert de haut niveau, vas droit au but.";
-  changerEcran('chat');
-  document.getElementById('chat-titre').textContent='Assistant IA';
-  document.getElementById('chat-icone').textContent='✦';
-  resetChat("Bonjour ! Je suis LuminZenith AI. Comment puis-je t'aider aujourd'hui ? ✦");
-  if(texte){input.value='';document.getElementById('chat-input').value=texte;envoyer();}
-}
+function sbNav(el){document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('on'));el.classList.add('on');}
+function nbClick(el){document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));el.classList.add('on');}
 
 function ouvrirModule(ico,titre,systeme){
   sys="Tu es LuminZenith AI, un assistant intelligent premium tout-en-un sans limite. Tu ne mentionnes jamais Claude ou Anthropic. Module actif : "+titre+". "+systeme+" Comportement permanent : reponds comme un expert de haut niveau, vas droit au but, propose 2 a 3 options quand pertinent.";
-  changerEcran('chat');
-  document.getElementById('chat-titre').textContent=titre;
-  document.getElementById('chat-icone').textContent=ico;
-  resetChat("Module <strong>"+titre+"</strong> activé ✦\n\nJe suis prêt. Dis-moi ce dont tu as besoin !");
+  currentModule=titre;
+  hist=[];
+  const zone=document.getElementById('chat-zone');
+  zone.innerHTML='<div class="brow">'+mkBav()+'<div class="bai-wrap"><div class="bai-hd"><span class="bai-nm">LuminZenith AI</span><span class="bai-bdg">PREMIUM</span></div><div class="bai">Module <strong>'+titre+'</strong> activé ✦\n\nJe suis prêt. Dis-moi ce dont tu as besoin !</div><div class="bai-time">'+now()+'</div></div></div>';
+  zone.scrollTop=zone.scrollHeight;
+  document.getElementById('chat-input').focus();
 }
-
-function resetChat(msg){
-  hist.length=0;
-  document.getElementById('chat-body').innerHTML='<div class="bubble-row"><div class="bubble-av">LZ</div><div class="bubble-ai">'+msg+'</div></div>';
-}
-
-function retourAccueil(){changerEcran('accueil');hist.length=0;}
 
 async function envoyer(){
   const input=document.getElementById('chat-input');
-  const zone=document.getElementById('chat-body');
+  const zone=document.getElementById('chat-zone');
   const texte=input.value.trim();
   if(!texte)return;
-  zone.innerHTML+='<div class="bubble-user">'+texte+'</div>';
   input.value='';
+
+  zone.innerHTML+='<div class="buser-wrap"><div class="buser">'+texte+'</div><div class="buser-av">A</div></div>';
   hist.push({role:'user',content:texte});
-  zone.innerHTML+='<div class="bubble-row" id="load-row"><div class="bubble-av">LZ</div><div class="bubble-ai bubble-loading">LuminZenith réfléchit...</div></div>';
+
+  const lid='l'+Date.now();
+  zone.innerHTML+='<div class="brow" id="'+lid+'">'+mkBav()+'<div class="bai-wrap"><div class="bai-hd"><span class="bai-nm">LuminZenith AI</span><span class="bai-bdg">PREMIUM</span></div><div class="bai bloading">LuminZenith réfléchit...</div></div></div>';
   zone.scrollTop=zone.scrollHeight;
+
   try{
     const r=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:hist,system:sys})});
     const rep=await r.text();
-    document.getElementById('load-row').remove();
+    const lel=document.getElementById(lid);
+    if(lel)lel.remove();
     hist.push({role:'assistant',content:rep});
-    zone.innerHTML+='<div class="bubble-row"><div class="bubble-av">LZ</div><div class="bubble-ai">'+rep+'</div></div>';
+    zone.innerHTML+='<div class="brow">'+mkBav()+'<div class="bai-wrap"><div class="bai-hd"><span class="bai-nm">LuminZenith AI</span><span class="bai-bdg">PREMIUM</span></div><div class="bai">'+rep+'</div><div class="bai-time">'+now()+'</div><div class="quick-btns"><button class="qbtn" onclick="qs(\'Oui, détaille tout\')">✦ Oui, détaille tout</button><button class="qbtn" onclick="qs(\'Donne-moi un plan d\'action\')">🎯 Plan d\'action</button><button class="qbtn" onclick="qs(\'Autre option\')">··· Autre option</button></div></div></div>';
+    sauvegarder();
   }catch(e){
-    const lr=document.getElementById('load-row');
-    if(lr)lr.querySelector('.bubble-ai').textContent='Erreur de connexion.';
+    const lel=document.getElementById(lid);
+    if(lel)lel.querySelector('.bai').textContent='Erreur de connexion.';
   }
   zone.scrollTop=zone.scrollHeight;
 }
+
+function qs(t){document.getElementById('chat-input').value=t;envoyer();}
+
+/* MÉMOIRE */
+function sauvegarder(){
+  if(hist.length<2)return;
+  const convs=JSON.parse(localStorage.getItem('lz_convs')||'[]');
+  const fu=hist.find(m=>m.role==='user');
+  const fa=hist.find(m=>m.role==='assistant');
+  const id='c'+Date.now();
+  const conv={id,module:currentModule,sys,
+    titre:(fu?fu.content:'Conv').substring(0,55),
+    preview:(fa?fa.content:'...').substring(0,90),
+    messages:[...hist],
+    date:new Date().toLocaleDateString('fr',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})
+  };
+  const idx=convs.findIndex(c=>c.module===currentModule&&c.messages[0]?.content===hist[0]?.content);
+  if(idx>=0)convs[idx]=conv;else convs.unshift(conv);
+  if(convs.length>100)convs.splice(100);
+  localStorage.setItem('lz_convs',JSON.stringify(convs));
+}
+
+function ouvrirHistorique(){
+  const modal=document.getElementById('hist-modal');
+  const list=document.getElementById('hist-list');
+  const convs=JSON.parse(localStorage.getItem('lz_convs')||'[]');
+  modal.classList.add('open');
+  if(!convs.length){list.innerHTML='<div class="hist-empty">Aucune conversation sauvegardée.<br><br>Lance une conversation et elle apparaîtra ici !</div>';return;}
+  list.innerHTML=convs.map(c=>`
+    <div class="hist-item" onclick="reprendreConv('${c.id}')">
+      <div class="hist-item-mod">📁 ${c.module}</div>
+      <div class="hist-item-title">${c.titre}${c.titre.length>=55?'...':''}</div>
+      <div class="hist-item-preview">${c.preview}${c.preview.length>=90?'...':''}</div>
+      <div class="hist-item-date">🕐 ${c.date}</div>
+    </div>`).join('');
+}
+
+function fermerHist(){document.getElementById('hist-modal').classList.remove('open');}
+
+function reprendreConv(id){
+  const convs=JSON.parse(localStorage.getItem('lz_convs')||'[]');
+  const conv=convs.find(c=>c.id===id);
+  if(!conv)return;
+  fermerHist();
+  currentModule=conv.module;
+  sys=conv.sys||sys;
+  hist=[...conv.messages];
+  const zone=document.getElementById('chat-zone');
+  zone.innerHTML='';
+  hist.forEach(m=>{
+    if(m.role==='user'){zone.innerHTML+='<div class="buser-wrap"><div class="buser">'+m.content+'</div><div class="buser-av">A</div></div>';}
+    else{zone.innerHTML+='<div class="brow">'+mkBav()+'<div class="bai-wrap"><div class="bai-hd"><span class="bai-nm">LuminZenith AI</span><span class="bai-bdg">PREMIUM</span></div><div class="bai">'+m.content+'</div></div></div>';}
+  });
+  zone.innerHTML+='<div class="brow">'+mkBav()+'<div class="bai-wrap"><div class="bai-hd"><span class="bai-nm">LuminZenith AI</span><span class="bai-bdg">PREMIUM</span></div><div class="bai">✦ Conversation <strong>'+conv.module+'</strong> reprise — Continue où tu en étais !</div><div class="bai-time">'+now()+'</div></div></div>';
+  zone.scrollTop=zone.scrollHeight;
+}
+
+function clearHist(){if(confirm('Effacer toutes les conversations ?')){localStorage.removeItem('lz_convs');fermerHist();}}
+
+window.addEventListener('load',()=>{
+  const zone=document.getElementById('chat-zone');
+  zone.innerHTML='<div class="brow">'+mkBav()+'<div class="bai-wrap"><div class="bai-hd"><span class="bai-nm">LuminZenith AI</span><span class="bai-bdg">PREMIUM</span></div><div class="bai">Bonjour Alexandre ! 👋\n\nJe suis LuminZenith AI, ton assistant intelligent premium.\nQue veux-tu accomplir aujourd\'hui ? ✦</div><div class="bai-time">'+now()+'</div></div></div>';
+  document.getElementById('hist-modal').addEventListener('click',function(e){if(e.target===this)fermerHist();});
+});
 </script>
 </body>
 </html>
