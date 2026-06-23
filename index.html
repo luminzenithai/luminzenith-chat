@@ -583,9 +583,17 @@ async function doLogin() {
   const msg = document.getElementById('login-msg');
   msg.textContent = '';
   if(!email||!pass){ msg.textContent='Remplis tous les champs.'; return; }
-  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
-  if(error){ msg.textContent = error.message; return; }
-  onLogin(data.user);
+  try {
+    const r = await fetch('https://luminzenithai-api.luminzenithai.workers.dev/auth/token?grant_type=password', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ email, password: pass })
+    });
+    const data = await r.json();
+    if(data.error || data.error_description){ msg.textContent = data.error_description || data.error; return; }
+    if(data.user){ onLogin(data.user, data.access_token); }
+    else { msg.textContent = 'Email ou mot de passe incorrect.'; }
+  } catch(e) { msg.textContent = 'Erreur de connexion: ' + e.message; }
 }
 
 async function doSignup() {
@@ -596,31 +604,58 @@ async function doSignup() {
   msg.textContent=''; msg.className='auth-msg';
   if(!nom||!email||!pass){ msg.textContent='Remplis tous les champs.'; msg.classList.add('auth-err'); return; }
   if(pass.length<6){ msg.textContent='Mot de passe minimum 6 caractères.'; msg.classList.add('auth-err'); return; }
-  const { data, error } = await sb.auth.signUp({ email, password: pass, options:{ data:{ nom } } });
-  if(error){ msg.textContent=error.message; msg.classList.add('auth-err'); return; }
-  if(data.user) await sb.from('profiles').upsert({ id:data.user.id, email, nom, plan:'gratuit' });
-  msg.textContent='Compte créé ! Vérifie ton email pour confirmer.'; msg.classList.add('auth-ok');
+  try {
+    const r = await fetch('https://luminzenithai-api.luminzenithai.workers.dev/auth/signup', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ email, password: pass, data: { nom } })
+    });
+    const data = await r.json();
+    if(data.error || data.error_description){ msg.textContent = data.error_description || data.error; msg.classList.add('auth-err'); return; }
+    if(data.user) {
+      // Sauvegarder le profil
+      await fetch('https://luminzenithai-api.luminzenithai.workers.dev/auth/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({_profile: true, id: data.user.id, email, nom}) });
+      msg.textContent='Compte créé ! Connecte-toi maintenant.'; 
+      msg.classList.add('auth-ok');
+      setTimeout(()=>switchTab('login'), 2000);
+    } else {
+      msg.textContent='Compte créé ! Vérifie ton email.'; msg.classList.add('auth-ok');
+    }
+  } catch(e) { msg.textContent = 'Erreur: ' + e.message; msg.classList.add('auth-err'); }
 }
 
 async function doLogout() {
-  await sb.auth.signOut();
   currentUser = null;
+  localStorage.removeItem('lz_token');
   document.getElementById('auth-overlay').style.display = 'flex';
 }
 
-function onLogin(user) {
+function onLogin(user, token) {
   currentUser = user;
+  if(token) localStorage.setItem('lz_token', token);
   document.getElementById('auth-overlay').style.display = 'none';
-  const nom = user.user_metadata?.nom || user.email.split('@')[0];
+  const nom = user.user_metadata?.nom || user.email?.split('@')[0] || 'Utilisateur';
   const letter = nom[0].toUpperCase();
   document.getElementById('right-av').textContent = letter;
   document.getElementById('right-nom').textContent = nom;
-  document.getElementById('right-email').textContent = user.email;
+  document.getElementById('right-email').textContent = user.email || '';
 }
 
+// Vérifier session stockée
 (async () => {
-  const { data } = await sb.auth.getSession();
-  if(data.session) onLogin(data.session.user);
+  const token = localStorage.getItem('lz_token');
+  if(token) {
+    try {
+      const r = await fetch('https://bsogxbejcbjrofalxfxg.supabase.co/auth/v1/user', {
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'apikey': 'sb_publishable_jyIHWZowzvjTr4wyfSrzUg_9gVZAPeS'
+        }
+      });
+      const user = await r.json();
+      if(user.id) onLogin(user, token);
+    } catch(e) { localStorage.removeItem('lz_token'); }
+  }
 })();
 
 /* NAV */
