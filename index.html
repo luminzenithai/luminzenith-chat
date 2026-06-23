@@ -584,7 +584,7 @@ async function doLogin(){
   try{
     const r=await fetch(EDGE,{
       method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+EDGE_KEY},
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({action:'login',email,password:pass})
     });
     const d=await r.json();
@@ -605,7 +605,7 @@ async function doSignup(){
   try{
     const r=await fetch(EDGE,{
       method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+EDGE_KEY},
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({action:'signup',email,password:pass,nom})
     });
     const d=await r.json();
