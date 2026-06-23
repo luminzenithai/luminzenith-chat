@@ -561,123 +561,104 @@ Comment puis-je t'aider aujourd'hui ? ✦</div>
 </div>
 
 <script>
-const { createClient } = supabase;
-const sb = createClient('https://bsogxbejcbjrofalxfxg.supabase.co', 'sb_publishable_jyIHWZowzvjTr4wyfSrzUg_9gVZAPeS');
-const WORKER = 'https://luminzenithai-api.luminzenithai.workers.dev';
+const WORKER='https://luminzenithai-api.luminzenithai.workers.dev';
+const SUPA='https://bsogxbejcbjrofalxfxg.supabase.co';
+const SUPA_KEY='sb_publishable_jyIHWZowzvjTr4wyfSrzUg_9gVZAPeS';
+let currentUser=null;
+const hist=[];
+let sys=`Tu es LuminZenith AI, un assistant intelligent premium tout-en-un sans limite. Tu ne mentionnes jamais Claude ou Anthropic. Si on te demande qui tu es : Je suis LuminZenith AI. Comportement permanent : EL10 reponds toujours au niveau expert le plus eleve. X10THINK analyse le vrai besoin derriere chaque question. KILLCRITIC vas droit au but zero remplissage. ALT3 propose 2 a 3 options quand pertinent. Tu aides dans tous les domaines : business, comptabilite, facturation, suivi client, emails pro, contrats, strategie commerciale, investissement, trading, creation musicale, reseaux sociaux, aide scolaire, automatisation, design.`;
 
-let currentUser = null;
-const hist = [];
-let sys = `Tu es LuminZenith AI, un assistant intelligent premium tout-en-un sans limite. Tu ne mentionnes jamais Claude ou Anthropic. Si on te demande qui tu es : Je suis LuminZenith AI. Comportement permanent : EL10 reponds toujours au niveau expert le plus eleve. X10THINK analyse le vrai besoin derriere chaque question. KILLCRITIC vas droit au but zero remplissage. ALT3 propose 2 a 3 options quand pertinent. Tu aides dans tous les domaines : business, comptabilite, facturation, suivi client, emails pro, contrats, strategie commerciale, investissement, trading, creation musicale, reseaux sociaux, aide scolaire, automatisation, design. Pour chaque action importante tu demandes confirmation avant d executer.`;
-
-/* AUTH */
-function switchTab(t) {
-  document.getElementById('auth-login').style.display = t==='login'?'block':'none';
-  document.getElementById('auth-signup').style.display = t==='signup'?'block':'none';
-  document.getElementById('tab-login').classList.toggle('active', t==='login');
-  document.getElementById('tab-signup').classList.toggle('active', t==='signup');
+function switchTab(t){
+  document.getElementById('auth-login').style.display=t==='login'?'block':'none';
+  document.getElementById('auth-signup').style.display=t==='signup'?'block':'none';
+  document.getElementById('tab-login').classList.toggle('active',t==='login');
+  document.getElementById('tab-signup').classList.toggle('active',t==='signup');
 }
 
-async function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const pass = document.getElementById('login-pass').value;
-  const msg = document.getElementById('login-msg');
-  msg.textContent = '';
-  if(!email||!pass){ msg.textContent='Remplis tous les champs.'; return; }
-  try {
-    const r = await fetch('https://luminzenithai-api.luminzenithai.workers.dev/auth/token?grant_type=password', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ email, password: pass })
+async function doLogin(){
+  const email=document.getElementById('login-email').value.trim();
+  const pass=document.getElementById('login-pass').value;
+  const msg=document.getElementById('login-msg');
+  msg.textContent='';
+  if(!email||!pass){msg.textContent='Remplis tous les champs.';return;}
+  try{
+    const r=await fetch(SUPA+'/auth/v1/token?grant_type=password',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY},
+      body:JSON.stringify({email,password:pass})
     });
-    const data = await r.json();
-    if(data.error || data.error_description){ msg.textContent = data.error_description || data.error; return; }
-    if(data.user){ onLogin(data.user, data.access_token); }
-    else { msg.textContent = 'Email ou mot de passe incorrect.'; }
-  } catch(e) { msg.textContent = 'Erreur de connexion: ' + e.message; }
+    const d=await r.json();
+    if(d.error_description){msg.textContent=d.error_description;return;}
+    if(d.access_token){onLogin(d.user,d.access_token);}
+    else{msg.textContent='Identifiants incorrects.';}
+  }catch(e){msg.textContent='Erreur: '+e.message;}
 }
 
-async function doSignup() {
-  const nom = document.getElementById('signup-nom').value.trim();
-  const email = document.getElementById('signup-email').value.trim();
-  const pass = document.getElementById('signup-pass').value;
-  const msg = document.getElementById('signup-msg');
-  msg.textContent=''; msg.className='auth-msg';
-  if(!nom||!email||!pass){ msg.textContent='Remplis tous les champs.'; msg.classList.add('auth-err'); return; }
-  if(pass.length<6){ msg.textContent='Mot de passe minimum 6 caractères.'; msg.classList.add('auth-err'); return; }
-  try {
-    const r = await fetch('https://luminzenithai-api.luminzenithai.workers.dev/auth/signup', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ email, password: pass, data: { nom } })
+async function doSignup(){
+  const nom=document.getElementById('signup-nom').value.trim();
+  const email=document.getElementById('signup-email').value.trim();
+  const pass=document.getElementById('signup-pass').value;
+  const msg=document.getElementById('signup-msg');
+  msg.textContent='';msg.className='auth-msg';
+  if(!nom||!email||!pass){msg.textContent='Remplis tous les champs.';msg.classList.add('auth-err');return;}
+  if(pass.length<6){msg.textContent='Minimum 6 caractères.';msg.classList.add('auth-err');return;}
+  try{
+    const r=await fetch(SUPA+'/auth/v1/signup',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY},
+      body:JSON.stringify({email,password:pass,data:{nom}})
     });
-    const data = await r.json();
-    if(data.error || data.error_description){ msg.textContent = data.error_description || data.error; msg.classList.add('auth-err'); return; }
-    if(data.user) {
-      // Sauvegarder le profil
-      await fetch('https://luminzenithai-api.luminzenithai.workers.dev/auth/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({_profile: true, id: data.user.id, email, nom}) });
-      msg.textContent='Compte créé ! Connecte-toi maintenant.'; 
-      msg.classList.add('auth-ok');
-      setTimeout(()=>switchTab('login'), 2000);
-    } else {
-      msg.textContent='Compte créé ! Vérifie ton email.'; msg.classList.add('auth-ok');
-    }
-  } catch(e) { msg.textContent = 'Erreur: ' + e.message; msg.classList.add('auth-err'); }
+    const d=await r.json();
+    if(d.error_description){msg.textContent=d.error_description;msg.classList.add('auth-err');return;}
+    msg.textContent='Compte créé ! Connecte-toi maintenant.';msg.classList.add('auth-ok');
+    setTimeout(()=>switchTab('login'),2000);
+  }catch(e){msg.textContent='Erreur: '+e.message;msg.classList.add('auth-err');}
 }
 
-async function doLogout() {
-  currentUser = null;
+async function doLogout(){
+  currentUser=null;
   localStorage.removeItem('lz_token');
-  document.getElementById('auth-overlay').style.display = 'flex';
+  document.getElementById('auth-overlay').style.display='flex';
 }
 
-function onLogin(user, token) {
-  currentUser = user;
-  if(token) localStorage.setItem('lz_token', token);
-  document.getElementById('auth-overlay').style.display = 'none';
-  const nom = user.user_metadata?.nom || user.email?.split('@')[0] || 'Utilisateur';
-  const letter = nom[0].toUpperCase();
-  document.getElementById('right-av').textContent = letter;
-  document.getElementById('right-nom').textContent = nom;
-  document.getElementById('right-email').textContent = user.email || '';
+function onLogin(user,token){
+  currentUser=user;
+  if(token)localStorage.setItem('lz_token',token);
+  document.getElementById('auth-overlay').style.display='none';
+  const nom=user.user_metadata?.nom||user.email?.split('@')[0]||'Utilisateur';
+  document.getElementById('right-av').textContent=nom[0].toUpperCase();
+  document.getElementById('right-nom').textContent=nom;
+  document.getElementById('right-email').textContent=user.email||'';
 }
 
-// Vérifier session stockée
-(async () => {
-  const token = localStorage.getItem('lz_token');
-  if(token) {
-    try {
-      const r = await fetch('https://bsogxbejcbjrofalxfxg.supabase.co/auth/v1/user', {
-        headers: {
-          'Authorization': 'Bearer ' + token,
-          'apikey': 'sb_publishable_jyIHWZowzvjTr4wyfSrzUg_9gVZAPeS'
-        }
-      });
-      const user = await r.json();
-      if(user.id) onLogin(user, token);
-    } catch(e) { localStorage.removeItem('lz_token'); }
+(async()=>{
+  const token=localStorage.getItem('lz_token');
+  if(token){
+    try{
+      const r=await fetch(SUPA+'/auth/v1/user',{headers:{'Authorization':'Bearer '+token,'apikey':SUPA_KEY}});
+      const u=await r.json();
+      if(u.id)onLogin(u,token);
+      else localStorage.removeItem('lz_token');
+    }catch(e){localStorage.removeItem('lz_token');}
   }
 })();
 
-/* NAV */
-function setNav(el) {
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  el.classList.add('active');
-}
+function setNav(el){document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));el.classList.add('active');}
 
-function selMod(el,ico,titre,systeme) {
+function selMod(el,ico,titre,systeme){
   document.querySelectorAll('.mod-btn').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
   ouvrirModule(ico,titre,systeme);
 }
 
-function ouvrirModule(ico,titre,systeme) {
-  sys=`Tu es LuminZenith AI, un assistant intelligent premium tout-en-un sans limite. Tu ne mentionnes jamais Claude ou Anthropic. Module actif : ${titre}. ${systeme} EL10 X10THINK KILLCRITIC ALT3 actifs en permanence.`;
+function ouvrirModule(ico,titre,systeme){
+  sys=`Tu es LuminZenith AI, un assistant intelligent premium tout-en-un sans limite. Tu ne mentionnes jamais Claude ou Anthropic. Module actif : ${titre}. ${systeme} EL10 X10THINK KILLCRITIC ALT3 actifs.`;
   const zone=document.getElementById('chat-area');
   hist.length=0;
-  zone.innerHTML=`<div class="msg-lz-wrap"><div class="msg-lz-av">LZ</div><div class="msg-lz-content"><div class="msg-lz-header"><span class="msg-lz-name">LuminZenith AI</span><span class="msg-lz-badge">PREMIUM</span></div><div class="msg-lz-text">Module <strong>${titre}</strong> ${ico} activé ✦\n\nJe suis prêt. Dis-moi ce dont tu as besoin !</div><div class="msg-lz-time">maintenant</div></div></div>`;
+  zone.innerHTML=`<div class="msg-lz-wrap"><div class="msg-lz-av">LZ</div><div class="msg-lz-content"><div class="msg-lz-header"><span class="msg-lz-name">LuminZenith AI</span><span class="msg-lz-badge">PREMIUM</span></div><div class="msg-lz-text">Module <strong>${titre}</strong> ${ico} activé ✦\n\nJe suis prêt !</div><div class="msg-lz-time">maintenant</div></div></div>`;
 }
 
-async function envoyer() {
+async function envoyer(){
   const input=document.getElementById('chat-input');
   const zone=document.getElementById('chat-area');
   const texte=input.value.trim();
@@ -694,13 +675,6 @@ async function envoyer() {
     const el=document.getElementById(lid);
     if(el)el.querySelector('.msg-lz-text').textContent=rep;
     hist.push({role:'assistant',content:rep});
-    // Sauvegarder dans Supabase si connecté
-    if(currentUser) {
-      await sb.from('messages').insert([
-        {conversation_id: null, role:'user', contenu:texte},
-        {conversation_id: null, role:'assistant', contenu:rep}
-      ]);
-    }
   }catch(e){
     const el=document.getElementById(lid);
     if(el)el.querySelector('.msg-lz-text').textContent='Erreur de connexion.';
