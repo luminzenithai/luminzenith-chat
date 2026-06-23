@@ -562,8 +562,8 @@ Comment puis-je t'aider aujourd'hui ? ✦</div>
 
 <script>
 const WORKER='https://luminzenithai-api.luminzenithai.workers.dev';
-const SUPA='https://bsogxbejcbjrofalxfxg.supabase.co';
-const SUPA_KEY='sb_publishable_jyIHWZowzvjTr4wyfSrzUg_9gVZAPeS';
+const EDGE='https://bsogxbejcbjrofalxfxg.supabase.co/functions/v1/auth-handler';
+const EDGE_KEY='sb_publishable_jyIHWZowzvjTr4wyfSrzUg_9gVZAPeS';
 let currentUser=null;
 const hist=[];
 let sys=`Tu es LuminZenith AI, un assistant intelligent premium tout-en-un sans limite. Tu ne mentionnes jamais Claude ou Anthropic. Si on te demande qui tu es : Je suis LuminZenith AI. Comportement permanent : EL10 reponds toujours au niveau expert le plus eleve. X10THINK analyse le vrai besoin derriere chaque question. KILLCRITIC vas droit au but zero remplissage. ALT3 propose 2 a 3 options quand pertinent. Tu aides dans tous les domaines : business, comptabilite, facturation, suivi client, emails pro, contrats, strategie commerciale, investissement, trading, creation musicale, reseaux sociaux, aide scolaire, automatisation, design.`;
@@ -582,14 +582,14 @@ async function doLogin(){
   msg.textContent='';
   if(!email||!pass){msg.textContent='Remplis tous les champs.';return;}
   try{
-    const r=await fetch(SUPA+'/auth/v1/token?grant_type=password',{
+    const r=await fetch(EDGE,{
       method:'POST',
-      headers:{'Content-Type':'application/json','apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY},
-      body:JSON.stringify({email,password:pass})
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+EDGE_KEY},
+      body:JSON.stringify({action:'login',email,password:pass})
     });
     const d=await r.json();
-    if(d.error_description){msg.textContent=d.error_description;return;}
-    if(d.access_token){onLogin(d.user,d.access_token);}
+    if(d.error){msg.textContent=d.error;return;}
+    if(d.token){onLogin(d.user,d.token);}
     else{msg.textContent='Identifiants incorrects.';}
   }catch(e){msg.textContent='Erreur: '+e.message;}
 }
@@ -603,13 +603,13 @@ async function doSignup(){
   if(!nom||!email||!pass){msg.textContent='Remplis tous les champs.';msg.classList.add('auth-err');return;}
   if(pass.length<6){msg.textContent='Minimum 6 caractères.';msg.classList.add('auth-err');return;}
   try{
-    const r=await fetch(SUPA+'/auth/v1/signup',{
+    const r=await fetch(EDGE,{
       method:'POST',
-      headers:{'Content-Type':'application/json','apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY},
-      body:JSON.stringify({email,password:pass,data:{nom}})
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+EDGE_KEY},
+      body:JSON.stringify({action:'signup',email,password:pass,nom})
     });
     const d=await r.json();
-    if(d.error_description){msg.textContent=d.error_description;msg.classList.add('auth-err');return;}
+    if(d.error){msg.textContent=d.error;msg.classList.add('auth-err');return;}
     msg.textContent='Compte créé ! Connecte-toi maintenant.';msg.classList.add('auth-ok');
     setTimeout(()=>switchTab('login'),2000);
   }catch(e){msg.textContent='Erreur: '+e.message;msg.classList.add('auth-err');}
@@ -635,7 +635,9 @@ function onLogin(user,token){
   const token=localStorage.getItem('lz_token');
   if(token){
     try{
-      const r=await fetch(SUPA+'/auth/v1/user',{headers:{'Authorization':'Bearer '+token,'apikey':SUPA_KEY}});
+      const r=await fetch('https://bsogxbejcbjrofalxfxg.supabase.co/functions/v1/'.replace('functions/v1/','')+'auth/v1/user',{
+        headers:{'Authorization':'Bearer '+token,'apikey':EDGE_KEY}
+      });
       const u=await r.json();
       if(u.id)onLogin(u,token);
       else localStorage.removeItem('lz_token');
