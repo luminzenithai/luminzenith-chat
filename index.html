@@ -48,7 +48,8 @@ async function envoyer(){
     const rep = await r.text();
     document.getElementById('loading').remove();
     historique.push({ role: "assistant", content: rep });
-    messages.innerHTML += `<div class="msg-ai">${rep}</div>`;
+    const repFormatee = rep.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+messages.innerHTML += `<div class="msg-ai">${repFormatee}</div>`;
   } catch(e) {
     document.getElementById('loading').textContent = 'Erreur de connexion.';
   }
