@@ -60,7 +60,25 @@ function creerNouvelleConversation() {
 }
 let conversationId = getCurrentConversationId();
 const historique = [];
-
+async function chargerHistorique() {
+  try {
+    const r = await fetch(WORKER, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ messages: [], userId: userId, conversationId: conversationId, chargerSeulement: true })
+    });
+    const data = await r.json();
+    if (data.historique && data.historique.length > 0) {
+      const messagesDiv = document.getElementById('messages');
+      messagesDiv.innerHTML = '';
+      data.historique.forEach(m => {
+        const classe = m.role === 'user' ? 'msg-user' : 'msg-ai';
+        messagesDiv.innerHTML += `<div class="${classe}">${m.content}</div>`;
+      });
+    }
+  } catch(e) { console.log('Pas d\'historique existant.'); }
+}
+chargerHistorique();
 async function envoyer(){
   const msg = document.getElementById('msg');
   const messages = document.getElementById('messages');
