@@ -36,7 +36,29 @@ function getUserId() {
   return id;
 }
 const userId = getUserId();
-const conversationId = 'default';
+function getConversationsList() {
+  const list = localStorage.getItem('luminzenith_convs');
+  return list ? JSON.parse(list) : [];
+}
+function saveConversationsList(list) {
+  localStorage.setItem('luminzenith_convs', JSON.stringify(list));
+}
+function getCurrentConversationId() {
+  let id = localStorage.getItem('luminzenith_current_conv');
+  if (!id) {
+    id = creerNouvelleConversation();
+  }
+  return id;
+}
+function creerNouvelleConversation() {
+  const id = 'conv_' + Date.now();
+  const list = getConversationsList();
+  list.push({ id: id, titre: 'Nouvelle conversation' });
+  saveConversationsList(list);
+  localStorage.setItem('luminzenith_current_conv', id);
+  return id;
+}
+let conversationId = getCurrentConversationId();
 const historique = [];
 
 async function envoyer(){
