@@ -28,6 +28,7 @@ header{background:#111;padding:15px;text-align:center;color:gold;font-size:22px;
 </div>
 <script>
 const WORKER = 'https://luminzenithai-api.luminzenithai.workers.dev';
+
 function getUserId() {
   let id = localStorage.getItem('luminzenith_uid');
   if (!id) {
@@ -37,19 +38,13 @@ function getUserId() {
   return id;
 }
 const userId = getUserId();
+
 function getConversationsList() {
   const list = localStorage.getItem('luminzenith_convs');
   return list ? JSON.parse(list) : [];
 }
 function saveConversationsList(list) {
   localStorage.setItem('luminzenith_convs', JSON.stringify(list));
-}
-function getCurrentConversationId() {
-  let id = localStorage.getItem('luminzenith_current_conv');
-  if (!id) {
-    id = creerNouvelleConversation();
-  }
-  return id;
 }
 function creerNouvelleConversation() {
   const id = 'conv_' + Date.now();
@@ -59,12 +54,21 @@ function creerNouvelleConversation() {
   localStorage.setItem('luminzenith_current_conv', id);
   return id;
 }
+function getCurrentConversationId() {
+  let id = localStorage.getItem('luminzenith_current_conv');
+  if (!id) {
+    id = creerNouvelleConversation();
+  }
+  return id;
+}
 function nouvelleConv() {
   creerNouvelleConversation();
   location.reload();
 }
+
 let conversationId = getCurrentConversationId();
 const historique = [];
+
 async function chargerHistorique() {
   try {
     const r = await fetch(WORKER, {
@@ -73,4 +77,44 @@ async function chargerHistorique() {
       body: JSON.stringify({ messages: [], userId: userId, conversationId: conversationId, chargerSeulement: true })
     });
     const data = await r.json();
-    if
+    if (data.historique && data.historique.length > 0) {
+      const messagesDiv = document.getElementById('messages');
+      messagesDiv.innerHTML = '';
+      data.historique.forEach(m => {
+        const classe = m.role === 'user' ? 'msg-user' : 'msg-ai';
+        messagesDiv.innerHTML += `<div class="${classe}">${m.content}</div>`;
+      });
+    }
+  } catch(e) { console.log('Pas d\'historique existant.'); }
+}
+chargerHistorique();
+
+async function envoyer(){
+  const msg = document.getElementById('msg');
+  const messages = document.getElementById('messages');
+  const texte = msg.value.trim();
+  if(!texte) return;
+  messages.innerHTML += `<div class="msg-user">${texte}</div>`;
+  msg.value = '';
+  historique.push({ role: "user", content: texte });
+  messages.innerHTML += `<div class="msg-ai loading" id="loading">LuminZenith réfléchit...</div>`;
+  messages.scrollTop = messages.scrollHeight;
+  try {
+    const r = await fetch(WORKER, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ messages: historique, userId: userId, conversationId: conversationId })
+    });
+    const rep = await r.text();
+    document.getElementById('loading').remove();
+    historique.push({ role: "assistant", content: rep });
+    const repFormatee = rep.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+    messages.innerHTML += `<div class="msg-ai">${repFormatee}</div>`;
+  } catch(e) {
+    document.getElementById('loading').textContent = 'Erreur de connexion.';
+  }
+  messages.scrollTop = messages.scrollHeight;
+}
+</script>
+</body>
+</html>
