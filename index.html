@@ -8,6 +8,15 @@
 body{margin:0;background:#0a0a0a;color:#fff;font-family:Arial,sans-serif;display:flex;flex-direction:column;height:100vh;}
 header{background:#111;padding:15px;text-align:center;color:gold;font-size:22px;font-weight:bold;border-bottom:2px solid gold;position:relative;}
 #newconv{position:absolute;top:15px;right:15px;background:gold;color:#000;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:14px;}
+#convlist{position:absolute;top:15px;left:15px;background:#1a1a1a;color:gold;border:1px solid gold;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:14px;}
+#sidebar{position:fixed;top:0;left:-300px;width:280px;height:100vh;background:#111;border-right:1px solid gold;padding:15px;transition:left 0.3s;overflow-y:auto;z-index:10;}
+#sidebar.open{left:0;}
+#sidebar h3{color:gold;margin-top:0;}
+.conv-item{padding:10px;border-radius:8px;cursor:pointer;margin-bottom:6px;color:#fff;border:1px solid #333;}
+.conv-item:hover{background:#222;}
+.conv-item.active{border-color:gold;color:gold;}
+#overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:5;}
+#overlay.open{display:block;}
 #messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:10px;}
 .msg-user{background:#1a1a2e;padding:10px 15px;border-radius:15px;align-self:flex-end;max-width:70%;border:1px solid #333;}
 .msg-ai{background:#111;padding:10px 15px;border-radius:15px;align-self:flex-start;max-width:70%;border:1px solid gold;color:gold;}
@@ -18,7 +27,16 @@ header{background:#111;padding:15px;text-align:center;color:gold;font-size:22px;
 </style>
 </head>
 <body>
-<header>✦ LuminZenith AI<button id="newconv" onclick="nouvelleConv()">+ Nouvelle conversation</button></header>
+<div id="overlay" onclick="fermerSidebar()"></div>
+<div id="sidebar">
+<h3>Conversations</h3>
+<div id="convItems"></div>
+</div>
+<header>
+<button id="convlist" onclick="ouvrirSidebar()">☰ Conversations</button>
+✦ LuminZenith AI
+<button id="newconv" onclick="nouvelleConv()">+ Nouvelle conversation</button>
+</header>
 <div id="messages">
 <div class="msg-ai">Bonjour ! Je suis LuminZenith AI. Comment puis-je vous aider aujourd'hui ?</div>
 </div>
@@ -65,9 +83,47 @@ function nouvelleConv() {
   creerNouvelleConversation();
   location.reload();
 }
+function ouvrirConversation(id) {
+  localStorage.setItem('luminzenith_current_conv', id);
+  location.reload();
+}
+function ouvrirSidebar() {
+  afficherListeConversations();
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+}
+function fermerSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+function afficherListeConversations() {
+  const list = getConversationsList();
+  const current = getCurrentConversationId();
+  const container = document.getElementById('convItems');
+  container.innerHTML = '';
+  list.slice().reverse().forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'conv-item' + (c.id === current ? ' active' : '');
+    div.textContent = c.titre;
+    div.onclick = () => ouvrirConversation(c.id);
+    container.appendChild(div);
+  });
+  if (list.length === 0) {
+    container.innerHTML = '<p style="color:#888;">Aucune conversation encore.</p>';
+  }
+}
 
 let conversationId = getCurrentConversationId();
 const historique = [];
+
+function mettreAJourTitreConversation(premierMessage) {
+  const list = getConversationsList();
+  const conv = list.find(c => c.id === conversationId);
+  if (conv && conv.titre === 'Nouvelle conversation') {
+    conv.titre = premierMessage.substring(0, 30) + (premierMessage.length > 30 ? '...' : '');
+    saveConversationsList(list);
+  }
+}
 
 async function chargerHistorique() {
   try {
@@ -82,7 +138,8 @@ async function chargerHistorique() {
       messagesDiv.innerHTML = '';
       data.historique.forEach(m => {
         const classe = m.role === 'user' ? 'msg-user' : 'msg-ai';
-        messagesDiv.innerHTML += `<div class="${classe}">${m.content}</div>`;
+        const contenu = m.role === 'user' ? m.content : m.content.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+        messagesDiv.innerHTML += `<div class="${classe}">${contenu}</div>`;
       });
     }
   } catch(e) { console.log('Pas d\'historique existant.'); }
@@ -97,6 +154,7 @@ async function envoyer(){
   messages.innerHTML += `<div class="msg-user">${texte}</div>`;
   msg.value = '';
   historique.push({ role: "user", content: texte });
+  mettreAJourTitreConversation(texte);
   messages.innerHTML += `<div class="msg-ai loading" id="loading">LuminZenith réfléchit...</div>`;
   messages.scrollTop = messages.scrollHeight;
   try {
