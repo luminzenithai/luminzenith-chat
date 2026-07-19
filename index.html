@@ -8,13 +8,13 @@
 <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 html{overflow-x:hidden!important;width:100%!important;max-width:100%!important;}
-body{margin:0!important;padding:0!important;width:100%!important;max-width:100%!important;overflow-x:hidden!important;font-family:'Plus Jakarta Sans',sans-serif;background:#000;}
+body{margin:0!important;padding:0!important;width:100%!important;max-width:100%!important;overflow-x:hidden!important;font-family:'Inter',sans-serif;background:#000;}
 *{box-sizing:border-box;min-width:0;}
 #root{width:100%;max-width:100%;overflow-x:hidden;}
-.font-display{font-family:'Outfit',sans-serif;letter-spacing:0.3px;}
+.font-display{font-family:'Syne',sans-serif;letter-spacing:1px;}
 ::-webkit-scrollbar{width:6px;}
 ::-webkit-scrollbar-thumb{background:#5a3d2c;border-radius:10px;}
 @keyframes twinkle{0%,100%{opacity:.1;transform:scale(0.6)}50%{opacity:1;transform:scale(1.6)}}
@@ -26,6 +26,10 @@ body{margin:0!important;padding:0!important;width:100%!important;max-width:100%!
 .text-shine{background:linear-gradient(90deg,#8c5a3f,#e8c9b0,#8c5a3f);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s linear infinite;}
 @keyframes pulseglow{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
 .glow-ring{animation:pulseglow 3.5s ease-in-out infinite;}
+.logo-fade{
+  -webkit-mask-image:radial-gradient(circle, black 45%, transparent 78%);
+  mask-image:radial-gradient(circle, black 45%, transparent 78%);
+}
 </style>
 </head>
 <body>
@@ -110,10 +114,10 @@ function Splash({ onDone }) {
           <div className="glow-ring absolute inset-0 rounded-full blur-3xl"
             style={{ background: 'radial-gradient(circle, rgba(232,201,176,0.5), transparent 70%)' }} />
           <img src="LuminZenith AI.png" alt="LuminZenith AI"
-            className="relative w-full h-full object-contain"
+            className="logo-fade relative w-full h-full object-contain"
             style={{ mixBlendMode: 'screen' }} />
         </div>
-        <h1 className="font-display text-shine text-3xl sm:text-4xl font-bold mb-2">LuminZenith AI</h1>
+        <h1 className="font-display text-shine text-3xl sm:text-4xl font-bold mb-2 uppercase">LuminZenith AI</h1>
         <p className="text-[#8c5a3f] text-xs tracking-[4px] uppercase">La lumière au sommet</p>
       </div>
     </div>
@@ -185,7 +189,7 @@ function Hero() {
           className="relative w-full h-full object-contain z-10"
           style={{ mixBlendMode: 'screen' }} />
       </div>
-      <h2 className="font-display text-shine text-xl sm:text-2xl font-bold relative z-10">LuminZenith AI</h2>
+      <h2 className="font-display text-shine text-xl sm:text-2xl font-bold relative z-10 uppercase">LuminZenith AI</h2>
       <p className="text-[#6b4632] text-xs tracking-[3px] uppercase mt-1 relative z-10">La lumière au sommet</p>
     </div>
   );
@@ -288,7 +292,7 @@ function App() {
             className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 border border-[#6b4632] text-[#c98b72] text-[11px] sm:text-xs px-2 sm:px-3 py-2 rounded-lg hover:border-[#c98b72] transition-colors whitespace-nowrap">
             ☰ <span className="hidden sm:inline">Conversations</span>
           </button>
-          <span className="font-display text-shine text-sm sm:text-xl font-bold truncate max-w-full">✦ LuminZenith AI</span>
+          <span className="font-display text-shine text-sm sm:text-xl font-bold truncate max-w-full uppercase">✦ LuminZenith AI</span>
           <button onClick={nouvelleConv}
             className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-[11px] sm:text-xs font-semibold px-2 sm:px-3 py-2 rounded-lg text-[#1a0f0a] shadow-[0_0_14px_rgba(201,139,114,0.4)] hover:shadow-[0_0_22px_rgba(201,139,114,0.7)] transition-shadow whitespace-nowrap"
             style={{ background: 'linear-gradient(135deg,#e8c9b0,#8c5a3f)' }}>
