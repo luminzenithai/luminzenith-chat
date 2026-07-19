@@ -8,10 +8,10 @@
 <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 html{overflow-x:hidden!important;width:100%!important;max-width:100%!important;}
-body{margin:0!important;padding:0!important;width:100%!important;max-width:100%!important;overflow-x:hidden!important;font-family:'Inter',sans-serif;background:#000;}
+body{margin:0!important;padding:0!important;width:100%!important;max-width:100%!important;overflow-x:hidden!important;font-family:'Cormorant Garamond',serif;background:#000;}
 *{box-sizing:border-box;min-width:0;}
 #root{width:100%;max-width:100%;overflow-x:hidden;}
 .font-display{font-family:'Syne',sans-serif;letter-spacing:1px;}
@@ -118,7 +118,7 @@ function Splash({ onDone }) {
             style={{ mixBlendMode: 'screen' }} />
         </div>
         <h1 className="font-display text-shine text-3xl sm:text-4xl font-bold mb-2 uppercase">LuminZenith AI</h1>
-        <p className="text-[#8c5a3f] text-xs tracking-[4px] uppercase">La lumière au sommet</p>
+        <p className="text-[#8c5a3f] text-xs tracking-[4px] uppercase font-display">La lumière au sommet</p>
       </div>
     </div>
   );
@@ -141,12 +141,12 @@ function Sidebar({ onOpenConversations }) {
         </div>
         <div className="hidden sm:block min-w-0">
           <div className="font-display text-[#e8c9b0] font-semibold text-sm leading-tight truncate">LuminZenith AI</div>
-          <div className="text-[#6b4632] text-[9px] tracking-widest truncate">LA LUMIÈRE AU SOMMET</div>
+          <div className="text-[#6b4632] text-[9px] tracking-widest truncate font-display">LA LUMIÈRE AU SOMMET</div>
         </div>
       </div>
       {items.map((it, i) => (
         <div key={i} onClick={it.onClick}
-          className={`flex items-center gap-3 px-2 sm:px-5 py-3 cursor-pointer text-sm border-l-2 justify-center sm:justify-start transition-colors
+          className={`flex items-center gap-3 px-2 sm:px-5 py-3 cursor-pointer text-sm border-l-2 justify-center sm:justify-start transition-colors font-display
             ${it.active ? 'border-[#c98b72] text-[#e8c9b0] bg-[#c98b72]/10' : 'border-transparent text-stone-500 hover:text-[#e8c9b0] hover:bg-[#c98b72]/5'}`}>
           <span className="text-lg drop-shadow-[0_0_4px_rgba(201,139,114,0.5)] shrink-0">{it.icon}</span>
           <span className="hidden sm:inline truncate">{it.label}</span>
@@ -165,10 +165,10 @@ function ConversationsPanel({ open, onClose, current, onSelect }) {
       <div className="fixed top-0 left-14 sm:left-56 w-64 max-w-[75vw] h-full z-40 p-4 border-r border-[#2a1a12] overflow-y-auto"
         style={{ background: '#080503' }}>
         <h3 className="font-display text-[#e8c9b0] text-lg mb-4">Conversations</h3>
-        {list.length === 0 && <p className="text-stone-600 text-sm">Aucune conversation encore.</p>}
+        {list.length === 0 && <p className="text-stone-600 text-sm font-sans">Aucune conversation encore.</p>}
         {list.map(c => (
           <div key={c.id} onClick={() => onSelect(c.id)}
-            className={`p-3 rounded-lg mb-2 cursor-pointer text-sm border transition-colors truncate
+            className={`p-3 rounded-lg mb-2 cursor-pointer text-sm border transition-colors truncate font-display
               ${c.id === current ? 'border-[#c98b72] text-[#e8c9b0] shadow-[0_0_12px_rgba(201,139,114,0.25)]' : 'border-[#2a1a12] text-stone-300 bg-black/40 hover:border-[#6b4632]'}`}>
             {c.titre}
           </div>
@@ -190,7 +190,7 @@ function Hero() {
           style={{ mixBlendMode: 'screen' }} />
       </div>
       <h2 className="font-display text-shine text-xl sm:text-2xl font-bold relative z-10 uppercase">LuminZenith AI</h2>
-      <p className="text-[#6b4632] text-xs tracking-[3px] uppercase mt-1 relative z-10">La lumière au sommet</p>
+      <p className="text-[#6b4632] text-xs tracking-[3px] uppercase mt-1 relative z-10 font-display">La lumière au sommet</p>
     </div>
   );
 }
@@ -289,12 +289,12 @@ function App() {
         <header className="relative flex items-center justify-center py-4 px-14 sm:px-16 border-b border-[#2a1a12] shadow-lg shrink-0"
           style={{ background: '#080503' }}>
           <button onClick={() => setConvOpen(true)}
-            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 border border-[#6b4632] text-[#c98b72] text-[11px] sm:text-xs px-2 sm:px-3 py-2 rounded-lg hover:border-[#c98b72] transition-colors whitespace-nowrap">
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 border border-[#6b4632] text-[#c98b72] text-[11px] sm:text-xs px-2 sm:px-3 py-2 rounded-lg hover:border-[#c98b72] transition-colors whitespace-nowrap font-display">
             ☰ <span className="hidden sm:inline">Conversations</span>
           </button>
           <span className="font-display text-shine text-sm sm:text-xl font-bold truncate max-w-full uppercase">✦ LuminZenith AI</span>
           <button onClick={nouvelleConv}
-            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-[11px] sm:text-xs font-semibold px-2 sm:px-3 py-2 rounded-lg text-[#1a0f0a] shadow-[0_0_14px_rgba(201,139,114,0.4)] hover:shadow-[0_0_22px_rgba(201,139,114,0.7)] transition-shadow whitespace-nowrap"
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-[11px] sm:text-xs font-semibold px-2 sm:px-3 py-2 rounded-lg text-[#1a0f0a] shadow-[0_0_14px_rgba(201,139,114,0.4)] hover:shadow-[0_0_22px_rgba(201,139,114,0.7)] transition-shadow whitespace-nowrap font-display"
             style={{ background: 'linear-gradient(135deg,#e8c9b0,#8c5a3f)' }}>
             + <span className="hidden sm:inline">Nouvelle conversation</span>
           </button>
@@ -306,7 +306,7 @@ function App() {
           <div className="flex gap-3 overflow-x-auto overflow-y-hidden px-5 py-4 border-b border-[#2a1a12]/50 shrink-0">
             {QUICK_ACTIONS.map((qa, i) => (
               <div key={i} onClick={() => setInput(qa.prompt)}
-                className="min-w-[110px] shrink-0 text-center rounded-xl border border-[#3a2418] px-3 py-4 cursor-pointer text-[#c98b72] text-xs hover:border-[#c98b72] hover:shadow-[0_0_18px_rgba(201,139,114,0.3)] hover:-translate-y-0.5 transition-all"
+                className="min-w-[110px] shrink-0 text-center rounded-xl border border-[#3a2418] px-3 py-4 cursor-pointer text-[#c98b72] text-xs hover:border-[#c98b72] hover:shadow-[0_0_18px_rgba(201,139,114,0.3)] hover:-translate-y-0.5 transition-all font-display"
                 style={{ background: '#0f0906' }}>
                 <div className="text-2xl mb-2 drop-shadow-[0_0_6px_rgba(201,139,114,0.5)]">{qa.icon}</div>
                 {qa.label}
@@ -317,14 +317,14 @@ function App() {
           <div ref={scrollRef} className="flex-1 px-5 sm:px-10 py-5 flex flex-col gap-3 min-w-0 max-w-5xl mx-auto w-full">
             {messages.map((m, i) => (
               <div key={i}
-                className={`max-w-[600px] w-fit px-4 py-3 rounded-2xl text-sm leading-relaxed break-words
+                className={`max-w-[600px] w-fit px-4 py-3 rounded-2xl text-base leading-relaxed break-words
                   ${m.role === 'user'
                     ? 'self-end bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700'
                     : 'self-start border border-[#3a2418] text-[#e0c4ac]'}`}
                 style={m.role === 'assistant' ? { background: '#0f0906' } : {}}
                 dangerouslySetInnerHTML={{ __html: formatMsg(m.content) }} />
             ))}
-            {loading && <div className="self-start text-[#8c5a3f] italic text-sm px-4">LuminZenith réfléchit...</div>}
+            {loading && <div className="self-start text-[#8c5a3f] italic text-base px-4">LuminZenith réfléchit...</div>}
           </div>
         </div>
 
@@ -332,9 +332,9 @@ function App() {
           <input value={input} onChange={e => setInput(e.target.value)}
             onKeyPress={e => e.key === 'Enter' && envoyer()}
             placeholder="Écrivez votre message..."
-            className="flex-1 min-w-0 bg-[#0f0906] border border-[#3a2418] rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-[#c98b72] focus:shadow-[0_0_14px_rgba(201,139,114,0.25)]" />
+            className="flex-1 min-w-0 bg-[#0f0906] border border-[#3a2418] rounded-lg px-4 py-3 text-base text-white focus:outline-none focus:border-[#c98b72] focus:shadow-[0_0_14px_rgba(201,139,114,0.25)]" />
           <button onClick={() => envoyer()}
-            className="shrink-0 px-4 sm:px-6 py-3 rounded-lg font-semibold text-[#1a0f0a] text-sm shadow-[0_0_16px_rgba(201,139,114,0.4)] hover:shadow-[0_0_26px_rgba(201,139,114,0.7)] hover:-translate-y-0.5 transition-all"
+            className="shrink-0 px-4 sm:px-6 py-3 rounded-lg font-semibold text-[#1a0f0a] text-sm shadow-[0_0_16px_rgba(201,139,114,0.4)] hover:shadow-[0_0_26px_rgba(201,139,114,0.7)] hover:-translate-y-0.5 transition-all font-display"
             style={{ background: 'linear-gradient(135deg,#e8c9b0,#8c5a3f)' }}>
             Envoyer
           </button>
