@@ -99,7 +99,7 @@ function Splash({ onDone }) {
       style={{ background: 'radial-gradient(circle at center, #140a06 0%, #000 60%, #000 100%)' }}>
       <StarField count={55} shooting={true} />
       <div className="flex flex-col items-center justify-center text-center z-10 px-4 w-full">
-        <div className="relative w-48 h-48 flex items-center justify-center mb-4">
+        <div className="relative w-64 h-64 sm:w-80 sm:h-80 flex items-center justify-center mb-4">
           <div className="glow-ring absolute inset-0 rounded-full blur-3xl"
             style={{ background: 'radial-gradient(circle, rgba(232,201,176,0.4), transparent 70%)' }} />
           <img src="LuminZenith AI.png" alt="LuminZenith AI"
@@ -171,7 +171,7 @@ function Hero() {
   return (
     <div className="relative flex flex-col items-center justify-center text-center py-8 px-4 border-b border-[#2a1a12]/60 overflow-hidden shrink-0">
       <StarField count={22} />
-      <div className="relative w-32 h-32 sm:w-40 sm:h-40 flex items-center justify-center mb-3">
+      <div className="relative w-48 h-48 sm:w-64 sm:h-64 flex items-center justify-center mb-3">
         <div className="glow-ring absolute inset-0 rounded-full blur-3xl"
           style={{ background: 'radial-gradient(circle, rgba(232,201,176,0.35), transparent 70%)' }} />
         <img src="LuminZenith AI.png" alt="LuminZenith AI"
