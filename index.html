@@ -303,10 +303,10 @@ function App() {
             ))}
           </div>
 
-          <div ref={scrollRef} className="flex-1 px-5 py-5 flex flex-col gap-3 min-w-0">
+          <div ref={scrollRef} className="flex-1 px-5 sm:px-10 py-5 flex flex-col gap-3 min-w-0 max-w-5xl mx-auto w-full">
             {messages.map((m, i) => (
               <div key={i}
-                className={`max-w-[70%] px-4 py-3 rounded-2xl text-sm leading-relaxed break-words
+                className={`max-w-[600px] w-fit px-4 py-3 rounded-2xl text-sm leading-relaxed break-words
                   ${m.role === 'user'
                     ? 'self-end bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700'
                     : 'self-start border border-[#3a2418] text-[#e0c4ac]'}`}
