@@ -10,9 +10,10 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-html,body{margin:0;padding:0;width:100%;max-width:100vw;height:100%;overflow-x:clip;font-family:'Plus Jakarta Sans',sans-serif;background:#000;}
-*{box-sizing:border-box;}
-#root{width:100%;max-width:100vw;height:100%;overflow-x:clip;}
+html{overflow-x:hidden!important;width:100%!important;max-width:100%!important;}
+body{margin:0!important;padding:0!important;width:100%!important;max-width:100%!important;overflow-x:hidden!important;font-family:'Plus Jakarta Sans',sans-serif;background:#000;}
+*{box-sizing:border-box;min-width:0;}
+#root{width:100%;max-width:100%;overflow-x:hidden;}
 .font-display{font-family:'Outfit',sans-serif;letter-spacing:0.3px;}
 ::-webkit-scrollbar{width:6px;}
 ::-webkit-scrollbar-thumb{background:#5a3d2c;border-radius:10px;}
@@ -98,14 +99,14 @@ function Splash({ onDone }) {
       style={{ background: 'radial-gradient(circle at center, #140a06 0%, #000 60%, #000 100%)' }}>
       <StarField count={55} shooting={true} />
       <div className="flex flex-col items-center justify-center text-center z-10 px-4 w-full">
-        <div className="relative w-56 h-56 flex items-center justify-center mb-4">
+        <div className="relative w-48 h-48 flex items-center justify-center mb-4">
           <div className="glow-ring absolute inset-0 rounded-full blur-3xl"
             style={{ background: 'radial-gradient(circle, rgba(232,201,176,0.4), transparent 70%)' }} />
           <img src="LuminZenith AI.png" alt="LuminZenith AI"
             className="relative w-full h-full object-contain"
             style={{ mixBlendMode: 'screen' }} />
         </div>
-        <h1 className="font-display text-shine text-4xl font-bold mb-2">LuminZenith AI</h1>
+        <h1 className="font-display text-shine text-3xl sm:text-4xl font-bold mb-2">LuminZenith AI</h1>
         <p className="text-[#8c5a3f] text-xs tracking-[4px] uppercase">La lumière au sommet</p>
       </div>
     </div>
@@ -121,24 +122,23 @@ function Sidebar({ onOpenConversations }) {
     { icon: '👤', label: 'Profil' },
   ];
   return (
-    <div className="w-16 md:w-56 shrink-0 flex flex-col py-6 border-r border-[#2a1a12]"
-      style={{ background: '#050302' }}>
-      <div className="flex items-center gap-3 px-3 md:px-5 pb-5 mb-4 border-b border-[#2a1a12] justify-center md:justify-start">
-        <div className="relative w-10 h-10 shrink-0">
+    <div className="w-14 sm:w-56 shrink-0 flex flex-col py-6 border-r border-[#2a1a12]" style={{ background: '#050302' }}>
+      <div className="flex items-center gap-3 px-2 sm:px-5 pb-5 mb-4 border-b border-[#2a1a12] justify-center sm:justify-start">
+        <div className="relative w-9 h-9 shrink-0">
           <img src="LuminZenith AI.png" alt="logo" className="w-full h-full object-contain rounded-lg"
             style={{ mixBlendMode: 'screen', filter: 'drop-shadow(0 0 10px rgba(232,201,176,0.4))' }} />
         </div>
-        <div className="hidden md:block min-w-0">
+        <div className="hidden sm:block min-w-0">
           <div className="font-display text-[#e8c9b0] font-semibold text-sm leading-tight truncate">LuminZenith AI</div>
-          <div className="text-[#6b4632] text-[9px] tracking-widest">LA LUMIÈRE AU SOMMET</div>
+          <div className="text-[#6b4632] text-[9px] tracking-widest truncate">LA LUMIÈRE AU SOMMET</div>
         </div>
       </div>
       {items.map((it, i) => (
         <div key={i} onClick={it.onClick}
-          className={`flex items-center gap-3 px-3 md:px-5 py-3 cursor-pointer text-sm border-l-2 justify-center md:justify-start transition-colors
+          className={`flex items-center gap-3 px-2 sm:px-5 py-3 cursor-pointer text-sm border-l-2 justify-center sm:justify-start transition-colors
             ${it.active ? 'border-[#c98b72] text-[#e8c9b0] bg-[#c98b72]/10' : 'border-transparent text-stone-500 hover:text-[#e8c9b0] hover:bg-[#c98b72]/5'}`}>
           <span className="text-lg drop-shadow-[0_0_4px_rgba(201,139,114,0.5)] shrink-0">{it.icon}</span>
-          <span className="hidden md:inline truncate">{it.label}</span>
+          <span className="hidden sm:inline truncate">{it.label}</span>
         </div>
       ))}
     </div>
@@ -146,13 +146,12 @@ function Sidebar({ onOpenConversations }) {
 }
 
 function ConversationsPanel({ open, onClose, current, onSelect }) {
+  if (!open) return null;
   const list = getConversationsList().slice().reverse();
   return (
     <>
-      <div onClick={onClose}
-        className={`fixed inset-0 bg-black/70 backdrop-blur-sm z-30 transition-opacity ${open ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} />
-      <div className={`fixed top-0 left-16 md:left-56 w-72 max-w-[80vw] h-full z-40 p-4 border-r border-[#2a1a12] transition-transform duration-300
-          ${open ? 'translate-x-0' : '-translate-x-full'}`}
+      <div onClick={onClose} className="fixed inset-0 bg-black/70 backdrop-blur-sm z-30" />
+      <div className="fixed top-0 left-14 sm:left-56 w-64 max-w-[75vw] h-full z-40 p-4 border-r border-[#2a1a12] overflow-y-auto"
         style={{ background: '#080503' }}>
         <h3 className="font-display text-[#e8c9b0] text-lg mb-4">Conversations</h3>
         {list.length === 0 && <p className="text-stone-600 text-sm">Aucune conversation encore.</p>}
@@ -170,16 +169,16 @@ function ConversationsPanel({ open, onClose, current, onSelect }) {
 
 function Hero() {
   return (
-    <div className="relative flex flex-col items-center justify-center text-center py-10 px-4 border-b border-[#2a1a12]/60 overflow-hidden shrink-0">
+    <div className="relative flex flex-col items-center justify-center text-center py-8 px-4 border-b border-[#2a1a12]/60 overflow-hidden shrink-0">
       <StarField count={22} />
-      <div className="relative w-40 h-40 flex items-center justify-center mb-3">
+      <div className="relative w-32 h-32 sm:w-40 sm:h-40 flex items-center justify-center mb-3">
         <div className="glow-ring absolute inset-0 rounded-full blur-3xl"
           style={{ background: 'radial-gradient(circle, rgba(232,201,176,0.35), transparent 70%)' }} />
         <img src="LuminZenith AI.png" alt="LuminZenith AI"
           className="relative w-full h-full object-contain z-10"
           style={{ mixBlendMode: 'screen' }} />
       </div>
-      <h2 className="font-display text-shine text-2xl font-bold relative z-10">LuminZenith AI</h2>
+      <h2 className="font-display text-shine text-xl sm:text-2xl font-bold relative z-10">LuminZenith AI</h2>
       <p className="text-[#6b4632] text-xs tracking-[3px] uppercase mt-1 relative z-10">La lumière au sommet</p>
     </div>
   );
@@ -270,21 +269,21 @@ function App() {
   }
 
   return (
-    <div className="flex h-screen w-full max-w-[100vw] text-white overflow-hidden">
+    <div className="flex h-screen w-full text-white overflow-hidden">
       {showSplash && <Splash onDone={() => setShowSplash(false)} />}
       <Sidebar onOpenConversations={() => setConvOpen(true)} />
       <ConversationsPanel open={convOpen} onClose={() => setConvOpen(false)} current={conversationId} onSelect={ouvrirConversation} />
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden" style={{ background: 'radial-gradient(circle at 50% 0%,#0e0705 0%,#000 60%)' }}>
-        <header className="relative flex items-center justify-center py-4 px-4 md:px-16 border-b border-[#2a1a12] shadow-lg shrink-0"
+        <header className="relative flex items-center justify-center py-4 px-14 sm:px-16 border-b border-[#2a1a12] shadow-lg shrink-0"
           style={{ background: '#080503' }}>
           <button onClick={() => setConvOpen(true)}
-            className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 border border-[#6b4632] text-[#c98b72] text-[11px] md:text-xs px-2 md:px-3 py-2 rounded-lg hover:border-[#c98b72] transition-colors whitespace-nowrap">
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 border border-[#6b4632] text-[#c98b72] text-[11px] sm:text-xs px-2 sm:px-3 py-2 rounded-lg hover:border-[#c98b72] transition-colors whitespace-nowrap">
             ☰ <span className="hidden sm:inline">Conversations</span>
           </button>
-          <span className="font-display text-shine text-base md:text-xl font-bold truncate px-14 md:px-0">✦ LuminZenith AI</span>
+          <span className="font-display text-shine text-sm sm:text-xl font-bold truncate max-w-full">✦ LuminZenith AI</span>
           <button onClick={nouvelleConv}
-            className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 text-[11px] md:text-xs font-semibold px-2 md:px-3 py-2 rounded-lg text-[#1a0f0a] shadow-[0_0_14px_rgba(201,139,114,0.4)] hover:shadow-[0_0_22px_rgba(201,139,114,0.7)] transition-shadow whitespace-nowrap"
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-[11px] sm:text-xs font-semibold px-2 sm:px-3 py-2 rounded-lg text-[#1a0f0a] shadow-[0_0_14px_rgba(201,139,114,0.4)] hover:shadow-[0_0_22px_rgba(201,139,114,0.7)] transition-shadow whitespace-nowrap"
             style={{ background: 'linear-gradient(135deg,#e8c9b0,#8c5a3f)' }}>
             + <span className="hidden sm:inline">Nouvelle conversation</span>
           </button>
@@ -304,7 +303,7 @@ function App() {
             ))}
           </div>
 
-          <div ref={scrollRef} className="flex-1 px-5 py-5 flex flex-col gap-3">
+          <div ref={scrollRef} className="flex-1 px-5 py-5 flex flex-col gap-3 min-w-0">
             {messages.map((m, i) => (
               <div key={i}
                 className={`max-w-[70%] px-4 py-3 rounded-2xl text-sm leading-relaxed break-words
@@ -324,7 +323,7 @@ function App() {
             placeholder="Écrivez votre message..."
             className="flex-1 min-w-0 bg-[#0f0906] border border-[#3a2418] rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-[#c98b72] focus:shadow-[0_0_14px_rgba(201,139,114,0.25)]" />
           <button onClick={() => envoyer()}
-            className="shrink-0 px-6 py-3 rounded-lg font-semibold text-[#1a0f0a] text-sm shadow-[0_0_16px_rgba(201,139,114,0.4)] hover:shadow-[0_0_26px_rgba(201,139,114,0.7)] hover:-translate-y-0.5 transition-all"
+            className="shrink-0 px-4 sm:px-6 py-3 rounded-lg font-semibold text-[#1a0f0a] text-sm shadow-[0_0_16px_rgba(201,139,114,0.4)] hover:shadow-[0_0_26px_rgba(201,139,114,0.7)] hover:-translate-y-0.5 transition-all"
             style={{ background: 'linear-gradient(135deg,#e8c9b0,#8c5a3f)' }}>
             Envoyer
           </button>
