@@ -8,18 +8,23 @@
 <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-html,body{margin:0;padding:0;width:100%;height:100%;overflow-x:hidden;font-family:'Inter',sans-serif;background:#050403;}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow-x:hidden;font-family:'Manrope',sans-serif;background:#0d0706;}
 *{box-sizing:border-box;}
 #root{width:100%;height:100%;overflow-x:hidden;}
-.font-display{font-family:'Playfair Display',serif;}
+.font-display{font-family:'Cinzel',serif;letter-spacing:0.5px;}
 ::-webkit-scrollbar{width:6px;}
-::-webkit-scrollbar-thumb{background:#4a3a15;border-radius:10px;}
-@keyframes twinkle{0%,100%{opacity:.25}50%{opacity:1}}
-.star{animation:twinkle 3s ease-in-out infinite;}
+::-webkit-scrollbar-thumb{background:#5a3d2c;border-radius:10px;}
+@keyframes twinkle{0%,100%{opacity:.15;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
+@keyframes drift{from{transform:translateY(0)}to{transform:translateY(-14px)}}
+.star{animation:twinkle var(--dur,3s) ease-in-out infinite, drift var(--driftDur,8s) ease-in-out infinite alternate;}
+@keyframes shoot{0%{transform:translate(0,0) rotate(-35deg);opacity:0}10%{opacity:1}25%{transform:translate(160px,110px) rotate(-35deg);opacity:0}100%{opacity:0}}
+.shooting-star{animation:shoot 6s ease-in infinite;}
 @keyframes shine{to{background-position:200% center;}}
-.text-shine{background:linear-gradient(90deg,#fff,#D4AF37,#fff);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 4s linear infinite;}
+.text-shine{background:linear-gradient(90deg,#8c5a3f,#e8c9b0,#8c5a3f);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s linear infinite;}
+@keyframes pulseglow{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:.9;transform:scale(1.08)}}
+.glow-ring{animation:pulseglow 4s ease-in-out infinite;}
 </style>
 </head>
 <body>
@@ -60,16 +65,23 @@ function getCurrentConversationId() {
   return id;
 }
 
-function StarField({ count = 30, className = '' }) {
+function StarField({ count = 30, shooting = false, className = '' }) {
   const stars = useMemo(() => Array.from({ length: count }, () => ({
-    top: Math.random() * 100, left: Math.random() * 100, delay: Math.random() * 3, size: Math.random() > 0.7 ? 3 : 2
+    top: Math.random() * 100, left: Math.random() * 100,
+    dur: 2 + Math.random() * 3, driftDur: 5 + Math.random() * 6,
+    delay: Math.random() * 4, size: Math.random() > 0.75 ? 3 : 1.5
   })), [count]);
   return (
     <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>
       {stars.map((s, i) => (
-        <div key={i} className="star absolute bg-white rounded-full"
-          style={{ top: s.top + '%', left: s.left + '%', width: s.size, height: s.size, animationDelay: s.delay + 's' }} />
+        <div key={i} className="star absolute bg-[#e8c9b0] rounded-full"
+          style={{ top: s.top + '%', left: s.left + '%', width: s.size, height: s.size,
+            animationDelay: s.delay + 's', '--dur': s.dur + 's', '--driftDur': s.driftDur + 's' }} />
       ))}
+      {shooting && (
+        <div className="shooting-star absolute top-[10%] left-[15%] w-16 h-[1px]"
+          style={{ background: 'linear-gradient(90deg, transparent, #e8c9b0, transparent)' }} />
+      )}
     </div>
   );
 }
@@ -83,13 +95,18 @@ function Splash({ onDone }) {
   }, []);
   return (
     <div className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-700 ${fade ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
-      style={{ background: 'radial-gradient(circle at center, #241a0a 0%, #0a0703 55%, #000 100%)' }}>
-      <StarField count={45} />
+      style={{ background: 'radial-gradient(circle at center, #2a1710 0%, #0d0706 55%, #000 100%)' }}>
+      <StarField count={55} shooting={true} />
       <div className="text-center z-10 px-4">
-        <img src="LuminZenith AI.png" alt="LuminZenith AI"
-          className="w-32 h-32 mx-auto mb-6 drop-shadow-[0_0_35px_rgba(212,175,55,0.6)]" />
-        <h1 className="font-display text-shine text-4xl font-bold mb-2">LuminZenith AI</h1>
-        <p className="text-amber-600 text-xs tracking-[3px] uppercase">La lumière au sommet</p>
+        <div className="relative w-40 h-40 mx-auto mb-6">
+          <div className="glow-ring absolute inset-[-20px] rounded-full blur-2xl"
+            style={{ background: 'radial-gradient(circle, rgba(232,201,176,0.35), transparent 70%)' }} />
+          <img src="LuminZenith AI.png" alt="LuminZenith AI"
+            className="relative w-full h-full object-contain"
+            style={{ mixBlendMode: 'screen' }} />
+        </div>
+        <h1 className="font-display text-shine text-4xl font-semibold mb-2">LuminZenith AI</h1>
+        <p className="text-[#8c5a3f] text-xs tracking-[4px] uppercase">La lumière au sommet</p>
       </div>
     </div>
   );
@@ -104,20 +121,23 @@ function Sidebar({ onOpenConversations }) {
     { icon: '👤', label: 'Profil' },
   ];
   return (
-    <div className="w-16 md:w-56 shrink-0 flex flex-col py-6 border-r border-amber-900/20"
-      style={{ background: 'linear-gradient(180deg,#120d05,#0a0704 60%,#050302)' }}>
-      <div className="flex items-center gap-3 px-3 md:px-5 pb-5 mb-4 border-b border-amber-900/20 justify-center md:justify-start">
-        <img src="LuminZenith AI.png" alt="logo" className="w-10 h-10 rounded-lg shadow-[0_0_18px_rgba(212,175,55,0.5)] shrink-0" />
+    <div className="w-16 md:w-56 shrink-0 flex flex-col py-6 border-r border-[#3d2a20]"
+      style={{ background: 'linear-gradient(180deg,#170f0c,#0d0706 60%,#080403)' }}>
+      <div className="flex items-center gap-3 px-3 md:px-5 pb-5 mb-4 border-b border-[#3d2a20] justify-center md:justify-start">
+        <div className="relative w-10 h-10 shrink-0">
+          <img src="LuminZenith AI.png" alt="logo" className="w-full h-full object-contain rounded-lg"
+            style={{ mixBlendMode: 'screen', filter: 'drop-shadow(0 0 10px rgba(232,201,176,0.4))' }} />
+        </div>
         <div className="hidden md:block min-w-0">
-          <div className="font-display text-amber-200 font-semibold text-sm leading-tight truncate">LuminZenith AI</div>
-          <div className="text-amber-800 text-[9px] tracking-widest">LA LUMIÈRE AU SOMMET</div>
+          <div className="font-display text-[#e8c9b0] font-semibold text-sm leading-tight truncate">LuminZenith AI</div>
+          <div className="text-[#6b4632] text-[9px] tracking-widest">LA LUMIÈRE AU SOMMET</div>
         </div>
       </div>
       {items.map((it, i) => (
         <div key={i} onClick={it.onClick}
           className={`flex items-center gap-3 px-3 md:px-5 py-3 cursor-pointer text-sm border-l-2 justify-center md:justify-start transition-colors
-            ${it.active ? 'border-amber-500 text-amber-200 bg-amber-500/10' : 'border-transparent text-stone-400 hover:text-amber-200 hover:bg-amber-500/5'}`}>
-          <span className="text-lg drop-shadow-[0_0_4px_rgba(212,175,55,0.4)] shrink-0">{it.icon}</span>
+            ${it.active ? 'border-[#c98b72] text-[#e8c9b0] bg-[#c98b72]/10' : 'border-transparent text-stone-500 hover:text-[#e8c9b0] hover:bg-[#c98b72]/5'}`}>
+          <span className="text-lg drop-shadow-[0_0_4px_rgba(201,139,114,0.5)] shrink-0">{it.icon}</span>
           <span className="hidden md:inline truncate">{it.label}</span>
         </div>
       ))}
@@ -131,15 +151,15 @@ function ConversationsPanel({ open, onClose, current, onSelect }) {
     <>
       <div onClick={onClose}
         className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-30 transition-opacity ${open ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} />
-      <div className={`fixed top-0 left-16 md:left-56 w-72 max-w-[80vw] h-full z-40 p-4 border-r border-amber-900/30 transition-transform duration-300
+      <div className={`fixed top-0 left-16 md:left-56 w-72 max-w-[80vw] h-full z-40 p-4 border-r border-[#3d2a20] transition-transform duration-300
           ${open ? 'translate-x-0' : '-translate-x-full'}`}
-        style={{ background: 'linear-gradient(180deg,#120d05,#0a0704)' }}>
-        <h3 className="font-display text-amber-200 text-lg mb-4">Conversations</h3>
+        style={{ background: 'linear-gradient(180deg,#170f0c,#0d0706)' }}>
+        <h3 className="font-display text-[#e8c9b0] text-lg mb-4">Conversations</h3>
         {list.length === 0 && <p className="text-stone-600 text-sm">Aucune conversation encore.</p>}
         {list.map(c => (
           <div key={c.id} onClick={() => onSelect(c.id)}
             className={`p-3 rounded-lg mb-2 cursor-pointer text-sm border transition-colors truncate
-              ${c.id === current ? 'border-amber-500 text-amber-200 shadow-[0_0_12px_rgba(212,175,55,0.2)]' : 'border-amber-900/20 text-stone-300 bg-black/30 hover:border-amber-700'}`}>
+              ${c.id === current ? 'border-[#c98b72] text-[#e8c9b0] shadow-[0_0_12px_rgba(201,139,114,0.25)]' : 'border-[#3d2a20] text-stone-300 bg-black/30 hover:border-[#6b4632]'}`}>
             {c.titre}
           </div>
         ))}
@@ -150,12 +170,17 @@ function ConversationsPanel({ open, onClose, current, onSelect }) {
 
 function Hero() {
   return (
-    <div className="relative text-center py-8 px-4 border-b border-amber-900/10 overflow-hidden shrink-0">
-      <StarField count={20} />
-      <img src="LuminZenith AI.png" alt="LuminZenith AI"
-        className="w-20 h-20 mx-auto mb-3 drop-shadow-[0_0_25px_rgba(212,175,55,0.55)] relative z-10" />
-      <h2 className="font-display text-shine text-2xl font-bold relative z-10">LuminZenith AI</h2>
-      <p className="text-amber-700 text-xs tracking-[2px] uppercase mt-1 relative z-10">La lumière au sommet</p>
+    <div className="relative text-center py-10 px-4 border-b border-[#3d2a20]/50 overflow-hidden shrink-0">
+      <StarField count={22} />
+      <div className="relative w-28 h-28 mx-auto mb-3">
+        <div className="glow-ring absolute inset-[-16px] rounded-full blur-2xl"
+          style={{ background: 'radial-gradient(circle, rgba(232,201,176,0.3), transparent 70%)' }} />
+        <img src="LuminZenith AI.png" alt="LuminZenith AI"
+          className="relative w-full h-full object-contain z-10"
+          style={{ mixBlendMode: 'screen' }} />
+      </div>
+      <h2 className="font-display text-shine text-2xl font-semibold relative z-10">LuminZenith AI</h2>
+      <p className="text-[#6b4632] text-xs tracking-[3px] uppercase mt-1 relative z-10">La lumière au sommet</p>
     </div>
   );
 }
@@ -250,17 +275,17 @@ function App() {
       <Sidebar onOpenConversations={() => setConvOpen(true)} />
       <ConversationsPanel open={convOpen} onClose={() => setConvOpen(false)} current={conversationId} onSelect={ouvrirConversation} />
 
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden" style={{ background: 'radial-gradient(circle at 50% 0%,#140f06 0%,#050505 60%)' }}>
-        <header className="relative text-center py-4 px-16 border-b border-amber-900/30 shadow-lg shrink-0"
-          style={{ background: 'linear-gradient(180deg,#161008,#0d0a05)' }}>
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden" style={{ background: 'radial-gradient(circle at 50% 0%,#1a0f0c 0%,#0d0706 60%)' }}>
+        <header className="relative text-center py-4 px-16 border-b border-[#3d2a20] shadow-lg shrink-0"
+          style={{ background: 'linear-gradient(180deg,#1c120d,#100a07)' }}>
           <button onClick={() => setConvOpen(true)}
-            className="absolute left-4 top-1/2 -translate-y-1/2 border border-amber-800/50 text-amber-300 text-xs px-3 py-2 rounded-lg hover:border-amber-500 transition-colors whitespace-nowrap">
+            className="absolute left-4 top-1/2 -translate-y-1/2 border border-[#6b4632] text-[#c98b72] text-xs px-3 py-2 rounded-lg hover:border-[#c98b72] transition-colors whitespace-nowrap">
             ☰ Conversations
           </button>
-          <span className="font-display text-shine text-lg md:text-xl font-bold">✦ LuminZenith AI</span>
+          <span className="font-display text-shine text-lg md:text-xl font-semibold">✦ LuminZenith AI</span>
           <button onClick={nouvelleConv}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-semibold px-3 py-2 rounded-lg text-amber-950 shadow-[0_0_14px_rgba(212,175,55,0.4)] hover:shadow-[0_0_22px_rgba(212,175,55,0.7)] transition-shadow whitespace-nowrap"
-            style={{ background: 'linear-gradient(135deg,#f0d580,#b8860b)' }}>
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-semibold px-3 py-2 rounded-lg text-[#2a1710] shadow-[0_0_14px_rgba(201,139,114,0.4)] hover:shadow-[0_0_22px_rgba(201,139,114,0.7)] transition-shadow whitespace-nowrap"
+            style={{ background: 'linear-gradient(135deg,#e8c9b0,#8c5a3f)' }}>
             + Nouvelle conversation
           </button>
         </header>
@@ -268,12 +293,12 @@ function App() {
         <div className="overflow-y-auto flex-1 flex flex-col min-h-0">
           <Hero />
 
-          <div className="flex gap-3 overflow-x-auto px-5 py-4 border-b border-amber-900/10 shrink-0">
+          <div className="flex gap-3 overflow-x-auto px-5 py-4 border-b border-[#3d2a20]/40 shrink-0">
             {QUICK_ACTIONS.map((qa, i) => (
               <div key={i} onClick={() => setInput(qa.prompt)}
-                className="min-w-[110px] shrink-0 text-center rounded-xl border border-amber-900/40 px-3 py-4 cursor-pointer text-amber-300 text-xs hover:border-amber-500 hover:shadow-[0_0_18px_rgba(212,175,55,0.3)] hover:-translate-y-0.5 transition-all"
-                style={{ background: 'linear-gradient(145deg,#1c1509,#0d0a05)' }}>
-                <div className="text-2xl mb-2 drop-shadow-[0_0_6px_rgba(212,175,55,0.5)]">{qa.icon}</div>
+                className="min-w-[110px] shrink-0 text-center rounded-xl border border-[#4a2f22] px-3 py-4 cursor-pointer text-[#c98b72] text-xs hover:border-[#c98b72] hover:shadow-[0_0_18px_rgba(201,139,114,0.3)] hover:-translate-y-0.5 transition-all"
+                style={{ background: 'linear-gradient(145deg,#211410,#120b08)' }}>
+                <div className="text-2xl mb-2 drop-shadow-[0_0_6px_rgba(201,139,114,0.5)]">{qa.icon}</div>
                 {qa.label}
               </div>
             ))}
@@ -285,22 +310,22 @@ function App() {
                 className={`max-w-[70%] px-4 py-3 rounded-2xl text-sm leading-relaxed break-words
                   ${m.role === 'user'
                     ? 'self-end bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700'
-                    : 'self-start border border-amber-800/40 text-amber-100'}`}
-                style={m.role === 'assistant' ? { background: 'linear-gradient(145deg,#161108,#0d0a05)' } : {}}
+                    : 'self-start border border-[#4a2f22] text-[#e0c4ac]'}`}
+                style={m.role === 'assistant' ? { background: 'linear-gradient(145deg,#1c1210,#120b08)' } : {}}
                 dangerouslySetInnerHTML={{ __html: formatMsg(m.content) }} />
             ))}
-            {loading && <div className="self-start text-amber-700 italic text-sm px-4">LuminZenith réfléchit...</div>}
+            {loading && <div className="self-start text-[#8c5a3f] italic text-sm px-4">LuminZenith réfléchit...</div>}
           </div>
         </div>
 
-        <div className="flex gap-3 p-4 border-t border-amber-900/20 shrink-0" style={{ background: 'linear-gradient(180deg,#0d0a05,#0a0703)' }}>
+        <div className="flex gap-3 p-4 border-t border-[#3d2a20] shrink-0" style={{ background: 'linear-gradient(180deg,#100a07,#0d0706)' }}>
           <input value={input} onChange={e => setInput(e.target.value)}
             onKeyPress={e => e.key === 'Enter' && envoyer()}
             placeholder="Écrivez votre message..."
-            className="flex-1 min-w-0 bg-[#120d06] border border-amber-900/40 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 focus:shadow-[0_0_14px_rgba(212,175,55,0.25)]" />
+            className="flex-1 min-w-0 bg-[#170f0c] border border-[#4a2f22] rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-[#c98b72] focus:shadow-[0_0_14px_rgba(201,139,114,0.25)]" />
           <button onClick={() => envoyer()}
-            className="shrink-0 px-6 py-3 rounded-lg font-semibold text-amber-950 text-sm shadow-[0_0_16px_rgba(212,175,55,0.4)] hover:shadow-[0_0_26px_rgba(212,175,55,0.7)] hover:-translate-y-0.5 transition-all"
-            style={{ background: 'linear-gradient(135deg,#f0d580,#b8860b)' }}>
+            className="shrink-0 px-6 py-3 rounded-lg font-semibold text-[#2a1710] text-sm shadow-[0_0_16px_rgba(201,139,114,0.4)] hover:shadow-[0_0_26px_rgba(201,139,114,0.7)] hover:-translate-y-0.5 transition-all"
+            style={{ background: 'linear-gradient(135deg,#e8c9b0,#8c5a3f)' }}>
             Envoyer
           </button>
         </div>
