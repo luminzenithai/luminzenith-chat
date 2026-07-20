@@ -11,7 +11,13 @@
 <script src="https://cdn.jsdelivr.net/npm/@memberstack/dom@1.9.10/dist/memberstack-dom.umd.js"></script>
 <script>
 window.addEventListener('DOMContentLoaded', () => {
-  window.$memberstackDom = MemberStack.init({ publicKey: "pk_sb_5b62492eaebe9cced76b" });
+  if (window.memberstackDOM) {
+    window.$memberstackDom = window.memberstackDOM.init({ publicKey: "pk_sb_5b62492eaebe9cced76b" });
+  } else if (window.MemberstackDom) {
+    window.$memberstackDom = window.MemberstackDom.init({ publicKey: "pk_sb_5b62492eaebe9cced76b" });
+  } else {
+    console.log('Memberstack global non trouvé:', Object.keys(window).filter(k => k.toLowerCase().includes('member')));
+  }
 });
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:wght@500;600;700&family=Source+Serif+4:wght@400;500;600&display=swap" rel="stylesheet">
@@ -145,6 +151,7 @@ function AuthModal({ open, onClose, onAuthSuccess }) {
     setLoading(true);
     try {
       const ms = window.$memberstackDom;
+      if (!ms) { setError("Le service d'authentification n'est pas encore prêt. Réessaie dans un instant."); setLoading(false); return; }
       let res;
       if (mode === 'signup') {
         res = await ms.signupMemberEmailPassword({ email, password });
@@ -340,7 +347,7 @@ function App() {
         }
       } catch (e) {}
     };
-    setTimeout(checkMember, 500);
+    setTimeout(checkMember, 800);
   }, []);
 
   useEffect(() => { chargerHistorique(); }, [conversationId]);
