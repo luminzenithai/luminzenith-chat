@@ -330,11 +330,14 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [attachedFile, setAttachedFile] = useState(null);
   const [listening, setListening] = useState(false);
+  const [cameraOpen, setCameraOpen] = useState(false);
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const streamRef = useRef(null);
   const userId = useRef(getUserId()).current;
   const scrollRef = useRef(null);
   const textareaRef = useRef(null);
   const fileInputRef = useRef(null);
-  const cameraInputRef = useRef(null);
   const recognitionRef = useRef(null);
 
   function handleInputChange(e) {
@@ -358,6 +361,39 @@ function App() {
 
   function removeAttachment() {
     setAttachedFile(null);
+  }
+
+  async function openCamera() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+      streamRef.current = stream;
+      setCameraOpen(true);
+      setTimeout(() => {
+        if (videoRef.current) videoRef.current.srcObject = stream;
+      }, 0);
+    } catch (e) {
+      alert("Impossible d'accéder à la caméra. Vérifie que l'accès est autorisé pour ce site.");
+    }
+  }
+
+  function closeCamera() {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(t => t.stop());
+      streamRef.current = null;
+    }
+    setCameraOpen(false);
+  }
+
+  function capturePhoto() {
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    if (!video || !canvas) return;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+    const dataUrl = canvas.toDataURL('image/png');
+    setAttachedFile({ dataUrl, type: 'image', name: 'photo.png' });
+    closeCamera();
   }
 
   function toggleMic() {
@@ -489,6 +525,24 @@ function App() {
     <div className="flex h-screen w-full text-white overflow-hidden">
       {showSplash && <Splash onDone={() => setShowSplash(false)} />}
       <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} onAuthSuccess={setMember} />
+      {cameraOpen && (
+        <>
+          <div onClick={closeCamera} className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50" />
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div className="relative w-full max-w-lg rounded-2xl border border-[#2e2510] p-5 flex flex-col items-center gap-4"
+              style={{ background: 'linear-gradient(160deg,#0c0704,#030201)' }}>
+              <button onClick={closeCamera} className="absolute top-3 right-3 text-[#8a7040] hover:text-[#f4e2ac] text-xl">✕</button>
+              <video ref={videoRef} autoPlay playsInline className="w-full rounded-lg bg-black" />
+              <canvas ref={canvasRef} className="hidden" />
+              <button onClick={capturePhoto}
+                className="px-6 py-3 rounded-lg font-semibold text-[#1a1206] text-sm shadow-[0_0_16px_rgba(212,175,55,0.4)] hover:shadow-[0_0_26px_rgba(212,175,55,0.7)] transition-all"
+                style={{ background: 'linear-gradient(135deg,#fff3d6,#f4e2ac,#c9a227,#9c7a2e)' }}>
+                📷 Capturer
+              </button>
+            </div>
+          </div>
+        </>
+      )}
       <Sidebar onOpenConversations={() => setConvOpen(true)} member={member} onOpenAuth={() => setAuthOpen(true)} onLogout={handleLogout} />
       <ConversationsPanel open={convOpen} onClose={() => setConvOpen(false)} current={conversationId} onSelect={ouvrirConversation} />
 
@@ -559,13 +613,12 @@ function App() {
           )}
           <div className="flex gap-2 sm:gap-3 p-4 items-end">
             <input type="file" accept="image/*,video/*" ref={fileInputRef} onChange={handleFileSelect} className="hidden" />
-            <input type="file" accept="image/*" capture="environment" ref={cameraInputRef} onChange={handleFileSelect} className="hidden" />
 
             <button onClick={() => fileInputRef.current && fileInputRef.current.click()} title="Joindre une photo ou vidéo"
               className="shrink-0 w-11 h-11 rounded-lg border border-[#2e2510] text-[#d4af37] flex items-center justify-center hover:border-[#d4af37] transition-colors">
               📎
             </button>
-            <button onClick={() => cameraInputRef.current && cameraInputRef.current.click()} title="Prendre une photo"
+            <button onClick={openCamera} title="Prendre une photo"
               className="shrink-0 w-11 h-11 rounded-lg border border-[#2e2510] text-[#d4af37] flex items-center justify-center hover:border-[#d4af37] transition-colors">
               📷
             </button>
