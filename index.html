@@ -428,10 +428,24 @@ function App() {
       });
     };
     recognition.onend = () => setListening(false);
-    recognition.onerror = () => setListening(false);
+    recognition.onerror = (event) => {
+      setListening(false);
+      const messages = {
+        'not-allowed': "L'accès au micro a été refusé. Autorise le micro pour ce site dans les réglages du navigateur.",
+        'audio-capture': "Aucun micro détecté sur cet appareil.",
+        'network': "Le service de reconnaissance vocale n'a pas pu être joint (connexion réseau).",
+        'service-not-allowed': "Le service de dictée vocale est désactivé ou bloqué sur cet appareil."
+      };
+      alert(messages[event.error] || ("Erreur du micro : " + event.error));
+    };
     recognitionRef.current = recognition;
-    recognition.start();
-    setListening(true);
+    try {
+      recognition.start();
+      setListening(true);
+    } catch (e) {
+      alert("Impossible de démarrer le micro : " + e.message);
+      setListening(false);
+    }
   }
 
   useEffect(() => {
