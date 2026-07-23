@@ -331,12 +331,20 @@ function Hero() {
 }
 
 const QUICK_ACTIONS = [
-  { icon: '💰', label: 'Business & Compta', prompt: "Aide-moi sur le business et la stratégie : " },
-  { icon: '📱', label: 'Réseaux Sociaux', prompt: "Aide-moi sur les réseaux sociaux : " },
-  { icon: '📊', label: 'Investissement & Trading', prompt: "Aide-moi sur l'investissement : " },
-  { icon: '🎨', label: 'Création & Design', prompt: "Aide-moi sur la création et le design : " },
-  { icon: '⚡', label: 'Automatisation', prompt: "Aide-moi à automatiser : " },
+  { key: 'business', label: 'Business & Compta', prompt: "Aide-moi sur le business et la stratégie : " },
+  { key: 'social', label: 'Réseaux Sociaux', prompt: "Aide-moi sur les réseaux sociaux : " },
+  { key: 'invest', label: 'Investissement & Trading', prompt: "Aide-moi sur l'investissement : " },
+  { key: 'design', label: 'Création & Design', prompt: "Aide-moi sur la création et le design : " },
+  { key: 'automation', label: 'Automatisation', prompt: "Aide-moi à automatiser : " },
 ];
+
+const QUICK_ACTION_ICONS = {
+  business: <><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></>,
+  social: <><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.6" y1="10.5" x2="15.4" y2="6.5" /><line x1="8.6" y1="13.5" x2="15.4" y2="17.5" /></>,
+  invest: <><polyline points="23 6 13.5 15.5 8.5 10.5 1 18" /><polyline points="17 6 23 6 23 12" /></>,
+  design: <><circle cx="13.5" cy="6.5" r="0.5" /><circle cx="17.5" cy="10.5" r="0.5" /><circle cx="8.5" cy="7.5" r="0.5" /><circle cx="6.5" cy="12.5" r="0.5" /><path d="M12 2a10 10 0 1 0 10 10c0-1.1-.9-2-2-2h-3a2 2 0 0 1-2-2v-.5a2.5 2.5 0 0 1 2.5-2.5H18a2 2 0 0 0 2-2c0-2.4-3.6-3-8-3z" /></>,
+  automation: <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />,
+};
 
 
 function App() {
@@ -605,7 +613,11 @@ function App() {
               <div key={i} onClick={() => setInput(qa.prompt)}
                 className="min-w-[130px] shrink-0 flex flex-col items-center gap-2 text-center rounded-xl border border-[#2e2510] px-3 py-4 cursor-pointer text-[#d4af37] text-xs hover:border-[#d4af37] hover:shadow-[0_0_18px_rgba(212,175,55,0.3)] hover:-translate-y-0.5 transition-all"
                 style={{ background: '#0d0a05' }}>
-                <div className="w-10 h-10 rounded-lg border border-[#2e2510] flex items-center justify-center text-xl">{qa.icon}</div>
+                <div className="w-10 h-10 rounded-lg border border-[#2e2510] flex items-center justify-center">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4af37" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    {QUICK_ACTION_ICONS[qa.key]}
+                  </svg>
+                </div>
                 <span className="leading-tight">{qa.label}</span>
               </div>
             ))}
