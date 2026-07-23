@@ -21,14 +21,14 @@ body{margin:0!important;padding:0!important;width:100%!important;max-width:100%!
 #root{width:100%;max-width:100%;overflow-x:hidden;}
 .font-display{font-family:'Libre Bodoni',serif;letter-spacing:0.5px;}
 ::-webkit-scrollbar{width:6px;}
-::-webkit-scrollbar-thumb{background:#5a3d2c;border-radius:10px;}
+::-webkit-scrollbar-thumb{background:#4a3a1a;border-radius:10px;}
 @keyframes twinkle{0%,100%{opacity:.1;transform:scale(0.6)}50%{opacity:1;transform:scale(1.6)}}
 @keyframes drift{from{transform:translateY(0)}to{transform:translateY(-20px)}}
 .star{animation:twinkle var(--dur,2.5s) ease-in-out infinite, drift var(--driftDur,7s) ease-in-out infinite alternate;}
-@keyframes shoot{0%{transform:translate(0,0) rotate(-35deg);opacity:0}8%{opacity:1}30%{transform:translate(240px,170px) rotate(-35deg);opacity:0}100%{opacity:0}}
-.shooting-star{animation:shoot linear infinite;}
+@keyframes shoot{0%{transform:translate(0,0) rotate(-35deg);opacity:0}6%{opacity:1}50%{opacity:.85}82%{opacity:.3}100%{transform:translate(440px,308px) rotate(-35deg);opacity:0}}
+.shooting-star{animation:shoot cubic-bezier(.3,.5,.4,1) infinite;}
 @keyframes shine{to{background-position:200% center;}}
-.text-shine{background:linear-gradient(90deg,#8c5a3f,#e8c9b0,#8c5a3f);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s linear infinite;}
+.text-shine{background:linear-gradient(90deg,#7a5c1e,#f4e2ac,#fff8e4,#f4e2ac,#7a5c1e);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s linear infinite;}
 @keyframes pulseglow{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
 .glow-ring{animation:pulseglow 3.5s ease-in-out infinite;}
 .logo-fade{
@@ -75,7 +75,7 @@ function getCurrentConversationId() {
   return id;
 }
 
-function StarField({ count = 60, shootingCount = 4, className = '' }) {
+function StarField({ count = 90, shootingCount = 6, className = '' }) {
   const stars = useMemo(() => Array.from({ length: count }, () => ({
     top: Math.random() * 100, left: Math.random() * 100,
     dur: 1.2 + Math.random() * 2, driftDur: 3.5 + Math.random() * 4,
@@ -88,16 +88,16 @@ function StarField({ count = 60, shootingCount = 4, className = '' }) {
   return (
     <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>
       {stars.map((s, i) => (
-        <div key={i} className="star absolute bg-[#f5e4d0] rounded-full"
+        <div key={i} className="star absolute bg-[#fff3d6] rounded-full"
           style={{ top: s.top + '%', left: s.left + '%', width: s.size, height: s.size,
             animationDelay: s.delay + 's', '--dur': s.dur + 's', '--driftDur': s.driftDur + 's',
-            boxShadow: '0 0 6px 1px rgba(232,201,176,0.9)' }} />
+            boxShadow: '0 0 6px 1px rgba(244,226,172,0.9)' }} />
       ))}
       {shootingStars.map((s, i) => (
-        <div key={'shoot'+i} className="shooting-star absolute w-24 h-[2px]"
+        <div key={'shoot'+i} className="shooting-star absolute w-32 h-[2px]"
           style={{ top: s.top + '%', left: s.left + '%', animationDelay: s.delay + 's', animationDuration: s.dur + 's',
-            background: 'linear-gradient(90deg, transparent, #f5e4d0, transparent)',
-            boxShadow: '0 0 8px 2px rgba(232,201,176,0.6)' }} />
+            background: 'linear-gradient(90deg, transparent, #fff3d6, transparent)',
+            boxShadow: '0 0 8px 2px rgba(244,226,172,0.6)' }} />
       ))}
     </div>
   );
@@ -112,18 +112,18 @@ function Splash({ onDone }) {
   }, []);
   return (
     <div className={`fixed inset-0 z-50 flex flex-col items-center justify-center transition-opacity duration-700 ${fade ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
-      style={{ background: 'radial-gradient(circle at center, #140a06 0%, #000 60%, #000 100%)' }}>
-      <StarField count={110} shootingCount={7} />
+      style={{ background: 'radial-gradient(circle at center, #0c0704 0%, #000 60%, #000 100%)' }}>
+      <StarField count={160} shootingCount={10} />
       <div className="flex flex-col items-center justify-center text-center z-10 px-4 w-full">
         <div className="relative w-[26rem] h-[26rem] sm:w-[30rem] sm:h-[30rem] flex items-center justify-center mb-4">
           <div className="glow-ring absolute inset-0 rounded-full blur-3xl"
-            style={{ background: 'radial-gradient(circle, rgba(232,201,176,0.5), transparent 70%)' }} />
+            style={{ background: 'radial-gradient(circle, rgba(244,226,172,0.5), transparent 70%)' }} />
           <img src="LuminZenith AI.png" alt="LuminZenith AI"
             className="logo-fade relative w-full h-full object-contain"
             style={{ mixBlendMode: 'screen' }} />
         </div>
         <h1 className="font-display text-shine text-3xl sm:text-4xl font-bold mb-2 uppercase">LuminZenith AI</h1>
-        <p className="text-[#8c5a3f] text-xs tracking-[4px] uppercase font-display">La lumière au sommet</p>
+        <p className="text-[#9c7a2e] text-xs tracking-[4px] uppercase font-display">La lumière au sommet</p>
       </div>
     </div>
   );
@@ -165,51 +165,51 @@ function AuthModal({ open, onClose, onAuthSuccess }) {
     <>
       <div onClick={onClose} className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50" />
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="relative w-full max-w-md rounded-2xl border border-[#3a2418] p-8"
-          style={{ background: 'linear-gradient(160deg,#100a06,#050302)' }}>
-          <button onClick={onClose} className="absolute top-4 right-4 text-[#6b4632] hover:text-[#e8c9b0] text-xl">✕</button>
+        <div className="relative w-full max-w-md rounded-2xl border border-[#2e2510] p-8"
+          style={{ background: 'linear-gradient(160deg,#0c0704,#030201)' }}>
+          <button onClick={onClose} className="absolute top-4 right-4 text-[#8a7040] hover:text-[#f4e2ac] text-xl">✕</button>
 
           <div className="text-center mb-6">
             <div className="w-14 h-14 mx-auto mb-3">
               <img src="LuminZenith AI.png" alt="logo" className="w-full h-full object-contain" style={{ mixBlendMode: 'screen' }} />
             </div>
-            <h2 className="font-display text-2xl text-[#e8c9b0] uppercase">
+            <h2 className="font-display text-2xl text-[#f4e2ac] uppercase">
               {mode === 'login' ? 'Connexion' : 'Créer un compte'}
             </h2>
           </div>
 
-          <div className="flex mb-6 rounded-lg overflow-hidden border border-[#3a2418]">
+          <div className="flex mb-6 rounded-lg overflow-hidden border border-[#2e2510]">
             <button onClick={() => setMode('login')}
-              className={`flex-1 py-2 text-sm font-display ${mode === 'login' ? 'text-[#1a0f0a]' : 'text-[#8c5a3f]'}`}
-              style={mode === 'login' ? { background: 'linear-gradient(135deg,#e8c9b0,#8c5a3f)' } : { background: '#0f0906' }}>
+              className={`flex-1 py-2 text-sm font-display ${mode === 'login' ? 'text-[#1a1206]' : 'text-[#9c7a2e]'}`}
+              style={mode === 'login' ? { background: 'linear-gradient(135deg,#fff3d6,#f4e2ac,#c9a227,#9c7a2e)' } : { background: '#0d0a05' }}>
               Se connecter
             </button>
             <button onClick={() => setMode('signup')}
-              className={`flex-1 py-2 text-sm font-display ${mode === 'signup' ? 'text-[#1a0f0a]' : 'text-[#8c5a3f]'}`}
-              style={mode === 'signup' ? { background: 'linear-gradient(135deg,#e8c9b0,#8c5a3f)' } : { background: '#0f0906' }}>
+              className={`flex-1 py-2 text-sm font-display ${mode === 'signup' ? 'text-[#1a1206]' : 'text-[#9c7a2e]'}`}
+              style={mode === 'signup' ? { background: 'linear-gradient(135deg,#fff3d6,#f4e2ac,#c9a227,#9c7a2e)' } : { background: '#0d0a05' }}>
               S'inscrire
             </button>
           </div>
 
           <div className="flex flex-col gap-3">
             <input type="email" placeholder="Adresse email" value={email} onChange={e => setEmail(e.target.value)}
-              className="bg-[#0f0906] border border-[#3a2418] rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-[#c98b72]" />
+              className="bg-[#0d0a05] border border-[#2e2510] rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-[#d4af37]" />
             <input type="password" placeholder="Mot de passe" value={password} onChange={e => setPassword(e.target.value)}
               onKeyPress={e => e.key === 'Enter' && submit()}
-              className="bg-[#0f0906] border border-[#3a2418] rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-[#c98b72]" />
+              className="bg-[#0d0a05] border border-[#2e2510] rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-[#d4af37]" />
 
             {error && <p className="text-red-400 text-xs">{error}</p>}
 
             <button onClick={submit} disabled={loading}
-              className="mt-2 py-3 rounded-lg font-semibold text-[#1a0f0a] text-sm shadow-[0_0_16px_rgba(201,139,114,0.4)] hover:shadow-[0_0_26px_rgba(201,139,114,0.7)] transition-all disabled:opacity-50"
-              style={{ background: 'linear-gradient(135deg,#e8c9b0,#8c5a3f)' }}>
+              className="mt-2 py-3 rounded-lg font-semibold text-[#1a1206] text-sm shadow-[0_0_16px_rgba(212,175,55,0.4)] hover:shadow-[0_0_26px_rgba(212,175,55,0.7)] transition-all disabled:opacity-50"
+              style={{ background: 'linear-gradient(135deg,#fff3d6,#f4e2ac,#c9a227,#9c7a2e)' }}>
               {loading ? 'Un instant...' : (mode === 'login' ? 'Se connecter' : "Créer mon compte")}
             </button>
           </div>
 
-          <p className="text-center text-[#6b4632] text-xs mt-5">
+          <p className="text-center text-[#8a7040] text-xs mt-5">
             {mode === 'login' ? "Pas encore de compte ?" : "Déjà un compte ?"}{' '}
-            <button onClick={() => setMode(mode === 'login' ? 'signup' : 'login')} className="text-[#c98b72] underline">
+            <button onClick={() => setMode(mode === 'login' ? 'signup' : 'login')} className="text-[#d4af37] underline">
               {mode === 'login' ? "S'inscrire" : "Se connecter"}
             </button>
           </p>
@@ -228,39 +228,39 @@ function Sidebar({ onOpenConversations, member, onOpenAuth, onLogout }) {
     { icon: '👤', label: 'Profil' },
   ];
   return (
-    <div className="w-14 sm:w-56 shrink-0 flex flex-col py-6 border-r border-[#2a1a12]" style={{ background: '#050302' }}>
-      <div className="flex items-center gap-3 px-2 sm:px-5 pb-5 mb-4 border-b border-[#2a1a12] justify-center sm:justify-start">
+    <div className="w-14 sm:w-56 shrink-0 flex flex-col py-6 border-r border-[#241d0d]" style={{ background: '#030201' }}>
+      <div className="flex items-center gap-3 px-2 sm:px-5 pb-5 mb-4 border-b border-[#241d0d] justify-center sm:justify-start">
         <div className="relative w-9 h-9 shrink-0">
           <img src="LuminZenith AI.png" alt="logo" className="w-full h-full object-contain rounded-lg"
-            style={{ mixBlendMode: 'screen', filter: 'drop-shadow(0 0 10px rgba(232,201,176,0.4))' }} />
+            style={{ mixBlendMode: 'screen', filter: 'drop-shadow(0 0 10px rgba(244,226,172,0.4))' }} />
         </div>
         <div className="hidden sm:block min-w-0">
-          <div className="font-display text-[#e8c9b0] font-semibold text-sm leading-tight truncate">LuminZenith AI</div>
-          <div className="text-[#6b4632] text-[9px] tracking-widest truncate font-display">LA LUMIÈRE AU SOMMET</div>
+          <div className="font-display text-[#f4e2ac] font-semibold text-sm leading-tight truncate">LuminZenith AI</div>
+          <div className="text-[#8a7040] text-[9px] tracking-widest truncate font-display">LA LUMIÈRE AU SOMMET</div>
         </div>
       </div>
       {items.map((it, i) => (
         <div key={i} onClick={it.onClick}
           className={`flex items-center gap-3 px-2 sm:px-5 py-3 cursor-pointer text-sm border-l-2 justify-center sm:justify-start transition-colors
-            ${it.active ? 'border-[#c98b72] text-[#e8c9b0] bg-[#c98b72]/10' : 'border-transparent text-stone-500 hover:text-[#e8c9b0] hover:bg-[#c98b72]/5'}`}>
-          <span className="text-lg drop-shadow-[0_0_4px_rgba(201,139,114,0.5)] shrink-0">{it.icon}</span>
+            ${it.active ? 'border-[#d4af37] text-[#f4e2ac] bg-[#d4af37]/10' : 'border-transparent text-stone-500 hover:text-[#f4e2ac] hover:bg-[#d4af37]/5'}`}>
+          <span className="text-lg drop-shadow-[0_0_4px_rgba(212,175,55,0.5)] shrink-0">{it.icon}</span>
           <span className="hidden sm:inline truncate">{it.label}</span>
         </div>
       ))}
 
-      <div className="mt-auto px-2 sm:px-5 pt-4 border-t border-[#2a1a12]">
+      <div className="mt-auto px-2 sm:px-5 pt-4 border-t border-[#241d0d]">
         {member ? (
           <div className="flex flex-col gap-2">
-            <div className="hidden sm:block text-[#c98b72] text-xs truncate">{member.auth?.email || member.email}</div>
+            <div className="hidden sm:block text-[#d4af37] text-xs truncate">{member.auth?.email || member.email}</div>
             <button onClick={onLogout}
-              className="text-[11px] text-[#6b4632] hover:text-[#e8c9b0] text-center sm:text-left">
+              className="text-[11px] text-[#8a7040] hover:text-[#f4e2ac] text-center sm:text-left">
               Déconnexion
             </button>
           </div>
         ) : (
           <button onClick={onOpenAuth}
-            className="w-full py-2 rounded-lg text-[11px] sm:text-xs font-semibold text-[#1a0f0a]"
-            style={{ background: 'linear-gradient(135deg,#e8c9b0,#8c5a3f)' }}>
+            className="w-full py-2 rounded-lg text-[11px] sm:text-xs font-semibold text-[#1a1206]"
+            style={{ background: 'linear-gradient(135deg,#fff3d6,#f4e2ac,#c9a227,#9c7a2e)' }}>
             <span className="sm:hidden">👤</span>
             <span className="hidden sm:inline">Se connecter</span>
           </button>
@@ -276,14 +276,14 @@ function ConversationsPanel({ open, onClose, current, onSelect }) {
   return (
     <>
       <div onClick={onClose} className="fixed inset-0 bg-black/70 backdrop-blur-sm z-30" />
-      <div className="fixed top-0 left-14 sm:left-56 w-64 max-w-[75vw] h-full z-40 p-4 border-r border-[#2a1a12] overflow-y-auto"
-        style={{ background: '#080503' }}>
-        <h3 className="font-display text-[#e8c9b0] text-lg mb-4">Conversations</h3>
+      <div className="fixed top-0 left-14 sm:left-56 w-64 max-w-[75vw] h-full z-40 p-4 border-r border-[#241d0d] overflow-y-auto"
+        style={{ background: '#050301' }}>
+        <h3 className="font-display text-[#f4e2ac] text-lg mb-4">Conversations</h3>
         {list.length === 0 && <p className="text-stone-600 text-sm">Aucune conversation encore.</p>}
         {list.map(c => (
           <div key={c.id} onClick={() => onSelect(c.id)}
             className={`p-3 rounded-lg mb-2 cursor-pointer text-sm border transition-colors truncate
-              ${c.id === current ? 'border-[#c98b72] text-[#e8c9b0] shadow-[0_0_12px_rgba(201,139,114,0.25)]' : 'border-[#2a1a12] text-stone-300 bg-black/40 hover:border-[#6b4632]'}`}>
+              ${c.id === current ? 'border-[#d4af37] text-[#f4e2ac] shadow-[0_0_12px_rgba(212,175,55,0.25)]' : 'border-[#241d0d] text-stone-300 bg-black/40 hover:border-[#8a7040]'}`}>
             {c.titre}
           </div>
         ))}
@@ -294,17 +294,17 @@ function ConversationsPanel({ open, onClose, current, onSelect }) {
 
 function Hero() {
   return (
-    <div className="relative flex flex-col items-center justify-center text-center py-12 px-4 border-b border-[#2a1a12]/60 overflow-hidden shrink-0">
-      <StarField count={70} shootingCount={5} />
+    <div className="relative flex flex-col items-center justify-center text-center py-12 px-4 border-b border-[#241d0d]/60 overflow-hidden shrink-0">
+      <StarField count={100} shootingCount={7} />
       <div className="relative w-80 h-80 sm:w-96 sm:h-96 flex items-center justify-center mb-3">
         <div className="glow-ring absolute inset-0 rounded-full blur-3xl"
-          style={{ background: 'radial-gradient(circle, rgba(232,201,176,0.45), transparent 70%)' }} />
+          style={{ background: 'radial-gradient(circle, rgba(244,226,172,0.45), transparent 70%)' }} />
         <img src="LuminZenith AI.png" alt="LuminZenith AI"
           className="relative w-full h-full object-contain z-10"
           style={{ mixBlendMode: 'screen' }} />
       </div>
       <h2 className="font-display text-shine text-xl sm:text-2xl font-bold relative z-10 uppercase">LuminZenith AI</h2>
-      <p className="text-[#6b4632] text-xs tracking-[3px] uppercase mt-1 relative z-10 font-display">La lumière au sommet</p>
+      <p className="text-[#8a7040] text-xs tracking-[3px] uppercase mt-1 relative z-10 font-display">La lumière au sommet</p>
     </div>
   );
 }
@@ -328,8 +328,75 @@ function App() {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [attachedFile, setAttachedFile] = useState(null);
+  const [listening, setListening] = useState(false);
   const userId = useRef(getUserId()).current;
   const scrollRef = useRef(null);
+  const textareaRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
+  const recognitionRef = useRef(null);
+
+  function handleInputChange(e) {
+    setInput(e.target.value);
+    const el = e.target;
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 240) + 'px';
+  }
+
+  function handleFileSelect(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const isVideo = file.type.startsWith('video/');
+    const reader = new FileReader();
+    reader.onload = () => {
+      setAttachedFile({ dataUrl: reader.result, type: isVideo ? 'video' : 'image', name: file.name });
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  }
+
+  function removeAttachment() {
+    setAttachedFile(null);
+  }
+
+  function toggleMic() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("La dictée vocale n'est pas prise en charge par ce navigateur.");
+      return;
+    }
+    if (listening) {
+      recognitionRef.current && recognitionRef.current.stop();
+      setListening(false);
+      return;
+    }
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'fr-FR';
+    recognition.continuous = true;
+    recognition.interimResults = false;
+    recognition.onresult = (event) => {
+      let texteRecu = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        texteRecu += event.results[i][0].transcript;
+      }
+      setInput(prev => {
+        const nouveau = (prev ? prev + ' ' : '') + texteRecu;
+        setTimeout(() => {
+          if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+            textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 240) + 'px';
+          }
+        }, 0);
+        return nouveau;
+      });
+    };
+    recognition.onend = () => setListening(false);
+    recognition.onerror = () => setListening(false);
+    recognitionRef.current = recognition;
+    recognition.start();
+    setListening(true);
+  }
 
   useEffect(() => {
     const checkMember = async () => {
@@ -373,17 +440,21 @@ function App() {
 
   async function envoyer(texteOverride) {
     const texte = (texteOverride ?? input).trim();
-    if (!texte) return;
-    const nouvHist = [...messages, { role: 'user', content: texte }];
+    if (!texte && !attachedFile) return;
+    const fichierEnvoye = attachedFile;
+    const nouvMessage = { role: 'user', content: texte, attachment: fichierEnvoye };
+    const nouvHist = [...messages, nouvMessage];
     setMessages(nouvHist);
     setInput('');
-    mettreAJourTitreConversation(texte);
+    setAttachedFile(null);
+    if (textareaRef.current) textareaRef.current.style.height = 'auto';
+    mettreAJourTitreConversation(texte || (fichierEnvoye ? fichierEnvoye.name : 'Pièce jointe'));
     setLoading(true);
     try {
       const r = await fetch(WORKER, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: nouvHist, userId, conversationId })
+        body: JSON.stringify({ messages: nouvHist, userId, conversationId, image: fichierEnvoye ? fichierEnvoye.dataUrl : undefined })
       });
       const rep = await r.text();
       setMessages(h => [...h, { role: 'assistant', content: rep }]);
@@ -421,17 +492,17 @@ function App() {
       <Sidebar onOpenConversations={() => setConvOpen(true)} member={member} onOpenAuth={() => setAuthOpen(true)} onLogout={handleLogout} />
       <ConversationsPanel open={convOpen} onClose={() => setConvOpen(false)} current={conversationId} onSelect={ouvrirConversation} />
 
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden" style={{ background: 'radial-gradient(circle at 50% 0%,#0e0705 0%,#000 60%)' }}>
-        <header className="relative flex items-center justify-center py-4 px-14 sm:px-16 border-b border-[#2a1a12] shadow-lg shrink-0"
-          style={{ background: '#080503' }}>
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden" style={{ background: 'radial-gradient(circle at 50% 0%,#090604 0%,#000 60%)' }}>
+        <header className="relative flex items-center justify-center py-4 px-14 sm:px-16 border-b border-[#241d0d] shadow-lg shrink-0"
+          style={{ background: '#050301' }}>
           <button onClick={() => setConvOpen(true)}
-            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 border border-[#6b4632] text-[#c98b72] text-[11px] sm:text-xs px-2 sm:px-3 py-2 rounded-lg hover:border-[#c98b72] transition-colors whitespace-nowrap">
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 border border-[#8a7040] text-[#d4af37] text-[11px] sm:text-xs px-2 sm:px-3 py-2 rounded-lg hover:border-[#d4af37] transition-colors whitespace-nowrap">
             ☰ <span className="hidden sm:inline">Conversations</span>
           </button>
           <span className="font-display text-shine text-sm sm:text-xl font-bold truncate max-w-full uppercase">✦ LuminZenith AI</span>
           <button onClick={nouvelleConv}
-            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-[11px] sm:text-xs font-semibold px-2 sm:px-3 py-2 rounded-lg text-[#1a0f0a] shadow-[0_0_14px_rgba(201,139,114,0.4)] hover:shadow-[0_0_22px_rgba(201,139,114,0.7)] transition-shadow whitespace-nowrap"
-            style={{ background: 'linear-gradient(135deg,#e8c9b0,#8c5a3f)' }}>
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-[11px] sm:text-xs font-semibold px-2 sm:px-3 py-2 rounded-lg text-[#1a1206] shadow-[0_0_14px_rgba(212,175,55,0.4)] hover:shadow-[0_0_22px_rgba(212,175,55,0.7)] transition-shadow whitespace-nowrap"
+            style={{ background: 'linear-gradient(135deg,#fff3d6,#f4e2ac,#c9a227,#9c7a2e)' }}>
             + <span className="hidden sm:inline">Nouvelle conversation</span>
           </button>
         </header>
@@ -439,12 +510,12 @@ function App() {
         <div className="overflow-y-auto overflow-x-hidden flex-1 flex flex-col min-h-0">
           <Hero />
 
-          <div className="flex gap-3 overflow-x-auto overflow-y-hidden px-5 py-4 border-b border-[#2a1a12]/50 shrink-0">
+          <div className="flex gap-3 overflow-x-auto overflow-y-hidden px-5 py-4 border-b border-[#241d0d]/50 shrink-0">
             {QUICK_ACTIONS.map((qa, i) => (
               <div key={i} onClick={() => setInput(qa.prompt)}
-                className="min-w-[110px] shrink-0 text-center rounded-xl border border-[#3a2418] px-3 py-4 cursor-pointer text-[#c98b72] text-xs hover:border-[#c98b72] hover:shadow-[0_0_18px_rgba(201,139,114,0.3)] hover:-translate-y-0.5 transition-all"
-                style={{ background: '#0f0906' }}>
-                <div className="text-2xl mb-2 drop-shadow-[0_0_6px_rgba(201,139,114,0.5)]">{qa.icon}</div>
+                className="min-w-[110px] shrink-0 text-center rounded-xl border border-[#2e2510] px-3 py-4 cursor-pointer text-[#d4af37] text-xs hover:border-[#d4af37] hover:shadow-[0_0_18px_rgba(212,175,55,0.3)] hover:-translate-y-0.5 transition-all"
+                style={{ background: '#0d0a05' }}>
+                <div className="text-2xl mb-2 drop-shadow-[0_0_6px_rgba(212,175,55,0.5)]">{qa.icon}</div>
                 {qa.label}
               </div>
             ))}
@@ -453,27 +524,69 @@ function App() {
           <div ref={scrollRef} className="flex-1 px-5 sm:px-10 py-5 flex flex-col gap-3 min-w-0 max-w-5xl mx-auto w-full">
             {messages.map((m, i) => (
               <div key={i}
-                className={`max-w-[600px] w-fit px-4 py-3 rounded-2xl text-sm leading-relaxed break-words
+                className={`max-w-[600px] w-fit px-4 py-3 rounded-2xl text-sm leading-relaxed break-words flex flex-col gap-2
                   ${m.role === 'user'
                     ? 'self-end bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700'
-                    : 'self-start border border-[#3a2418] text-[#e0c4ac]'}`}
-                style={m.role === 'assistant' ? { background: '#0f0906' } : {}}
-                dangerouslySetInnerHTML={{ __html: formatMsg(m.content) }} />
+                    : 'self-start border border-[#2e2510] text-[#f0dcae]'}`}
+                style={m.role === 'assistant' ? { background: '#0d0a05' } : {}}>
+                {m.attachment && m.attachment.type === 'image' && (
+                  <img src={m.attachment.dataUrl} alt={m.attachment.name} className="max-w-[260px] max-h-[260px] rounded-lg object-contain" />
+                )}
+                {m.attachment && m.attachment.type === 'video' && (
+                  <video src={m.attachment.dataUrl} controls className="max-w-[260px] max-h-[260px] rounded-lg" />
+                )}
+                {m.content && <span dangerouslySetInnerHTML={{ __html: formatMsg(m.content) }} />}
+              </div>
             ))}
-            {loading && <div className="self-start text-[#8c5a3f] italic text-sm px-4">LuminZenith réfléchit...</div>}
+            {loading && <div className="self-start text-[#9c7a2e] italic text-sm px-4">LuminZenith réfléchit...</div>}
           </div>
         </div>
 
-        <div className="flex gap-3 p-4 border-t border-[#2a1a12] shrink-0" style={{ background: '#050302' }}>
-          <input value={input} onChange={e => setInput(e.target.value)}
-            onKeyPress={e => e.key === 'Enter' && envoyer()}
-            placeholder="Écrivez votre message..."
-            className="flex-1 min-w-0 bg-[#0f0906] border border-[#3a2418] rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-[#c98b72] focus:shadow-[0_0_14px_rgba(201,139,114,0.25)]" />
-          <button onClick={() => envoyer()}
-            className="shrink-0 px-4 sm:px-6 py-3 rounded-lg font-semibold text-[#1a0f0a] text-sm shadow-[0_0_16px_rgba(201,139,114,0.4)] hover:shadow-[0_0_26px_rgba(201,139,114,0.7)] hover:-translate-y-0.5 transition-all"
-            style={{ background: 'linear-gradient(135deg,#e8c9b0,#8c5a3f)' }}>
-            Envoyer
-          </button>
+        <div className="border-t border-[#241d0d] shrink-0" style={{ background: '#030201' }}>
+          {attachedFile && (
+            <div className="flex items-center gap-3 px-4 pt-3">
+              <div className="relative">
+                {attachedFile.type === 'image' ? (
+                  <img src={attachedFile.dataUrl} alt={attachedFile.name} className="w-16 h-16 object-cover rounded-lg border border-[#2e2510]" />
+                ) : (
+                  <video src={attachedFile.dataUrl} className="w-16 h-16 object-cover rounded-lg border border-[#2e2510]" />
+                )}
+                <button onClick={removeAttachment}
+                  className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-black border border-[#2e2510] text-[#f4e2ac] text-xs flex items-center justify-center">✕</button>
+              </div>
+              <span className="text-[#8a7040] text-xs truncate">{attachedFile.name}</span>
+            </div>
+          )}
+          <div className="flex gap-2 sm:gap-3 p-4 items-end">
+            <input type="file" accept="image/*,video/*" ref={fileInputRef} onChange={handleFileSelect} className="hidden" />
+            <input type="file" accept="image/*" capture="environment" ref={cameraInputRef} onChange={handleFileSelect} className="hidden" />
+
+            <button onClick={() => fileInputRef.current && fileInputRef.current.click()} title="Joindre une photo ou vidéo"
+              className="shrink-0 w-11 h-11 rounded-lg border border-[#2e2510] text-[#d4af37] flex items-center justify-center hover:border-[#d4af37] transition-colors">
+              📎
+            </button>
+            <button onClick={() => cameraInputRef.current && cameraInputRef.current.click()} title="Prendre une photo"
+              className="shrink-0 w-11 h-11 rounded-lg border border-[#2e2510] text-[#d4af37] flex items-center justify-center hover:border-[#d4af37] transition-colors">
+              📷
+            </button>
+            <button onClick={toggleMic} title="Dicter un message"
+              className={`shrink-0 w-11 h-11 rounded-lg border flex items-center justify-center transition-colors ${listening ? 'border-red-500 text-red-400 animate-pulse' : 'border-[#2e2510] text-[#d4af37] hover:border-[#d4af37]'}`}>
+              🎙
+            </button>
+
+            <textarea ref={textareaRef} value={input}
+              onChange={handleInputChange}
+              onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); envoyer(); } }}
+              placeholder="Écrivez votre message..."
+              rows={2}
+              style={{ maxHeight: '240px', overflowY: 'auto' }}
+              className="flex-1 min-w-0 resize-none bg-[#0d0a05] border border-[#2e2510] rounded-lg px-4 py-3 text-sm text-white leading-relaxed focus:outline-none focus:border-[#d4af37] focus:shadow-[0_0_14px_rgba(212,175,55,0.25)]" />
+            <button onClick={() => envoyer()}
+              className="shrink-0 px-4 sm:px-6 py-3 rounded-lg font-semibold text-[#1a1206] text-sm shadow-[0_0_16px_rgba(212,175,55,0.4)] hover:shadow-[0_0_26px_rgba(212,175,55,0.7)] hover:-translate-y-0.5 transition-all"
+              style={{ background: 'linear-gradient(135deg,#fff3d6,#f4e2ac,#c9a227,#9c7a2e)' }}>
+              Envoyer
+            </button>
+          </div>
         </div>
       </div>
     </div>
