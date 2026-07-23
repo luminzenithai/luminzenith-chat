@@ -82,6 +82,23 @@ function supprimerConversation(id) {
   const list = getConversationsList().filter(c => c.id !== id);
   saveConversationsList(list);
 }
+function toggleArchiveConversation(id) {
+  const list = getConversationsList();
+  const conv = list.find(c => c.id === id);
+  if (conv) { conv.archive = !conv.archive; saveConversationsList(list); }
+}
+function partagerConversation(id, titre) {
+  const url = window.location.origin + window.location.pathname + '?conv=' + encodeURIComponent(id);
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => {
+      alert('Lien copié : "' + titre + '"\n\nCe lien rouvre cette conversation précise sur ton compte.');
+    }).catch(() => {
+      window.prompt('Copie ce lien :', url);
+    });
+  } else {
+    window.prompt('Copie ce lien :', url);
+  }
+}
 function creerNouvelleConversation() {
   const id = 'conv_' + Date.now();
   const list = getConversationsList();
@@ -91,6 +108,12 @@ function creerNouvelleConversation() {
   return id;
 }
 function getCurrentConversationId() {
+  const params = new URLSearchParams(window.location.search);
+  const partage = params.get('conv');
+  if (partage) {
+    localStorage.setItem('luminzenith_current_conv', partage);
+    return partage;
+  }
   let id = localStorage.getItem('luminzenith_current_conv');
   if (!id) id = creerNouvelleConversation();
   return id;
@@ -310,14 +333,22 @@ function Sidebar({ onOpenConversations, member, onOpenAuth, onLogout }) {
 
 function ConversationsPanel({ open, onClose, current, onSelect }) {
   const [menuOpenId, setMenuOpenId] = useState(null);
+  const [showArchived, setShowArchived] = useState(false);
   if (!open) return null;
-  const base = getConversationsList().slice().reverse();
+  const all = getConversationsList().slice().reverse();
+  const archivedCount = all.filter(c => c.archive).length;
+  const base = showArchived ? all.filter(c => c.archive) : all.filter(c => !c.archive);
   const list = [...base.filter(c => c.favori), ...base.filter(c => !c.favori)];
 
   function handleAction(action, id) {
     setMenuOpenId(null);
     if (action === 'renommer') renommerConversation(id);
     if (action === 'favori') toggleFavoriConversation(id);
+    if (action === 'archiver') toggleArchiveConversation(id);
+    if (action === 'partager') {
+      const conv = getConversationsList().find(c => c.id === id);
+      partagerConversation(id, conv ? conv.titre : '');
+    }
     if (action === 'supprimer') {
       supprimerConversation(id);
       if (id === current) {
@@ -332,8 +363,15 @@ function ConversationsPanel({ open, onClose, current, onSelect }) {
       <div onClick={() => { onClose(); setMenuOpenId(null); }} className="fixed inset-0 bg-black/70 backdrop-blur-sm z-30" />
       <div className="fixed top-0 left-16 sm:left-64 w-64 max-w-[75vw] h-full z-40 p-4 border-r border-[#241d0d] overflow-y-auto"
         style={{ background: '#050301' }}>
-        <h3 className="font-display text-[#f4e2ac] text-lg mb-4">Conversations</h3>
-        {list.length === 0 && <p className="text-stone-600 text-sm">Aucune conversation encore.</p>}
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-display text-[#f4e2ac] text-lg">{showArchived ? 'Archivées' : 'Conversations'}</h3>
+          {archivedCount > 0 && (
+            <button onClick={() => setShowArchived(!showArchived)} className="text-[10px] text-[#8a7040] hover:text-[#d4af37] underline">
+              {showArchived ? 'Retour' : `Archives (${archivedCount})`}
+            </button>
+          )}
+        </div>
+        {list.length === 0 && <p className="text-stone-600 text-sm">{showArchived ? 'Aucune conversation archivée.' : 'Aucune conversation encore.'}</p>}
         {list.map(c => (
           <div key={c.id} className="relative mb-2">
             <div onClick={() => { onSelect(c.id); setMenuOpenId(null); }}
@@ -352,11 +390,19 @@ function ConversationsPanel({ open, onClose, current, onSelect }) {
                 style={{ background: '#0d0a05' }}>
                 <button onClick={() => handleAction('favori', c.id)}
                   className="w-full text-left px-3 py-2 text-xs text-[#f0dcae] hover:bg-[#d4af37]/10">
-                  {c.favori ? '★ Retirer des favoris' : '☆ Ajouter aux favoris'}
+                  {c.favori ? '★ Désépingler' : '☆ Épingler'}
                 </button>
                 <button onClick={() => handleAction('renommer', c.id)}
                   className="w-full text-left px-3 py-2 text-xs text-[#f0dcae] hover:bg-[#d4af37]/10 border-t border-[#241d0d]">
                   ✎ Renommer
+                </button>
+                <button onClick={() => handleAction('partager', c.id)}
+                  className="w-full text-left px-3 py-2 text-xs text-[#f0dcae] hover:bg-[#d4af37]/10 border-t border-[#241d0d]">
+                  ↗ Partager
+                </button>
+                <button onClick={() => handleAction('archiver', c.id)}
+                  className="w-full text-left px-3 py-2 text-xs text-[#f0dcae] hover:bg-[#d4af37]/10 border-t border-[#241d0d]">
+                  {c.archive ? '⇧ Désarchiver' : '⇩ Archiver'}
                 </button>
                 <button onClick={() => handleAction('supprimer', c.id)}
                   className="w-full text-left px-3 py-2 text-xs text-red-400 hover:bg-red-500/10 border-t border-[#241d0d]">
@@ -364,6 +410,7 @@ function ConversationsPanel({ open, onClose, current, onSelect }) {
                 </button>
               </div>
             )}
+
           </div>
         ))}
       </div>
