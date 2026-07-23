@@ -65,6 +65,23 @@ function getConversationsList() {
 function saveConversationsList(list) {
   localStorage.setItem('luminzenith_convs', JSON.stringify(list));
 }
+function renommerConversation(id) {
+  const list = getConversationsList();
+  const conv = list.find(c => c.id === id);
+  const nouveauNom = window.prompt('Renommer la conversation :', conv ? conv.titre : '');
+  if (!nouveauNom || !nouveauNom.trim()) return;
+  if (conv) { conv.titre = nouveauNom.trim(); saveConversationsList(list); }
+}
+function toggleFavoriConversation(id) {
+  const list = getConversationsList();
+  const conv = list.find(c => c.id === id);
+  if (conv) { conv.favori = !conv.favori; saveConversationsList(list); }
+}
+function supprimerConversation(id) {
+  if (!window.confirm('Supprimer définitivement cette conversation ?')) return;
+  const list = getConversationsList().filter(c => c.id !== id);
+  saveConversationsList(list);
+}
 function creerNouvelleConversation() {
   const id = 'conv_' + Date.now();
   const list = getConversationsList();
@@ -292,20 +309,61 @@ function Sidebar({ onOpenConversations, member, onOpenAuth, onLogout }) {
 
 
 function ConversationsPanel({ open, onClose, current, onSelect }) {
+  const [menuOpenId, setMenuOpenId] = useState(null);
   if (!open) return null;
-  const list = getConversationsList().slice().reverse();
+  const base = getConversationsList().slice().reverse();
+  const list = [...base.filter(c => c.favori), ...base.filter(c => !c.favori)];
+
+  function handleAction(action, id) {
+    setMenuOpenId(null);
+    if (action === 'renommer') renommerConversation(id);
+    if (action === 'favori') toggleFavoriConversation(id);
+    if (action === 'supprimer') {
+      supprimerConversation(id);
+      if (id === current) {
+        const nouvelId = creerNouvelleConversation();
+        onSelect(nouvelId);
+      }
+    }
+  }
+
   return (
     <>
-      <div onClick={onClose} className="fixed inset-0 bg-black/70 backdrop-blur-sm z-30" />
+      <div onClick={() => { onClose(); setMenuOpenId(null); }} className="fixed inset-0 bg-black/70 backdrop-blur-sm z-30" />
       <div className="fixed top-0 left-16 sm:left-64 w-64 max-w-[75vw] h-full z-40 p-4 border-r border-[#241d0d] overflow-y-auto"
         style={{ background: '#050301' }}>
         <h3 className="font-display text-[#f4e2ac] text-lg mb-4">Conversations</h3>
         {list.length === 0 && <p className="text-stone-600 text-sm">Aucune conversation encore.</p>}
         {list.map(c => (
-          <div key={c.id} onClick={() => onSelect(c.id)}
-            className={`p-3 rounded-lg mb-2 cursor-pointer text-sm border transition-colors truncate
-              ${c.id === current ? 'border-[#d4af37] text-[#f4e2ac] shadow-[0_0_12px_rgba(212,175,55,0.25)]' : 'border-[#241d0d] text-stone-300 bg-black/40 hover:border-[#8a7040]'}`}>
-            {c.titre}
+          <div key={c.id} className="relative mb-2">
+            <div onClick={() => { onSelect(c.id); setMenuOpenId(null); }}
+              className={`p-3 pr-9 rounded-lg cursor-pointer text-sm border transition-colors truncate flex items-center gap-1
+                ${c.id === current ? 'border-[#d4af37] text-[#f4e2ac] shadow-[0_0_12px_rgba(212,175,55,0.25)]' : 'border-[#241d0d] text-stone-300 bg-black/40 hover:border-[#8a7040]'}`}>
+              {c.favori && <span className="text-[#d4af37] shrink-0">★</span>}
+              <span className="truncate">{c.titre}</span>
+            </div>
+            <button onClick={(e) => { e.stopPropagation(); setMenuOpenId(menuOpenId === c.id ? null : c.id); }}
+              className="absolute top-2 right-1.5 w-6 h-6 rounded-md flex items-center justify-center text-[#8a7040] hover:text-[#f4e2ac] hover:bg-[#d4af37]/10">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2" /><circle cx="12" cy="12" r="2" /><circle cx="19" cy="12" r="2" /></svg>
+            </button>
+            {menuOpenId === c.id && (
+              <div onClick={(e) => e.stopPropagation()}
+                className="absolute right-0 top-9 z-50 w-44 rounded-lg border border-[#2e2510] overflow-hidden shadow-lg"
+                style={{ background: '#0d0a05' }}>
+                <button onClick={() => handleAction('favori', c.id)}
+                  className="w-full text-left px-3 py-2 text-xs text-[#f0dcae] hover:bg-[#d4af37]/10">
+                  {c.favori ? '★ Retirer des favoris' : '☆ Ajouter aux favoris'}
+                </button>
+                <button onClick={() => handleAction('renommer', c.id)}
+                  className="w-full text-left px-3 py-2 text-xs text-[#f0dcae] hover:bg-[#d4af37]/10 border-t border-[#241d0d]">
+                  ✎ Renommer
+                </button>
+                <button onClick={() => handleAction('supprimer', c.id)}
+                  className="w-full text-left px-3 py-2 text-xs text-red-400 hover:bg-red-500/10 border-t border-[#241d0d]">
+                  🗑 Supprimer
+                </button>
+              </div>
+            )}
           </div>
         ))}
       </div>
