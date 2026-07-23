@@ -532,11 +532,15 @@ function App() {
     if (textareaRef.current) textareaRef.current.style.height = 'auto';
     mettreAJourTitreConversation(texte || (fichierEnvoye ? fichierEnvoye.name : 'Pièce jointe'));
     setLoading(true);
+    const messagesPourAPI = nouvHist.map(m => ({
+      role: m.role,
+      content: m.content && m.content.trim() ? m.content : (m.attachment ? '(pièce jointe envoyée)' : '')
+    })).filter(m => m.content);
     try {
       const r = await fetch(WORKER, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: nouvHist, userId, conversationId, image: fichierEnvoye ? fichierEnvoye.dataUrl : undefined })
+        body: JSON.stringify({ messages: messagesPourAPI, userId, conversationId, image: fichierEnvoye ? fichierEnvoye.dataUrl : undefined })
       });
       const rep = await r.text();
       setMessages(h => [...h, { role: 'assistant', content: rep, heure: heureActuelle() }]);
