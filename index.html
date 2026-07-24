@@ -439,13 +439,109 @@ function ConversationsPanel({ open, onClose, current, onSelect }) {
   );
 }
 
-function ProfilPanel({ open, onClose, member, onOpenAuth, onLogout }) {
+const PLANS_AFFICHAGE = [
+  { cle: 'aube', nom: 'Aube', prix: 'Gratuit', description: '26 messages / 6h', gratuit: true },
+  { cle: 'eclat', nom: 'Éclat', prix: '12,99€/mois', description: '3 000 messages/mois' },
+  { cle: 'halo', nom: 'Halo', prix: '27,99€/mois', description: '6 000 messages/mois + modules avancés' },
+  { cle: 'zenith', nom: 'Zénith', prix: '59,99€/mois', description: '12 000 messages/mois + automatisations' },
+];
+
+function PaywallPanel({ open, onClose, userId, email, forfaitActuel, onLancerCheckout, onInitialiserStripe }) {
   if (!open) return null;
+  return (
+    <>
+      <div onClick={onClose} className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50" />
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-2xl border border-[#16110c] p-6"
+          style={{ background: 'linear-gradient(160deg,#0c0a07,#020102)' }}>
+          <button onClick={onClose} className="absolute top-4 right-4 text-white/70 hover:text-white text-xl">✕</button>
+          <h2 className="font-display text-white text-2xl mb-1 text-center">Choisis ton forfait</h2>
+          <p className="text-white/60 text-sm text-center mb-6">Messagerie chiffrée et appels inclus sur toutes les formules.</p>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {PLANS_AFFICHAGE.map(p => (
+              <div key={p.cle} className={`rounded-xl border p-4 flex flex-col gap-2 ${forfaitActuel === p.cle ? 'border-[#b8805a]' : 'border-[#16110c]'}`} style={{ background: '#0c0a07' }}>
+                <div className="text-white font-semibold">{p.nom}</div>
+                <div className="text-[#dcaaa0] text-lg font-display">{p.prix}</div>
+                <div className="text-white/60 text-xs flex-1">{p.description}</div>
+                {forfaitActuel === p.cle ? (
+                  <span className="text-center text-xs text-[#b8805a] py-2">Forfait actuel</span>
+                ) : p.gratuit ? (
+                  <span className="text-center text-xs text-white/40 py-2">—</span>
+                ) : (
+                  <button onClick={() => onLancerCheckout(p.cle)}
+                    className="py-2 rounded-lg text-xs font-semibold text-[#150f0a]"
+                    style={{ background: 'linear-gradient(135deg,#f5e8d0,#d9b48f,#8f6a45,#6e4a35)' }}>
+                    Choisir
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+          <button onClick={onInitialiserStripe} className="w-full mt-6 text-[10px] text-white/30 hover:text-white/60 underline">
+            (Admin) Initialiser les produits Stripe — à faire une seule fois
+          </button>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function ProfilPanel({ open, onClose, member, onOpenAuth, onLogout }) {
+  const [forfait, setForfait] = useState('aube');
+  const [paywallOpen, setPaywallOpen] = useState(false);
   const email = member?.auth?.email || member?.email || null;
+  const userId = member?.id;
   const initiale = email ? email[0].toUpperCase() : '?';
+
+  useEffect(() => {
+    if (!open || !userId) return;
+    fetch(WORKER, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'obtenirForfait', userId })
+    }).then(r => r.json()).then(d => setForfait(d.plan || 'aube')).catch(() => {});
+  }, [open, userId]);
+
+  async function lancerCheckout(cle) {
+    try {
+      const r = await fetch(WORKER, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'creerCheckout', userId, plan: cle, email })
+      });
+      const data = await r.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert(data.error || "Impossible de démarrer le paiement.");
+      }
+    } catch (e) {
+      alert("Erreur de connexion au service de paiement.");
+    }
+  }
+
+  async function initialiserStripe() {
+    if (!window.confirm("Créer les 3 produits payants sur Stripe maintenant ? À ne faire qu'une seule fois.")) return;
+    try {
+      const r = await fetch(WORKER, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'initialiserStripe' })
+      });
+      const data = await r.json();
+      alert(data.ok ? "Produits Stripe créés avec succès." : (data.error || "Erreur."));
+    } catch (e) {
+      alert("Erreur de connexion.");
+    }
+  }
+
+  if (!open) return null;
+  const infosForfait = PLANS_AFFICHAGE.find(p => p.cle === forfait) || PLANS_AFFICHAGE[0];
   return (
     <>
       <div onClick={onClose} className="fixed inset-0 bg-black/70 backdrop-blur-sm z-30" />
+      <PaywallPanel open={paywallOpen} onClose={() => setPaywallOpen(false)} userId={userId} email={email}
+        forfaitActuel={forfait} onLancerCheckout={lancerCheckout} onInitialiserStripe={initialiserStripe} />
       <div className="fixed top-0 left-16 sm:left-64 w-72 max-w-[80vw] h-full z-40 p-4 border-r border-[#16110c] overflow-y-auto"
         style={{ background: '#040302' }}>
         <h3 className="font-display text-white text-lg mb-4">Profil</h3>
@@ -459,11 +555,11 @@ function ProfilPanel({ open, onClose, member, onOpenAuth, onLogout }) {
               </div>
               <div className="min-w-0">
                 <div className="text-white text-sm truncate">{email}</div>
-                <span className="text-[10px] tracking-wide px-2 py-0.5 rounded-full border border-[#b8805a] text-[#b8805a] inline-block mt-1">GRATUIT</span>
+                <span className="text-[10px] tracking-wide px-2 py-0.5 rounded-full border border-[#b8805a] text-[#b8805a] inline-block mt-1 uppercase">{infosForfait.nom}</span>
               </div>
             </div>
 
-            <button onClick={() => alert("Le changement de forfait arrive bientôt — l'intégration des paiements est en cours.")}
+            <button onClick={() => setPaywallOpen(true)}
               className="w-full flex items-center justify-between px-3 py-3 rounded-lg border border-[#16110c] text-white text-sm mb-2 hover:border-[#b8805a] transition-colors">
               Changer de forfait
               <span className="text-white/40">›</span>
