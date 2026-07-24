@@ -44,12 +44,13 @@ body{margin:0!important;padding:0!important;width:100%!important;max-width:100%!
 const { useState, useEffect, useRef, useMemo } = React;
 
 const WORKER = 'https://luminzenithai-api.luminzenithai.workers.dev';
+let memberIdActuel = null;
 
 function heureActuelle() {
   return new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 }
 
-function getUserId() {
+function getAnonymousId() {
   let id = localStorage.getItem('luminzenith_uid');
   if (!id) {
     id = 'user_' + Math.random().toString(36).substring(2) + Date.now();
@@ -64,6 +65,26 @@ function getConversationsList() {
 }
 function saveConversationsList(list) {
   localStorage.setItem('luminzenith_convs', JSON.stringify(list));
+  if (memberIdActuel) {
+    fetch(WORKER, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'sauverListe', userId: memberIdActuel, liste: list })
+    }).catch(() => {});
+  }
+}
+async function chargerListeServeur(userId) {
+  try {
+    const r = await fetch(WORKER, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'chargerListe', userId })
+    });
+    const data = await r.json();
+    return data.liste || [];
+  } catch (e) {
+    return [];
+  }
 }
 function renommerConversation(id) {
   const list = getConversationsList();
@@ -471,7 +492,8 @@ function App() {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
-  const userId = useRef(getUserId()).current;
+  const anonymousIdRef = useRef(getAnonymousId());
+  const userId = member?.id || anonymousIdRef.current;
   const scrollRef = useRef(null);
   const textareaRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -597,7 +619,18 @@ function App() {
     setTimeout(checkMember, 800);
   }, []);
 
-  useEffect(() => { chargerHistorique(); }, [conversationId]);
+  useEffect(() => { chargerHistorique(); }, [conversationId, userId]);
+
+  useEffect(() => {
+    memberIdActuel = member?.id || null;
+    if (!member?.id) return;
+    chargerListeServeur(member.id).then(listeServeur => {
+      const listeLocale = getConversationsList();
+      const idsServeur = new Set(listeServeur.map(c => c.id));
+      const fusion = [...listeServeur, ...listeLocale.filter(c => !idsServeur.has(c.id))];
+      saveConversationsList(fusion);
+    });
+  }, [member]);
   useEffect(() => { scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight); }, [messages, loading]);
 
   async function chargerHistorique() {
