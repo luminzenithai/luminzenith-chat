@@ -446,17 +446,26 @@ const PLANS_AFFICHAGE = [
   { cle: 'zenith', nom: 'Zénith', prix: '59,99€/mois', description: '12 000 messages/mois + automatisations' },
 ];
 
-function PaywallPanel({ open, onClose, userId, email, forfaitActuel, onLancerCheckout, onInitialiserStripe }) {
+function PaywallPanel({ open, onClose, userId, email, forfaitActuel, onLancerCheckout, onInitialiserStripe, bloquant }) {
   if (!open) return null;
   return (
     <>
       <div onClick={onClose} className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50" />
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-2xl border border-[#16110c] p-6"
+        <div className={`relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-2xl border p-6 ${bloquant ? 'border-red-500/40' : 'border-[#16110c]'}`}
           style={{ background: 'linear-gradient(160deg,#0c0a07,#020102)' }}>
           <button onClick={onClose} className="absolute top-4 right-4 text-white/70 hover:text-white text-xl">✕</button>
-          <h2 className="font-display text-white text-2xl mb-1 text-center">Choisis ton forfait</h2>
-          <p className="text-white/60 text-sm text-center mb-6">Messagerie chiffrée et appels inclus sur toutes les formules.</p>
+          {bloquant ? (
+            <>
+              <h2 className="font-display text-white text-2xl mb-1 text-center">Limite de messages atteinte</h2>
+              <p className="text-red-400/90 text-sm text-center mb-6">Tu as utilisé tous les messages inclus dans ton forfait actuel. Choisis un forfait supérieur pour continuer à discuter.</p>
+            </>
+          ) : (
+            <>
+              <h2 className="font-display text-white text-2xl mb-1 text-center">Choisis ton forfait</h2>
+              <p className="text-white/60 text-sm text-center mb-6">Messagerie chiffrée et appels inclus sur toutes les formules.</p>
+            </>
+          )}
           <div className="grid sm:grid-cols-2 gap-3">
             {PLANS_AFFICHAGE.map(p => (
               <div key={p.cle} className={`rounded-xl border p-4 flex flex-col gap-2 ${forfaitActuel === p.cle ? 'border-[#b8805a]' : 'border-[#16110c]'}`} style={{ background: '#0c0a07' }}>
@@ -486,69 +495,19 @@ function PaywallPanel({ open, onClose, userId, email, forfaitActuel, onLancerChe
   );
 }
 
-function ProfilPanel({ open, onClose, member, onOpenAuth, onLogout }) {
-  const [forfait, setForfait] = useState('aube');
-  const [quota, setQuota] = useState(null);
-  const [paywallOpen, setPaywallOpen] = useState(false);
+function ProfilPanel({ open, onClose, member, forfait, quota, onOpenPaywall, onOpenAuth, onLogout }) {
   const email = member?.auth?.email || member?.email || null;
-  const userId = member?.id;
   const initiale = email ? email[0].toUpperCase() : '?';
-
-  useEffect(() => {
-    if (!open || !userId) return;
-    fetch(WORKER, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'obtenirForfait', userId })
-    }).then(r => r.json()).then(d => {
-      setForfait(d.plan || 'aube');
-      if (d.quota && d.details) setQuota({ ...d.quota, cap: d.details.cap });
-    }).catch(() => {});
-  }, [open, userId]);
-
-  async function lancerCheckout(cle) {
-    try {
-      const r = await fetch(WORKER, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'creerCheckout', userId, plan: cle, email })
-      });
-      const data = await r.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        alert(data.error || "Impossible de démarrer le paiement.");
-      }
-    } catch (e) {
-      alert("Erreur de connexion au service de paiement.");
-    }
-  }
-
-  async function initialiserStripe() {
-    if (!window.confirm("Créer les 3 produits payants sur Stripe maintenant ? À ne faire qu'une seule fois.")) return;
-    try {
-      const r = await fetch(WORKER, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'initialiserStripe' })
-      });
-      const data = await r.json();
-      alert(data.ok ? "Produits Stripe créés avec succès." : (data.error || "Erreur."));
-    } catch (e) {
-      alert("Erreur de connexion.");
-    }
-  }
 
   if (!open) return null;
   const infosForfait = PLANS_AFFICHAGE.find(p => p.cle === forfait) || PLANS_AFFICHAGE[0];
   return (
     <>
       <div onClick={onClose} className="fixed inset-0 bg-black/70 backdrop-blur-sm z-30" />
-      <PaywallPanel open={paywallOpen} onClose={() => setPaywallOpen(false)} userId={userId} email={email}
-        forfaitActuel={forfait} onLancerCheckout={lancerCheckout} onInitialiserStripe={initialiserStripe} />
       <div className="fixed top-0 left-16 sm:left-64 w-72 max-w-[80vw] h-full z-40 p-4 border-r border-[#16110c] overflow-y-auto"
         style={{ background: '#040302' }}>
         <h3 className="font-display text-white text-lg mb-4">Profil</h3>
+
 
         {member ? (
           <>
@@ -575,7 +534,7 @@ function ProfilPanel({ open, onClose, member, onOpenAuth, onLogout }) {
               </div>
             )}
 
-            <button onClick={() => setPaywallOpen(true)}
+            <button onClick={onOpenPaywall}
               className="w-full flex items-center justify-between px-3 py-3 rounded-lg border border-[#16110c] text-white text-sm mb-2 hover:border-[#b8805a] transition-colors">
               Changer de forfait
               <span className="text-white/40">›</span>
@@ -667,15 +626,68 @@ function App() {
   const [attachedFile, setAttachedFile] = useState(null);
   const [listening, setListening] = useState(false);
   const [cameraOpen, setCameraOpen] = useState(false);
+  const [forfait, setForfait] = useState('aube');
+  const [quotaInfo, setQuotaInfo] = useState(null);
+  const [paywallOpen, setPaywallOpen] = useState(false);
+  const [blocageActif, setBlocageActif] = useState(false);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
   const anonymousIdRef = useRef(getAnonymousId());
   const userId = member?.id || anonymousIdRef.current;
+  const email = member?.auth?.email || member?.email || null;
   const scrollRef = useRef(null);
   const textareaRef = useRef(null);
   const fileInputRef = useRef(null);
   const recognitionRef = useRef(null);
+
+  async function rafraichirForfait() {
+    try {
+      const r = await fetch(WORKER, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'obtenirForfait', userId })
+      });
+      const d = await r.json();
+      setForfait(d.plan || 'aube');
+      if (d.quota && d.details) setQuotaInfo({ ...d.quota, cap: d.details.cap });
+    } catch (e) {}
+  }
+
+  useEffect(() => { rafraichirForfait(); }, [userId]);
+
+  async function lancerCheckout(cle) {
+    try {
+      const r = await fetch(WORKER, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'creerCheckout', userId, plan: cle, email })
+      });
+      const data = await r.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert(data.error || "Impossible de démarrer le paiement.");
+      }
+    } catch (e) {
+      alert("Erreur de connexion au service de paiement.");
+    }
+  }
+
+  async function initialiserStripe() {
+    if (!window.confirm("Créer les 3 produits payants sur Stripe maintenant ? À ne faire qu'une seule fois.")) return;
+    try {
+      const r = await fetch(WORKER, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'initialiserStripe' })
+      });
+      const data = await r.json();
+      alert(data.ok ? "Produits Stripe créés avec succès." : (data.error || "Erreur."));
+    } catch (e) {
+      alert("Erreur de connexion.");
+    }
+  }
 
   function handleInputChange(e) {
     setInput(e.target.value);
@@ -859,7 +871,13 @@ function App() {
         body: JSON.stringify({ messages: messagesPourAPI, userId, conversationId, image: fichierEnvoye ? fichierEnvoye.dataUrl : undefined })
       });
       const rep = await r.text();
-      setMessages(h => [...h, { role: 'assistant', content: rep, heure: heureActuelle() }]);
+      if (rep === '__QUOTA_LIMIT__') {
+        setBlocageActif(true);
+        setPaywallOpen(true);
+      } else {
+        setMessages(h => [...h, { role: 'assistant', content: rep, heure: heureActuelle() }]);
+      }
+      rafraichirForfait();
     } catch (e) {
       setMessages(h => [...h, { role: 'assistant', content: 'Erreur de connexion.', heure: heureActuelle() }]);
     }
@@ -911,7 +929,10 @@ function App() {
       )}
       <Sidebar onOpenConversations={() => setConvOpen(true)} onOpenProfil={() => setProfilOpen(true)} member={member} onOpenAuth={() => setAuthOpen(true)} onLogout={handleLogout} />
       <ConversationsPanel open={convOpen} onClose={() => setConvOpen(false)} current={conversationId} onSelect={ouvrirConversation} />
-      <ProfilPanel open={profilOpen} onClose={() => setProfilOpen(false)} member={member} onOpenAuth={() => setAuthOpen(true)} onLogout={handleLogout} />
+      <ProfilPanel open={profilOpen} onClose={() => setProfilOpen(false)} member={member} forfait={forfait} quota={quotaInfo}
+        onOpenPaywall={() => { setBlocageActif(false); setPaywallOpen(true); }} onOpenAuth={() => setAuthOpen(true)} onLogout={handleLogout} />
+      <PaywallPanel open={paywallOpen} onClose={() => { setPaywallOpen(false); setBlocageActif(false); }} userId={userId} email={email}
+        forfaitActuel={forfait} onLancerCheckout={lancerCheckout} onInitialiserStripe={initialiserStripe} bloquant={blocageActif} />
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden" style={{ background: 'radial-gradient(circle at 50% 0%,#080604 0%,#000 60%)' }}>
         <header className="relative flex items-center justify-center py-4 px-14 sm:px-16 border-b border-[#140f0b] shadow-lg shrink-0"
@@ -977,6 +998,12 @@ function App() {
         </div>
 
         <div className="border-t border-[#140f0b] shrink-0" style={{ background: '#020102' }}>
+          {quotaInfo && !blocageActif && (quotaInfo.count / quotaInfo.cap) >= 0.9 && (
+            <div className="flex items-center justify-between gap-3 px-4 pt-3 text-xs">
+              <span className="text-amber-400/90">⚠ Tu approches de la limite de ton forfait ({quotaInfo.count}/{quotaInfo.cap} messages).</span>
+              <button onClick={() => setPaywallOpen(true)} className="text-[#dcaaa0] underline shrink-0">Changer de forfait</button>
+            </div>
+          )}
           {attachedFile && (
             <div className="flex items-center gap-3 px-4 pt-3">
               <div className="relative">
