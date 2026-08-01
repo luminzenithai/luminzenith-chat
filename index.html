@@ -488,6 +488,7 @@ function PaywallPanel({ open, onClose, userId, email, forfaitActuel, onLancerChe
 
 function ProfilPanel({ open, onClose, member, onOpenAuth, onLogout }) {
   const [forfait, setForfait] = useState('aube');
+  const [quota, setQuota] = useState(null);
   const [paywallOpen, setPaywallOpen] = useState(false);
   const email = member?.auth?.email || member?.email || null;
   const userId = member?.id;
@@ -499,7 +500,10 @@ function ProfilPanel({ open, onClose, member, onOpenAuth, onLogout }) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'obtenirForfait', userId })
-    }).then(r => r.json()).then(d => setForfait(d.plan || 'aube')).catch(() => {});
+    }).then(r => r.json()).then(d => {
+      setForfait(d.plan || 'aube');
+      if (d.quota && d.details) setQuota({ ...d.quota, cap: d.details.cap });
+    }).catch(() => {});
   }, [open, userId]);
 
   async function lancerCheckout(cle) {
@@ -558,6 +562,18 @@ function ProfilPanel({ open, onClose, member, onOpenAuth, onLogout }) {
                 <span className="text-[10px] tracking-wide px-2 py-0.5 rounded-full border border-[#b8805a] text-[#b8805a] inline-block mt-1 uppercase">{infosForfait.nom}</span>
               </div>
             </div>
+
+            {quota && (
+              <div className="p-3 rounded-lg border border-[#16110c] mb-4" style={{ background: '#0c0a07' }}>
+                <div className="flex justify-between text-xs text-white/80 mb-1">
+                  <span>Messages utilisés</span>
+                  <span>{quota.count} / {quota.cap}</span>
+                </div>
+                <div className="w-full h-1.5 rounded-full bg-[#1a130f] overflow-hidden">
+                  <div className="h-full rounded-full" style={{ width: Math.min(100, (quota.count / quota.cap) * 100) + '%', background: 'linear-gradient(90deg,#d9b48f,#b8805a)' }} />
+                </div>
+              </div>
+            )}
 
             <button onClick={() => setPaywallOpen(true)}
               className="w-full flex items-center justify-between px-3 py-3 rounded-lg border border-[#16110c] text-white text-sm mb-2 hover:border-[#b8805a] transition-colors">
