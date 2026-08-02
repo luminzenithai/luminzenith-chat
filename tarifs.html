@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LuminZenith AI — Tarifs</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:wght@500;600;700&family=Source+Serif+4:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#020102; --card:#0c0a07; --border:#16110c; --border-soft:#1f1712;
+  --gold-1:#f5e8d0; --gold-2:#d9b48f; --gold-3:#8f6a45; --gold-4:#6e4a35;
+  --accent:#b8805a; --accent-soft:#dcaaa0; --white-70:rgba(255,255,255,.7); --white-50:rgba(255,255,255,.5);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:#fff;font-family:'Source Serif 4',serif;overflow-x:hidden;}
+.font-display{font-family:'Libre Bodoni',serif;letter-spacing:.3px;}
+.gold-text{background:linear-gradient(90deg,var(--gold-4),var(--gold-1),var(--gold-4));background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite;}
+@keyframes shine{to{background-position:200% center;}}
+.gold-btn{background:linear-gradient(135deg,var(--gold-1),var(--gold-2),var(--gold-3),var(--gold-4));color:#150f0a;font-weight:600;}
+::-webkit-scrollbar{width:8px;} ::-webkit-scrollbar-thumb{background:var(--gold-4);border-radius:10px;}
+
+.wrap{max-width:1360px;margin:0 auto;padding:48px 24px 80px;}
+
+.header{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:40px;}
+.brand{display:flex;align-items:center;gap:14px;}
+.crest{width:56px;height:56px;flex-shrink:0;}
+.brand-name{font-size:14px;letter-spacing:2px;color:var(--gold-2);text-transform:uppercase;}
+.hero{text-align:center;margin:32px 0 8px;}
+.hero h1{font-size:clamp(32px,5vw,52px);margin:0 0 8px;}
+.hero p{color:var(--white-70);font-size:16px;margin:0;}
+.vision-badge{border:1px solid var(--accent);border-radius:12px;padding:14px 18px;text-align:center;font-size:13px;color:var(--white-70);min-width:200px;}
+.vision-badge b{color:var(--accent-soft);display:block;font-family:'Libre Bodoni',serif;font-size:15px;margin-bottom:4px;}
+
+.plans-grid{display:grid;grid-template-columns:1.3fr repeat(5,1fr);gap:2px;background:var(--border-soft);border-radius:16px;overflow:hidden;border:1px solid var(--border-soft);}
+.plans-grid > div{background:var(--card);padding:14px 12px;}
+.row-label{display:flex;align-items:center;font-size:13px;color:var(--white-70);gap:6px;}
+.plan-head{text-align:center;padding:22px 10px !important;position:relative;}
+.plan-head.top{background:linear-gradient(180deg,rgba(184,128,90,.12),var(--card)) !important;border-top:2px solid var(--accent);}
+.badge-top{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--accent);color:#150f0a;font-size:9px;letter-spacing:1px;padding:3px 9px;border-radius:0 0 8px 8px;font-weight:600;white-space:nowrap;}
+.plan-name{font-size:17px;margin:4px 0 2px;}
+.plan-price{color:var(--gold-2);font-size:19px;font-family:'Libre Bodoni',serif;}
+.cell{text-align:center;font-size:13px;color:#fff;}
+.cell.dim{color:var(--white-50);}
+.cell.x{color:var(--white-50);opacity:.5;}
+.cell.gold{color:var(--accent-soft);font-weight:600;}
+.section-title{grid-column:1/-1;padding:20px 14px 10px !important;font-family:'Libre Bodoni',serif;color:var(--gold-2);font-size:15px;letter-spacing:1px;text-transform:uppercase;background:var(--bg) !important;border-top:1px solid var(--border-soft);}
+.note{grid-column:1/-1;padding:8px 14px !important;font-size:11px;color:var(--white-50);background:var(--bg) !important;}
+
+.enterprise-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:16px;}
+.enterprise-list div{background:var(--card);border:1px solid var(--border-soft);border-radius:10px;padding:12px 14px;font-size:13px;color:#fff;display:flex;align-items:center;gap:8px;}
+
+.eco-title{text-align:center;font-size:24px;margin:60px 0 24px;}
+.eco-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;}
+.eco-card{background:var(--card);border:1px solid var(--border-soft);border-radius:14px;padding:18px;text-align:center;}
+.eco-card .ic{font-size:26px;margin-bottom:8px;}
+.eco-card h4{margin:0 0 8px;font-size:15px;color:var(--gold-2);font-family:'Libre Bodoni',serif;}
+.eco-card p{margin:0;font-size:12px;color:var(--white-70);line-height:1.5;}
+
+.footer{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-top:60px;padding-top:30px;border-top:1px solid var(--border-soft);}
+.trust{display:flex;gap:20px;flex-wrap:wrap;}
+.trust div{font-size:12px;color:var(--white-70);max-width:180px;}
+.trust b{display:block;color:#fff;font-size:13px;margin-bottom:3px;}
+.cta{padding:16px 32px;border-radius:12px;font-size:15px;white-space:nowrap;border:none;cursor:pointer;}
+
+@media (max-width:900px){
+  .plans-grid{grid-template-columns:1fr;}
+  .row-label{padding-top:10px;font-weight:600;color:#fff;}
+  .plan-head{padding-top:14px !important;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="brand">
+      <svg class="crest" viewBox="0 0 100 100" fill="none">
+        <path d="M50 8 L58 40 L90 30 L65 55 L85 82 L50 68 L15 82 L35 55 L10 30 L42 40 Z" fill="url(#g1)"/>
+        <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#f5e8d0"/><stop offset="50%" stop-color="#d9b48f"/><stop offset="100%" stop-color="#6e4a35"/>
+        </linearGradient></defs>
+      </svg>
+      <div>
+        <div class="font-display" style="font-size:18px;">LuminZenith AI</div>
+        <div class="brand-name">La lumière au sommet</div>
+      </div>
+    </div>
+    <div class="vision-badge"><b>VISION : 1 MILLIARD</b>Ton succès, notre intelligence. Zéro limite, zéro frein.</div>
+  </div>
+
+  <div class="hero">
+    <h1 class="font-display gold-text">CHOISIS TON SOMMET</h1>
+    <p>Une IA. Tous les outils. Zéro limite.</p>
+  </div>
+
+  <div class="plans-grid" style="margin-top:32px;">
+    <div></div>
+    <div class="plan-head"><div class="plan-name font-display">🌅 Aube</div><div class="plan-price">Gratuit</div></div>
+    <div class="plan-head"><div class="plan-name font-display">✨ Éclat</div><div class="plan-price">12,99 €<span style="font-size:11px;color:var(--white-50);">/mois</span></div></div>
+    <div class="plan-head"><div class="plan-name font-display">🌕 Halo</div><div class="plan-price">27,99 €<span style="font-size:11px;color:var(--white-50);">/mois</span></div></div>
+    <div class="plan-head top"><div class="badge-top">POPULAIRE</div><div class="plan-name font-display">👑 Zénith</div><div class="plan-price">59,99 €<span style="font-size:11px;color:var(--white-50);">/mois</span></div></div>
+    <div class="plan-head top" style="border-top-color:#8f6a45;"><div class="badge-top" style="background:#8f6a45;">ENTREPRISE</div><div class="plan-name font-display">🏢 Entreprise</div><div class="plan-price">149,99 €<span style="font-size:11px;color:var(--white-50);">/mois</span></div></div>
+
+    <div class="section-title">Fonctionnalités générales</div>
+    <div class="row-label">👥 Utilisateurs</div><div class="cell">1</div><div class="cell">3</div><div class="cell">6</div><div class="cell gold">16</div><div class="cell gold">Illimités</div>
+    <div class="row-label">🤖 Assistant IA</div><div class="cell">Basic</div><div class="cell">Assistant 3</div><div class="cell">Assistant 4</div><div class="cell gold">Lumin Core 5</div><div class="cell gold">Lumin Core 6</div>
+    <div class="row-label">⚡ Priorité IA</div><div class="cell">⭐</div><div class="cell">⭐⭐</div><div class="cell">⭐⭐⭐</div><div class="cell gold">⭐⭐⭐⭐</div><div class="cell gold">⭐⭐⭐⭐⭐</div>
+    <div class="row-label">💬 Messages IA</div><div class="cell">26 / 6h</div><div class="cell">3 000/mois</div><div class="cell">6 000/mois</div><div class="cell gold">12 000/mois</div><div class="cell gold">Illimité + priorité absolue</div>
+    <div class="row-label">🧠 Mémoire IA</div><div class="cell">Limitée</div><div class="cell">50</div><div class="cell">360</div><div class="cell gold">Illimitée</div><div class="cell gold">Illimitée</div>
+    <div class="row-label">🌐 Recherche web (volume)</div><div class="cell">10/jour</div><div class="cell">150/jour</div><div class="cell">250/14h</div><div class="cell gold">750/6h</div><div class="cell gold">Illimitée</div>
+    <div class="row-label">👁️ Vision IA (analyse d'images)</div><div class="cell">20/mois</div><div class="cell">100/mois</div><div class="cell">500/mois</div><div class="cell gold">Illimitée</div><div class="cell gold">Illimitée</div>
+    <div class="row-label">📄 Documents IA</div><div class="cell">Basique</div><div class="cell">Standard</div><div class="cell">Avancé</div><div class="cell gold">Premium</div><div class="cell gold">Enterprise</div>
+    <div class="row-label">🖼️ Génération d'images</div><div class="cell">6/jour</div><div class="cell">250/mois</div><div class="cell">500/mois</div><div class="cell gold">Illimitée</div><div class="cell gold">Illimitée</div>
+    <div class="row-label">🎥 Génération vidéo</div><div class="cell">6/jour</div><div class="cell">250/mois</div><div class="cell">500/mois</div><div class="cell gold">Illimitée 4K</div><div class="cell gold">Illimitée 4K/8K</div>
+    <div class="row-label">🎵 Génération musicale</div><div class="cell">10/jour</div><div class="cell">2 500/mois</div><div class="cell">5 500/mois</div><div class="cell gold">10 000/mois + Mixage Pro</div><div class="cell gold">Illimitée + Studio Pro</div>
+    <div class="row-label">📎 Pièces jointes / caméra / micro</div><div class="cell">16/semaine</div><div class="cell">100/mois</div><div class="cell">500/mois</div><div class="cell gold">Illimité</div><div class="cell gold">Illimité</div>
+    <div class="row-label">⚡ Actions rapides</div><div class="cell">3</div><div class="cell">6</div><div class="cell">6 + spécialisées</div><div class="cell gold">Toutes</div><div class="cell gold">Toutes</div>
+    <div class="row-label">🤖 Automatisations actives</div><div class="cell x">❌</div><div class="cell">3</div><div class="cell">10</div><div class="cell gold">Illimitées</div><div class="cell gold">Illimitées</div>
+    <div class="row-label">🔄 Workflows</div><div class="cell x">❌</div><div class="cell">3</div><div class="cell">10</div><div class="cell gold">Illimités</div><div class="cell gold">Illimités</div>
+    <div class="row-label">☁️ Stockage cloud</div><div class="cell">1 Go</div><div class="cell">25 Go</div><div class="cell">250 Go</div><div class="cell gold">2 To</div><div class="cell gold">10 To</div>
+    <div class="row-label">🔒 Confidentialité</div><div class="cell">Chiffrement E2EE</div><div class="cell">Chiffrement renforcé</div><div class="cell">Confidentialité avancée</div><div class="cell gold">Isolation dédiée</div><div class="cell gold">Isolation dédiée + conformité entreprise</div>
+    <div class="note">Volume recherche web : les fenêtres correspondent au vrai cycle technique (24h pour Aube/Éclat, 14h pour Halo, 6h pour Zénith), pas des plafonds mensuels.</div>
+
+    <div class="section-title">📞 Communication sécurisée (E2EE)</div>
+    <div class="row-label">💬 Messagerie privée chiffrée</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">👥 Discussions de groupe</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">📎 Envoi de fichiers</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">🎤 Messages vocaux</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">📞 Appels audio</div><div class="cell">60 min/jour</div><div class="cell">120 min/jour</div><div class="cell">240 min/jour</div><div class="cell gold">480 min/jour</div><div class="cell gold">Politique d'utilisation raisonnable</div>
+    <div class="row-label">🎥 Appels vidéo (participants max)</div><div class="cell">2</div><div class="cell">3</div><div class="cell">5</div><div class="cell gold">25</div><div class="cell gold">250</div>
+    <div class="row-label">🖥️ Réunions type Teams</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">🖥️ Partage d'écran</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">📝 Sous-titres IA</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">🤖 Résumé automatique de réunion</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">🌍 Traduction en direct</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+
+    <div class="section-title">🤖 Agents IA &amp; outils</div>
+    <div class="row-label">💼 Agent Business</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">📈 Agent Marketing</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">💰 Agent Finance</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">⚖️ Agent Juridique</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">👥 Agent RH</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">🎨 Agent Design</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">🎵 Agent Musique</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">💻 Agent codeur</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">Basique</div><div class="cell gold">Complet</div><div class="cell gold">Complet</div>
+    <div class="row-label">🔗 API développeur</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">Illimitée</div>
+    <div class="row-label">🎙️ Mode vocal IA</div><div class="cell">10 min/jour</div><div class="cell">30 min/jour</div><div class="cell">90 min/jour</div><div class="cell gold">480 min/jour</div><div class="cell gold">Politique d'utilisation raisonnable</div>
+
+    <div class="section-title">🔗 Connecteurs disponibles</div>
+    <div class="row-label">Google Drive</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Gmail</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Google Calendar</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Google Contacts</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Google Docs</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Google Sheets</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Google Slides</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Microsoft OneDrive</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Outlook</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Outlook Calendar</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Dropbox</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Slack</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Discord</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Notion</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Microsoft Teams</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Trello</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Asana</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">ClickUp</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">GitHub</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">GitLab</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Bitbucket</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Shopify</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">WooCommerce</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Stripe</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">PayPal</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">HubSpot</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Salesforce</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Airtable</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Firebase</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Supabase</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">PostgreSQL</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">MySQL</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">API REST</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Webhooks</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Zapier</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Make</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">n8n</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Connecteurs personnalisés</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div>
+  </div>
+
+  <div class="section-title" style="margin-top:40px;font-size:18px;">🏢 Exclusivités Entreprise</div>
+  <div class="enterprise-list">
+    <div>👤 Gestionnaire de compte dédié</div>
+    <div>📈 SLA garanti</div>
+    <div>🔐 SSO (Google Workspace, Azure AD, Okta)</div>
+    <div>👥 Gestion des équipes &amp; rôles</div>
+    <div>📋 Journal d'audit</div>
+    <div>🧾 Facturation multi-entités</div>
+    <div>🚀 Déploiement assisté</div>
+    <div>🎓 Formation personnalisée</div>
+    <div>🖥️ Hébergement dédié (option)</div>
+    <div>🎧 Support VIP 24/7</div>
+  </div>
+
+  <div class="eco-title font-display gold-text">Écosystème LuminZenith AI</div>
+  <div class="eco-grid">
+    <div class="eco-card"><div class="ic">💼</div><h4>Business</h4><p>CRM, factures, comptabilité, juridique, RH</p></div>
+    <div class="eco-card"><div class="ic">🎨</div><h4>Création</h4><p>Logos, UI/UX, images IA, vidéos IA, flyers</p></div>
+    <div class="eco-card"><div class="ic">🎵</div><h4>Studio IA</h4><p>Beats, mixage, mastering, prompts musicaux</p></div>
+    <div class="eco-card"><div class="ic">💻</div><h4>Développement</h4><p>Sites, apps, API, GitHub, code</p></div>
+    <div class="eco-card"><div class="ic">📈</div><h4>Finance</h4><p>Budget, fiscalité, trading, simulations</p></div>
+    <div class="eco-card"><div class="ic">⚙️</div><h4>Automatisation</h4><p>Workflows, connecteurs, rappels, IA</p></div>
+    <div class="eco-card"><div class="ic">📞</div><h4>Communication</h4><p>Messages, appels, visio, réunions</p></div>
+    <div class="eco-card"><div class="ic">🔒</div><h4>Sécurité</h4><p>Chiffrement E2EE, protection avancée</p></div>
+    <div class="eco-card"><div class="ic">☁️</div><h4>Cloud</h4><p>Synchronisation web, mobile, desktop</p></div>
+  </div>
+
+  <div class="footer">
+    <div class="trust">
+      <div><b>🔒 Sécurité maximale</b>Chiffrement de bout en bout garanti</div>
+      <div><b>🚀 Mises à jour</b>Nouvelles fonctionnalités chaque semaine</div>
+      <div><b>🎧 Support dédié</b>Une équipe à ton succès</div>
+      <div><b>🌍 Disponible partout</b>Web, mobile, desktop synchronisés</div>
+    </div>
+    <button class="gold-btn cta">Rejoins LuminZenith AI et atteins ton sommet →</button>
+  </div>
+
+</div>
+</body>
+</html>
