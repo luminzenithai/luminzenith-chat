@@ -67,6 +67,8 @@ body{margin:0;background:var(--bg);color:#fff;font-family:'Source Serif 4',serif
   .row-label{padding-top:10px;font-weight:600;color:#fff;}
   .plan-head{padding-top:14px !important;}
 }
+.grow-row{display:contents;}
+.section-title .arrow{color:var(--gold-2);font-size:12px;transition:transform .2s;}
 </style>
 </head>
 <body>
@@ -101,90 +103,90 @@ body{margin:0;background:var(--bg);color:#fff;font-family:'Source Serif 4',serif
     <div class="plan-head top"><div class="badge-top">POPULAIRE</div><div class="plan-name font-display">👑 Zénith</div><div class="plan-price">59,99 €<span style="font-size:11px;color:var(--white-50);">/mois</span></div></div>
     <div class="plan-head top" style="border-top-color:#8f6a45;"><div class="badge-top" style="background:#8f6a45;">ENTREPRISE</div><div class="plan-name font-display">🏢 Entreprise</div><div class="plan-price">149,99 €<span style="font-size:11px;color:var(--white-50);">/mois</span></div></div>
 
-    <div class="section-title">Fonctionnalités générales</div>
-    <div class="row-label">👥 Utilisateurs</div><div class="cell">1</div><div class="cell">3</div><div class="cell">6</div><div class="cell gold">16</div><div class="cell gold">Illimités</div>
-    <div class="row-label">🤖 Assistant IA</div><div class="cell">Basic</div><div class="cell">Assistant 3</div><div class="cell">Assistant 4</div><div class="cell gold">Lumin Core 5</div><div class="cell gold">Lumin Core 6</div>
-    <div class="row-label">⚡ Priorité IA</div><div class="cell">⭐</div><div class="cell">⭐⭐</div><div class="cell">⭐⭐⭐</div><div class="cell gold">⭐⭐⭐⭐</div><div class="cell gold">⭐⭐⭐⭐⭐</div>
-    <div class="row-label">💬 Messages IA</div><div class="cell">26 / 6h</div><div class="cell">3 000/mois</div><div class="cell">6 000/mois</div><div class="cell gold">12 000/mois</div><div class="cell gold">Illimité + priorité absolue</div>
-    <div class="row-label">🧠 Mémoire IA</div><div class="cell">Limitée</div><div class="cell">50</div><div class="cell">360</div><div class="cell gold">Illimitée</div><div class="cell gold">Illimitée</div>
-    <div class="row-label">🌐 Recherche web (volume)</div><div class="cell">10/jour</div><div class="cell">150/jour</div><div class="cell">250/14h</div><div class="cell gold">750/6h</div><div class="cell gold">Illimitée</div>
-    <div class="row-label">👁️ Vision IA (analyse d'images)</div><div class="cell">20/mois</div><div class="cell">100/mois</div><div class="cell">500/mois</div><div class="cell gold">Illimitée</div><div class="cell gold">Illimitée</div>
-    <div class="row-label">📄 Documents IA</div><div class="cell">Basique</div><div class="cell">Standard</div><div class="cell">Avancé</div><div class="cell gold">Premium</div><div class="cell gold">Enterprise</div>
-    <div class="row-label">🖼️ Génération d'images</div><div class="cell">6/jour</div><div class="cell">250/mois</div><div class="cell">500/mois</div><div class="cell gold">Illimitée</div><div class="cell gold">Illimitée</div>
-    <div class="row-label">🎥 Génération vidéo</div><div class="cell">6/jour</div><div class="cell">250/mois</div><div class="cell">500/mois</div><div class="cell gold">Illimitée 4K</div><div class="cell gold">Illimitée 4K/8K</div>
-    <div class="row-label">🎵 Génération musicale</div><div class="cell">10/jour</div><div class="cell">2 500/mois</div><div class="cell">5 500/mois</div><div class="cell gold">10 000/mois + Mixage Pro</div><div class="cell gold">Illimitée + Studio Pro</div>
-    <div class="row-label">📎 Pièces jointes / caméra / micro</div><div class="cell">16/semaine</div><div class="cell">100/mois</div><div class="cell">500/mois</div><div class="cell gold">Illimité</div><div class="cell gold">Illimité</div>
-    <div class="row-label">⚡ Actions rapides</div><div class="cell">3</div><div class="cell">6</div><div class="cell">6 + spécialisées</div><div class="cell gold">Toutes</div><div class="cell gold">Toutes</div>
-    <div class="row-label">🤖 Automatisations actives</div><div class="cell x">❌</div><div class="cell">3</div><div class="cell">10</div><div class="cell gold">Illimitées</div><div class="cell gold">Illimitées</div>
-    <div class="row-label">🔄 Workflows</div><div class="cell x">❌</div><div class="cell">3</div><div class="cell">10</div><div class="cell gold">Illimités</div><div class="cell gold">Illimités</div>
-    <div class="row-label">☁️ Stockage cloud</div><div class="cell">1 Go</div><div class="cell">25 Go</div><div class="cell">250 Go</div><div class="cell gold">2 To</div><div class="cell gold">10 To</div>
-    <div class="row-label">🔒 Confidentialité</div><div class="cell">Chiffrement E2EE</div><div class="cell">Chiffrement renforcé</div><div class="cell">Confidentialité avancée</div><div class="cell gold">Isolation dédiée</div><div class="cell gold">Isolation dédiée + conformité entreprise</div>
-    <div class="note">Volume recherche web : les fenêtres correspondent au vrai cycle technique (24h pour Aube/Éclat, 14h pour Halo, 6h pour Zénith), pas des plafonds mensuels.</div>
+    <div class="section-title" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;" onclick="toggleSection('general', this)" data-open="true"><span>Fonctionnalités générales</span><span class="arrow">▾</span></div>
+    <div class="grow-row" data-section="general"><div class="row-label">👥 Utilisateurs</div><div class="cell">1</div><div class="cell">3</div><div class="cell">6</div><div class="cell gold">16</div><div class="cell gold">Illimités</div></div>
+    <div class="grow-row" data-section="general"><div class="row-label">🤖 Assistant IA</div><div class="cell">Basic</div><div class="cell">Assistant 3</div><div class="cell">Assistant 4</div><div class="cell gold">Lumin Core 5</div><div class="cell gold">Lumin Core 6</div></div>
+    <div class="grow-row" data-section="general"><div class="row-label">⚡ Priorité IA</div><div class="cell">⭐</div><div class="cell">⭐⭐</div><div class="cell">⭐⭐⭐</div><div class="cell gold">⭐⭐⭐⭐</div><div class="cell gold">⭐⭐⭐⭐⭐</div></div>
+    <div class="grow-row" data-section="general"><div class="row-label">💬 Messages IA</div><div class="cell">26 / 6h</div><div class="cell">3 000/mois</div><div class="cell">6 000/mois</div><div class="cell gold">12 000/mois</div><div class="cell gold">Illimité + priorité absolue</div></div>
+    <div class="grow-row" data-section="general"><div class="row-label">🧠 Mémoire IA</div><div class="cell">Limitée</div><div class="cell">50</div><div class="cell">360</div><div class="cell gold">Illimitée</div><div class="cell gold">Illimitée</div></div>
+    <div class="grow-row" data-section="general"><div class="row-label">🌐 Recherche web (volume)</div><div class="cell">10/jour</div><div class="cell">150/jour</div><div class="cell">250/14h</div><div class="cell gold">750/6h</div><div class="cell gold">Illimitée</div></div>
+    <div class="grow-row" data-section="general"><div class="row-label">👁️ Vision IA (analyse d'images)</div><div class="cell">20/mois</div><div class="cell">100/mois</div><div class="cell">500/mois</div><div class="cell gold">Illimitée</div><div class="cell gold">Illimitée</div></div>
+    <div class="grow-row" data-section="general"><div class="row-label">📄 Documents IA</div><div class="cell">Basique</div><div class="cell">Standard</div><div class="cell">Avancé</div><div class="cell gold">Premium</div><div class="cell gold">Enterprise</div></div>
+    <div class="grow-row" data-section="general"><div class="row-label">🖼️ Génération d'images</div><div class="cell">6/jour</div><div class="cell">250/mois</div><div class="cell">500/mois</div><div class="cell gold">Illimitée</div><div class="cell gold">Illimitée</div></div>
+    <div class="grow-row" data-section="general"><div class="row-label">🎥 Génération vidéo</div><div class="cell">6/jour</div><div class="cell">250/mois</div><div class="cell">500/mois</div><div class="cell gold">Illimitée 4K</div><div class="cell gold">Illimitée 4K/8K</div></div>
+    <div class="grow-row" data-section="general"><div class="row-label">🎵 Génération musicale</div><div class="cell">10/jour</div><div class="cell">2 500/mois</div><div class="cell">5 500/mois</div><div class="cell gold">10 000/mois + Mixage Pro</div><div class="cell gold">Illimitée + Studio Pro</div></div>
+    <div class="grow-row" data-section="general"><div class="row-label">📎 Pièces jointes / caméra / micro</div><div class="cell">16/semaine</div><div class="cell">100/mois</div><div class="cell">500/mois</div><div class="cell gold">Illimité</div><div class="cell gold">Illimité</div></div>
+    <div class="grow-row" data-section="general"><div class="row-label">⚡ Actions rapides</div><div class="cell">3</div><div class="cell">6</div><div class="cell">6 + spécialisées</div><div class="cell gold">Toutes</div><div class="cell gold">Toutes</div></div>
+    <div class="grow-row" data-section="general"><div class="row-label">🤖 Automatisations actives</div><div class="cell x">❌</div><div class="cell">3</div><div class="cell">10</div><div class="cell gold">Illimitées</div><div class="cell gold">Illimitées</div></div>
+    <div class="grow-row" data-section="general"><div class="row-label">🔄 Workflows</div><div class="cell x">❌</div><div class="cell">3</div><div class="cell">10</div><div class="cell gold">Illimités</div><div class="cell gold">Illimités</div></div>
+    <div class="grow-row" data-section="general"><div class="row-label">☁️ Stockage cloud</div><div class="cell">1 Go</div><div class="cell">25 Go</div><div class="cell">250 Go</div><div class="cell gold">2 To</div><div class="cell gold">10 To</div></div>
+    <div class="grow-row" data-section="general"><div class="row-label">🔒 Confidentialité</div><div class="cell">Chiffrement E2EE</div><div class="cell">Chiffrement renforcé</div><div class="cell">Confidentialité avancée</div><div class="cell gold">Isolation dédiée</div><div class="cell gold">Isolation dédiée + conformité entreprise</div></div>
+    <div class="grow-row" data-section="general"><div class="note">Volume recherche web : les fenêtres correspondent au vrai cycle technique (24h pour Aube/Éclat, 14h pour Halo, 6h pour Zénith), pas des plafonds mensuels.</div></div>
 
-    <div class="section-title">📞 Communication sécurisée (E2EE)</div>
-    <div class="row-label">💬 Messagerie privée chiffrée</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">👥 Discussions de groupe</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">📎 Envoi de fichiers</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">🎤 Messages vocaux</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">📞 Appels audio</div><div class="cell">60 min/jour</div><div class="cell">120 min/jour</div><div class="cell">240 min/jour</div><div class="cell gold">480 min/jour</div><div class="cell gold">Politique d'utilisation raisonnable</div>
-    <div class="row-label">🎥 Appels vidéo (participants max)</div><div class="cell">2</div><div class="cell">3</div><div class="cell">5</div><div class="cell gold">25</div><div class="cell gold">250</div>
-    <div class="row-label">🖥️ Réunions type Teams</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">🖥️ Partage d'écran</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">📝 Sous-titres IA</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">🤖 Résumé automatique de réunion</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">🌍 Traduction en direct</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="section-title" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;" onclick="toggleSection('communication', this)" data-open="false"><span>📞 Communication sécurisée (E2EE)</span><span class="arrow">▸</span></div>
+    <div class="grow-row" data-section="communication" style="display:none;"><div class="row-label">💬 Messagerie privée chiffrée</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="communication" style="display:none;"><div class="row-label">👥 Discussions de groupe</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="communication" style="display:none;"><div class="row-label">📎 Envoi de fichiers</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="communication" style="display:none;"><div class="row-label">🎤 Messages vocaux</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="communication" style="display:none;"><div class="row-label">📞 Appels audio</div><div class="cell">60 min/jour</div><div class="cell">120 min/jour</div><div class="cell">240 min/jour</div><div class="cell gold">480 min/jour</div><div class="cell gold">Politique d'utilisation raisonnable</div></div>
+    <div class="grow-row" data-section="communication" style="display:none;"><div class="row-label">🎥 Appels vidéo (participants max)</div><div class="cell">2</div><div class="cell">3</div><div class="cell">5</div><div class="cell gold">25</div><div class="cell gold">250</div></div>
+    <div class="grow-row" data-section="communication" style="display:none;"><div class="row-label">🖥️ Réunions type Teams</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="communication" style="display:none;"><div class="row-label">🖥️ Partage d'écran</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="communication" style="display:none;"><div class="row-label">📝 Sous-titres IA</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="communication" style="display:none;"><div class="row-label">🤖 Résumé automatique de réunion</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="communication" style="display:none;"><div class="row-label">🌍 Traduction en direct</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
 
-    <div class="section-title">🤖 Agents IA &amp; outils</div>
-    <div class="row-label">💼 Agent Business</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">📈 Agent Marketing</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">💰 Agent Finance</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">⚖️ Agent Juridique</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">👥 Agent RH</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">🎨 Agent Design</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">🎵 Agent Musique</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">💻 Agent codeur</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">Basique</div><div class="cell gold">Complet</div><div class="cell gold">Complet</div>
-    <div class="row-label">🔗 API développeur</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">Illimitée</div>
-    <div class="row-label">🎙️ Mode vocal IA</div><div class="cell">10 min/jour</div><div class="cell">30 min/jour</div><div class="cell">90 min/jour</div><div class="cell gold">480 min/jour</div><div class="cell gold">Politique d'utilisation raisonnable</div>
+    <div class="section-title" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;" onclick="toggleSection('agents', this)" data-open="false"><span>🤖 Agents IA &amp; outils</span><span class="arrow">▸</span></div>
+    <div class="grow-row" data-section="agents" style="display:none;"><div class="row-label">💼 Agent Business</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="agents" style="display:none;"><div class="row-label">📈 Agent Marketing</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="agents" style="display:none;"><div class="row-label">💰 Agent Finance</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="agents" style="display:none;"><div class="row-label">⚖️ Agent Juridique</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="agents" style="display:none;"><div class="row-label">👥 Agent RH</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="agents" style="display:none;"><div class="row-label">🎨 Agent Design</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="agents" style="display:none;"><div class="row-label">🎵 Agent Musique</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="agents" style="display:none;"><div class="row-label">💻 Agent codeur</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">Basique</div><div class="cell gold">Complet</div><div class="cell gold">Complet</div></div>
+    <div class="grow-row" data-section="agents" style="display:none;"><div class="row-label">🔗 API développeur</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">Illimitée</div></div>
+    <div class="grow-row" data-section="agents" style="display:none;"><div class="row-label">🎙️ Mode vocal IA</div><div class="cell">10 min/jour</div><div class="cell">30 min/jour</div><div class="cell">90 min/jour</div><div class="cell gold">480 min/jour</div><div class="cell gold">Politique d'utilisation raisonnable</div></div>
 
-    <div class="section-title">🔗 Connecteurs disponibles</div>
-    <div class="row-label">Google Drive</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Gmail</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Google Calendar</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Google Contacts</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Google Docs</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Google Sheets</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Google Slides</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Microsoft OneDrive</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Outlook</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Outlook Calendar</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Dropbox</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Slack</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Discord</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Notion</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Microsoft Teams</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Trello</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Asana</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">ClickUp</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">GitHub</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">GitLab</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Bitbucket</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Shopify</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">WooCommerce</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Stripe</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">PayPal</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">HubSpot</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Salesforce</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Airtable</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Firebase</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Supabase</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">PostgreSQL</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">MySQL</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">API REST</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Webhooks</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Zapier</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Make</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">n8n</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
-    <div class="row-label">Connecteurs personnalisés</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div>
+    <div class="section-title" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;" onclick="toggleSection('connecteurs', this)" data-open="false"><span>🔗 Connecteurs disponibles</span><span class="arrow">▸</span></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Google Drive</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Gmail</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Google Calendar</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Google Contacts</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Google Docs</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Google Sheets</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Google Slides</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Microsoft OneDrive</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Outlook</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Outlook Calendar</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Dropbox</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Slack</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Discord</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Notion</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Microsoft Teams</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Trello</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Asana</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">ClickUp</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">GitHub</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">GitLab</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Bitbucket</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Shopify</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">WooCommerce</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Stripe</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">PayPal</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">HubSpot</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Salesforce</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Airtable</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Firebase</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Supabase</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">PostgreSQL</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">MySQL</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">API REST</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Webhooks</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Zapier</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Make</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">n8n</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div></div>
+    <div class="grow-row" data-section="connecteurs" style="display:none;"><div class="row-label">Connecteurs personnalisés</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div></div>
   </div>
 
   <div class="section-title" style="margin-top:40px;font-size:18px;">🏢 Exclusivités Entreprise</div>
@@ -225,5 +227,14 @@ body{margin:0;background:var(--bg);color:#fff;font-family:'Source Serif 4',serif
   </div>
 
 </div>
+<script>
+function toggleSection(section, headerEl) {
+  const isOpen = headerEl.getAttribute('data-open') === 'true';
+  const rows = document.querySelectorAll('.grow-row[data-section="' + section + '"]');
+  rows.forEach(r => { r.style.display = isOpen ? 'none' : ''; });
+  headerEl.setAttribute('data-open', isOpen ? 'false' : 'true');
+  headerEl.querySelector('.arrow').textContent = isOpen ? '▸' : '▾';
+}
+</script>
 </body>
 </html>
