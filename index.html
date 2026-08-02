@@ -3,1067 +3,227 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LuminZenith AI</title>
-<script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
-<script src="https://cdn.tailwindcss.com"></script>
-<script
-  data-memberstack-app="app_cmrsf4mt3002q0svtg4bt4p4a"
-  src="https://static.memberstack.com/scripts/v2/memberstack.js"
-  type="text/javascript"
-></script>
+<title>LuminZenith AI — Tarifs</title>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:wght@500;600;700&family=Source+Serif+4:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-html{overflow-x:hidden!important;width:100%!important;max-width:100%!important;}
-body{margin:0!important;padding:0!important;width:100%!important;max-width:100%!important;overflow-x:hidden!important;font-family:'Source Serif 4',serif;background:#000;}
-*{box-sizing:border-box;min-width:0;}
-#root{width:100%;max-width:100%;overflow-x:hidden;}
-.font-display{font-family:'Libre Bodoni',serif;letter-spacing:0.5px;}
-::-webkit-scrollbar{width:6px;}
-::-webkit-scrollbar-thumb{background:#40301f;border-radius:10px;}
-@keyframes twinkle{0%,100%{opacity:.1;transform:scale(0.6)}50%{opacity:1;transform:scale(1.6)}}
-@keyframes drift{from{transform:translateY(0)}to{transform:translateY(-20px)}}
-.star{animation:twinkle var(--dur,2.5s) ease-in-out infinite, drift var(--driftDur,7s) ease-in-out infinite alternate;}
-@keyframes shoot{0%{transform:translate(0,0) rotate(-35deg);opacity:0}6%{opacity:1}50%{opacity:.85}82%{opacity:.3}100%{transform:translate(440px,308px) rotate(-35deg);opacity:0}}
-.shooting-star{animation:shoot cubic-bezier(.3,.5,.4,1) infinite;}
+:root{
+  --bg:#020102; --card:#0c0a07; --border:#16110c; --border-soft:#1f1712;
+  --gold-1:#f5e8d0; --gold-2:#d9b48f; --gold-3:#8f6a45; --gold-4:#6e4a35;
+  --accent:#b8805a; --accent-soft:#dcaaa0; --white-70:rgba(255,255,255,.7); --white-50:rgba(255,255,255,.5);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:#fff;font-family:'Source Serif 4',serif;overflow-x:hidden;}
+.font-display{font-family:'Libre Bodoni',serif;letter-spacing:.3px;}
+.gold-text{background:linear-gradient(90deg,var(--gold-4),var(--gold-1),var(--gold-4));background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite;}
 @keyframes shine{to{background-position:200% center;}}
-.text-shine{background:linear-gradient(90deg,#33221a,#d9b48f,#f5e8d0,#d9b48f,#33221a);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s linear infinite;}
-@keyframes pulseglow{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
-.glow-ring{animation:pulseglow 3.5s ease-in-out infinite;}
-.logo-fade{
-  -webkit-mask-image:radial-gradient(circle, black 45%, transparent 78%);
-  mask-image:radial-gradient(circle, black 45%, transparent 78%);
+.gold-btn{background:linear-gradient(135deg,var(--gold-1),var(--gold-2),var(--gold-3),var(--gold-4));color:#150f0a;font-weight:600;}
+::-webkit-scrollbar{width:8px;} ::-webkit-scrollbar-thumb{background:var(--gold-4);border-radius:10px;}
+
+.wrap{max-width:1360px;margin:0 auto;padding:48px 24px 80px;}
+
+.header{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:40px;}
+.brand{display:flex;align-items:center;gap:14px;}
+.crest{width:56px;height:56px;flex-shrink:0;}
+.brand-name{font-size:14px;letter-spacing:2px;color:var(--gold-2);text-transform:uppercase;}
+.hero{text-align:center;margin:32px 0 8px;}
+.hero h1{font-size:clamp(32px,5vw,52px);margin:0 0 8px;}
+.hero p{color:var(--white-70);font-size:16px;margin:0;}
+.vision-badge{border:1px solid var(--accent);border-radius:12px;padding:14px 18px;text-align:center;font-size:13px;color:var(--white-70);min-width:200px;}
+.vision-badge b{color:var(--accent-soft);display:block;font-family:'Libre Bodoni',serif;font-size:15px;margin-bottom:4px;}
+
+.plans-grid{display:grid;grid-template-columns:1.3fr repeat(5,1fr);gap:2px;background:var(--border-soft);border-radius:16px;overflow:hidden;border:1px solid var(--border-soft);}
+.plans-grid > div{background:var(--card);padding:14px 12px;}
+.row-label{display:flex;align-items:center;font-size:13px;color:var(--white-70);gap:6px;}
+.plan-head{text-align:center;padding:22px 10px !important;position:relative;}
+.plan-head.top{background:linear-gradient(180deg,rgba(184,128,90,.12),var(--card)) !important;border-top:2px solid var(--accent);}
+.badge-top{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--accent);color:#150f0a;font-size:9px;letter-spacing:1px;padding:3px 9px;border-radius:0 0 8px 8px;font-weight:600;white-space:nowrap;}
+.plan-name{font-size:17px;margin:4px 0 2px;}
+.plan-price{color:var(--gold-2);font-size:19px;font-family:'Libre Bodoni',serif;}
+.cell{text-align:center;font-size:13px;color:#fff;}
+.cell.dim{color:var(--white-50);}
+.cell.x{color:var(--white-50);opacity:.5;}
+.cell.gold{color:var(--accent-soft);font-weight:600;}
+.section-title{grid-column:1/-1;padding:20px 14px 10px !important;font-family:'Libre Bodoni',serif;color:var(--gold-2);font-size:15px;letter-spacing:1px;text-transform:uppercase;background:var(--bg) !important;border-top:1px solid var(--border-soft);}
+.note{grid-column:1/-1;padding:8px 14px !important;font-size:11px;color:var(--white-50);background:var(--bg) !important;}
+
+.enterprise-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:16px;}
+.enterprise-list div{background:var(--card);border:1px solid var(--border-soft);border-radius:10px;padding:12px 14px;font-size:13px;color:#fff;display:flex;align-items:center;gap:8px;}
+
+.eco-title{text-align:center;font-size:24px;margin:60px 0 24px;}
+.eco-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;}
+.eco-card{background:var(--card);border:1px solid var(--border-soft);border-radius:14px;padding:18px;text-align:center;}
+.eco-card .ic{font-size:26px;margin-bottom:8px;}
+.eco-card h4{margin:0 0 8px;font-size:15px;color:var(--gold-2);font-family:'Libre Bodoni',serif;}
+.eco-card p{margin:0;font-size:12px;color:var(--white-70);line-height:1.5;}
+
+.footer{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-top:60px;padding-top:30px;border-top:1px solid var(--border-soft);}
+.trust{display:flex;gap:20px;flex-wrap:wrap;}
+.trust div{font-size:12px;color:var(--white-70);max-width:180px;}
+.trust b{display:block;color:#fff;font-size:13px;margin-bottom:3px;}
+.cta{padding:16px 32px;border-radius:12px;font-size:15px;white-space:nowrap;border:none;cursor:pointer;}
+
+@media (max-width:900px){
+  .plans-grid{grid-template-columns:1fr;}
+  .row-label{padding-top:10px;font-weight:600;color:#fff;}
+  .plan-head{padding-top:14px !important;}
 }
 </style>
 </head>
 <body>
-<div id="root"></div>
+<div class="wrap">
 
-<script type="text/babel">
-const { useState, useEffect, useRef, useMemo } = React;
-
-const WORKER = 'https://luminzenithai-api.luminzenithai.workers.dev';
-let memberIdActuel = null;
-
-function heureActuelle() {
-  return new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-}
-
-function getAnonymousId() {
-  let id = localStorage.getItem('luminzenith_uid');
-  if (!id) {
-    id = 'user_' + Math.random().toString(36).substring(2) + Date.now();
-    localStorage.setItem('luminzenith_uid', id);
-  }
-  return id;
-}
-
-function getConversationsList() {
-  const list = localStorage.getItem('luminzenith_convs');
-  return list ? JSON.parse(list) : [];
-}
-function saveConversationsList(list) {
-  localStorage.setItem('luminzenith_convs', JSON.stringify(list));
-  if (memberIdActuel) {
-    fetch(WORKER, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'sauverListe', userId: memberIdActuel, liste: list })
-    }).catch(() => {});
-  }
-}
-async function chargerListeServeur(userId) {
-  try {
-    const r = await fetch(WORKER, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'chargerListe', userId })
-    });
-    const data = await r.json();
-    return data.liste || [];
-  } catch (e) {
-    return [];
-  }
-}
-function renommerConversation(id) {
-  const list = getConversationsList();
-  const conv = list.find(c => c.id === id);
-  const nouveauNom = window.prompt('Renommer la conversation :', conv ? conv.titre : '');
-  if (!nouveauNom || !nouveauNom.trim()) return;
-  if (conv) { conv.titre = nouveauNom.trim(); saveConversationsList(list); }
-}
-function toggleFavoriConversation(id) {
-  const list = getConversationsList();
-  const conv = list.find(c => c.id === id);
-  if (conv) { conv.favori = !conv.favori; saveConversationsList(list); }
-}
-function supprimerConversation(id) {
-  if (!window.confirm('Supprimer définitivement cette conversation ?')) return;
-  const list = getConversationsList().filter(c => c.id !== id);
-  saveConversationsList(list);
-}
-function toggleArchiveConversation(id) {
-  const list = getConversationsList();
-  const conv = list.find(c => c.id === id);
-  if (conv) { conv.archive = !conv.archive; saveConversationsList(list); }
-}
-function partagerConversation(id, titre) {
-  const url = window.location.origin + window.location.pathname + '?conv=' + encodeURIComponent(id);
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(url).then(() => {
-      alert('Lien copié : "' + titre + '"\n\nCe lien rouvre cette conversation précise sur ton compte.');
-    }).catch(() => {
-      window.prompt('Copie ce lien :', url);
-    });
-  } else {
-    window.prompt('Copie ce lien :', url);
-  }
-}
-function creerNouvelleConversation() {
-  const id = 'conv_' + Date.now();
-  const list = getConversationsList();
-  list.push({ id, titre: 'Nouvelle conversation' });
-  saveConversationsList(list);
-  localStorage.setItem('luminzenith_current_conv', id);
-  return id;
-}
-function getCurrentConversationId() {
-  const params = new URLSearchParams(window.location.search);
-  const partage = params.get('conv');
-  if (partage) {
-    localStorage.setItem('luminzenith_current_conv', partage);
-    return partage;
-  }
-  let id = localStorage.getItem('luminzenith_current_conv');
-  if (!id) id = creerNouvelleConversation();
-  return id;
-}
-
-function StarField({ count = 90, shootingCount = 6, className = '' }) {
-  const stars = useMemo(() => Array.from({ length: count }, () => ({
-    top: Math.random() * 100, left: Math.random() * 100,
-    dur: 1.2 + Math.random() * 2, driftDur: 3.5 + Math.random() * 4,
-    delay: Math.random() * 3, size: Math.random() > 0.65 ? 4 : 2
-  })), [count]);
-  const shootingStars = useMemo(() => Array.from({ length: shootingCount }, () => ({
-    top: Math.random() * 60, left: Math.random() * 70,
-    delay: Math.random() * 6, dur: 3 + Math.random() * 2.5
-  })), [shootingCount]);
-  return (
-    <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>
-      {stars.map((s, i) => (
-        <div key={i} className="star absolute bg-[#f0e0c8] rounded-full"
-          style={{ top: s.top + '%', left: s.left + '%', width: s.size, height: s.size,
-            animationDelay: s.delay + 's', '--dur': s.dur + 's', '--driftDur': s.driftDur + 's',
-            boxShadow: '0 0 6px 1px rgba(217,180,143,0.9)' }} />
-      ))}
-      {shootingStars.map((s, i) => (
-        <div key={'shoot'+i} className="shooting-star absolute w-32 h-[2px]"
-          style={{ top: s.top + '%', left: s.left + '%', animationDelay: s.delay + 's', animationDuration: s.dur + 's',
-            background: 'linear-gradient(90deg, transparent, #f0e0c8, transparent)',
-            boxShadow: '0 0 8px 2px rgba(217,180,143,0.6)' }} />
-      ))}
-    </div>
-  );
-}
-
-function Splash({ onDone }) {
-  const [fade, setFade] = useState(false);
-  useEffect(() => {
-    const t1 = setTimeout(() => setFade(true), 2200);
-    const t2 = setTimeout(onDone, 3000);
-    return () => { clearTimeout(t1); clearTimeout(t2); };
-  }, []);
-  return (
-    <div className={`fixed inset-0 z-50 flex flex-col items-center justify-center transition-opacity duration-700 ${fade ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
-      style={{ background: 'radial-gradient(circle at center, #0b0805 0%, #000 60%, #000 100%)' }}>
-      <StarField count={160} shootingCount={10} />
-      <div className="flex flex-col items-center justify-center text-center z-10 px-4 w-full">
-        <div className="relative w-[26rem] h-[26rem] sm:w-[30rem] sm:h-[30rem] flex items-center justify-center mb-4">
-          <div className="glow-ring absolute inset-0 rounded-full blur-3xl"
-            style={{ background: 'radial-gradient(circle, rgba(217,180,143,0.5), transparent 70%)' }} />
-          <img src="LuminZenith AI.png" alt="LuminZenith AI"
-            className="logo-fade relative w-full h-full object-contain"
-            style={{ mixBlendMode: 'screen' }} />
-        </div>
-        <h1 className="font-display text-shine text-3xl sm:text-4xl font-bold mb-2 uppercase">LuminZenith AI</h1>
-        <p className="text-[#6e4a35] text-xs tracking-[4px] uppercase font-display">La lumière au sommet</p>
+  <div class="header">
+    <div class="brand">
+      <svg class="crest" viewBox="0 0 100 100" fill="none">
+        <path d="M50 8 L58 40 L90 30 L65 55 L85 82 L50 68 L15 82 L35 55 L10 30 L42 40 Z" fill="url(#g1)"/>
+        <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#f5e8d0"/><stop offset="50%" stop-color="#d9b48f"/><stop offset="100%" stop-color="#6e4a35"/>
+        </linearGradient></defs>
+      </svg>
+      <div>
+        <div class="font-display" style="font-size:18px;">LuminZenith AI</div>
+        <div class="brand-name">La lumière au sommet</div>
       </div>
     </div>
-  );
-}
+    <div class="vision-badge"><b>VISION : 1 MILLIARD</b>Ton succès, notre intelligence. Zéro limite, zéro frein.</div>
+  </div>
 
-function AuthModal({ open, onClose, onAuthSuccess }) {
-  const [mode, setMode] = useState('login');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  <div class="hero">
+    <h1 class="font-display gold-text">CHOISIS TON SOMMET</h1>
+    <p>Une IA. Tous les outils. Zéro limite.</p>
+  </div>
 
-  if (!open) return null;
+  <div class="plans-grid" style="margin-top:32px;">
+    <div></div>
+    <div class="plan-head"><div class="plan-name font-display">🌅 Aube</div><div class="plan-price">Gratuit</div></div>
+    <div class="plan-head"><div class="plan-name font-display">✨ Éclat</div><div class="plan-price">12,99 €<span style="font-size:11px;color:var(--white-50);">/mois</span></div></div>
+    <div class="plan-head"><div class="plan-name font-display">🌕 Halo</div><div class="plan-price">27,99 €<span style="font-size:11px;color:var(--white-50);">/mois</span></div></div>
+    <div class="plan-head top"><div class="badge-top">POPULAIRE</div><div class="plan-name font-display">👑 Zénith</div><div class="plan-price">59,99 €<span style="font-size:11px;color:var(--white-50);">/mois</span></div></div>
+    <div class="plan-head top" style="border-top-color:#8f6a45;"><div class="badge-top" style="background:#8f6a45;">ENTREPRISE</div><div class="plan-name font-display">🏢 Entreprise</div><div class="plan-price">149,99 €<span style="font-size:11px;color:var(--white-50);">/mois</span></div></div>
 
-  async function submit() {
-    setError('');
-    if (!email || !password) { setError('Remplis tous les champs.'); return; }
-    setLoading(true);
-    try {
-      const ms = window.$memberstackDom;
-      if (!ms) { setError("Le service d'authentification n'est pas encore prêt. Réessaie dans un instant."); setLoading(false); return; }
-      let res;
-      if (mode === 'signup') {
-        res = await ms.signupMemberEmailPassword({ email, password });
-      } else {
-        res = await ms.loginMemberEmailPassword({ email, password });
-      }
-      if (res && res.data) {
-        onAuthSuccess(res.data.member || res.data);
-        onClose();
-      }
-    } catch (e) {
-      setError(e.message || "Une erreur s'est produite. Vérifie tes identifiants.");
-    }
-    setLoading(false);
-  }
+    <div class="section-title">Fonctionnalités générales</div>
+    <div class="row-label">👥 Utilisateurs</div><div class="cell">1</div><div class="cell">3</div><div class="cell">6</div><div class="cell gold">16</div><div class="cell gold">Illimités</div>
+    <div class="row-label">🤖 Assistant IA</div><div class="cell">Basic</div><div class="cell">Assistant 3</div><div class="cell">Assistant 4</div><div class="cell gold">Lumin Core 5</div><div class="cell gold">Lumin Core 6</div>
+    <div class="row-label">⚡ Priorité IA</div><div class="cell">⭐</div><div class="cell">⭐⭐</div><div class="cell">⭐⭐⭐</div><div class="cell gold">⭐⭐⭐⭐</div><div class="cell gold">⭐⭐⭐⭐⭐</div>
+    <div class="row-label">💬 Messages IA</div><div class="cell">26 / 6h</div><div class="cell">3 000/mois</div><div class="cell">6 000/mois</div><div class="cell gold">12 000/mois</div><div class="cell gold">Illimité + priorité absolue</div>
+    <div class="row-label">🧠 Mémoire IA</div><div class="cell">Limitée</div><div class="cell">50</div><div class="cell">360</div><div class="cell gold">Illimitée</div><div class="cell gold">Illimitée</div>
+    <div class="row-label">🌐 Recherche web (volume)</div><div class="cell">10/jour</div><div class="cell">150/jour</div><div class="cell">250/14h</div><div class="cell gold">750/6h</div><div class="cell gold">Illimitée</div>
+    <div class="row-label">👁️ Vision IA (analyse d'images)</div><div class="cell">20/mois</div><div class="cell">100/mois</div><div class="cell">500/mois</div><div class="cell gold">Illimitée</div><div class="cell gold">Illimitée</div>
+    <div class="row-label">📄 Documents IA</div><div class="cell">Basique</div><div class="cell">Standard</div><div class="cell">Avancé</div><div class="cell gold">Premium</div><div class="cell gold">Enterprise</div>
+    <div class="row-label">🖼️ Génération d'images</div><div class="cell">6/jour</div><div class="cell">250/mois</div><div class="cell">500/mois</div><div class="cell gold">Illimitée</div><div class="cell gold">Illimitée</div>
+    <div class="row-label">🎥 Génération vidéo</div><div class="cell">6/jour</div><div class="cell">250/mois</div><div class="cell">500/mois</div><div class="cell gold">Illimitée 4K</div><div class="cell gold">Illimitée 4K/8K</div>
+    <div class="row-label">🎵 Génération musicale</div><div class="cell">10/jour</div><div class="cell">2 500/mois</div><div class="cell">5 500/mois</div><div class="cell gold">10 000/mois + Mixage Pro</div><div class="cell gold">Illimitée + Studio Pro</div>
+    <div class="row-label">📎 Pièces jointes / caméra / micro</div><div class="cell">16/semaine</div><div class="cell">100/mois</div><div class="cell">500/mois</div><div class="cell gold">Illimité</div><div class="cell gold">Illimité</div>
+    <div class="row-label">⚡ Actions rapides</div><div class="cell">3</div><div class="cell">6</div><div class="cell">6 + spécialisées</div><div class="cell gold">Toutes</div><div class="cell gold">Toutes</div>
+    <div class="row-label">🤖 Automatisations actives</div><div class="cell x">❌</div><div class="cell">3</div><div class="cell">10</div><div class="cell gold">Illimitées</div><div class="cell gold">Illimitées</div>
+    <div class="row-label">🔄 Workflows</div><div class="cell x">❌</div><div class="cell">3</div><div class="cell">10</div><div class="cell gold">Illimités</div><div class="cell gold">Illimités</div>
+    <div class="row-label">☁️ Stockage cloud</div><div class="cell">1 Go</div><div class="cell">25 Go</div><div class="cell">250 Go</div><div class="cell gold">2 To</div><div class="cell gold">10 To</div>
+    <div class="row-label">🔒 Confidentialité</div><div class="cell">Chiffrement E2EE</div><div class="cell">Chiffrement renforcé</div><div class="cell">Confidentialité avancée</div><div class="cell gold">Isolation dédiée</div><div class="cell gold">Isolation dédiée + conformité entreprise</div>
+    <div class="note">Volume recherche web : les fenêtres correspondent au vrai cycle technique (24h pour Aube/Éclat, 14h pour Halo, 6h pour Zénith), pas des plafonds mensuels.</div>
 
-  return (
-    <>
-      <div onClick={onClose} className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50" />
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="relative w-full max-w-md rounded-2xl border border-[#16110c] p-8"
-          style={{ background: 'linear-gradient(160deg,#0b0805,#020102)' }}>
-          <button onClick={onClose} className="absolute top-4 right-4 text-white/70 hover:text-white text-xl">✕</button>
+    <div class="section-title">📞 Communication sécurisée (E2EE)</div>
+    <div class="row-label">💬 Messagerie privée chiffrée</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">👥 Discussions de groupe</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">📎 Envoi de fichiers</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">🎤 Messages vocaux</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">📞 Appels audio</div><div class="cell">60 min/jour</div><div class="cell">120 min/jour</div><div class="cell">240 min/jour</div><div class="cell gold">480 min/jour</div><div class="cell gold">Politique d'utilisation raisonnable</div>
+    <div class="row-label">🎥 Appels vidéo (participants max)</div><div class="cell">2</div><div class="cell">3</div><div class="cell">5</div><div class="cell gold">25</div><div class="cell gold">250</div>
+    <div class="row-label">🖥️ Réunions type Teams</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">🖥️ Partage d'écran</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">📝 Sous-titres IA</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">🤖 Résumé automatique de réunion</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">🌍 Traduction en direct</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
 
-          <div className="text-center mb-6">
-            <div className="w-14 h-14 mx-auto mb-3">
-              <img src="LuminZenith AI.png" alt="logo" className="w-full h-full object-contain" style={{ mixBlendMode: 'screen' }} />
-            </div>
-            <h2 className="font-display text-2xl text-white uppercase">
-              {mode === 'login' ? 'Connexion' : 'Créer un compte'}
-            </h2>
-          </div>
+    <div class="section-title">🤖 Agents IA &amp; outils</div>
+    <div class="row-label">💼 Agent Business</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">📈 Agent Marketing</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">💰 Agent Finance</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">⚖️ Agent Juridique</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">👥 Agent RH</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">🎨 Agent Design</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">🎵 Agent Musique</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">💻 Agent codeur</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">Basique</div><div class="cell gold">Complet</div><div class="cell gold">Complet</div>
+    <div class="row-label">🔗 API développeur</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">Illimitée</div>
+    <div class="row-label">🎙️ Mode vocal IA</div><div class="cell">10 min/jour</div><div class="cell">30 min/jour</div><div class="cell">90 min/jour</div><div class="cell gold">480 min/jour</div><div class="cell gold">Politique d'utilisation raisonnable</div>
 
-          <div className="flex mb-6 rounded-lg overflow-hidden border border-[#16110c]">
-            <button onClick={() => setMode('login')}
-              className={`flex-1 py-2 text-sm font-display ${mode === 'login' ? 'text-[#150f0a]' : 'text-[#6e4a35]'}`}
-              style={mode === 'login' ? { background: 'linear-gradient(135deg,#f0e0c8,#d9b48f,#8f6a45,#6e4a35)' } : { background: '#0c0a07' }}>
-              Se connecter
-            </button>
-            <button onClick={() => setMode('signup')}
-              className={`flex-1 py-2 text-sm font-display ${mode === 'signup' ? 'text-[#150f0a]' : 'text-[#6e4a35]'}`}
-              style={mode === 'signup' ? { background: 'linear-gradient(135deg,#f0e0c8,#d9b48f,#8f6a45,#6e4a35)' } : { background: '#0c0a07' }}>
-              S'inscrire
-            </button>
-          </div>
+    <div class="section-title">🔗 Connecteurs disponibles</div>
+    <div class="row-label">Google Drive</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Gmail</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Google Calendar</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Google Contacts</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Google Docs</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Google Sheets</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Google Slides</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Microsoft OneDrive</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Outlook</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Outlook Calendar</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Dropbox</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Slack</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Discord</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Notion</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Microsoft Teams</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Trello</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Asana</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">ClickUp</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">GitHub</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">GitLab</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Bitbucket</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Shopify</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">WooCommerce</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Stripe</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">PayPal</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">HubSpot</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Salesforce</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Airtable</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Firebase</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Supabase</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">PostgreSQL</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">MySQL</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">API REST</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Webhooks</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell">✔</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Zapier</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Make</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">n8n</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div><div class="cell gold">✔</div>
+    <div class="row-label">Connecteurs personnalisés</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell x">❌</div><div class="cell gold">✔</div>
+  </div>
 
-          <div className="flex flex-col gap-3">
-            <input type="email" placeholder="Adresse email" value={email} onChange={e => setEmail(e.target.value)}
-              className="bg-[#0c0a07] border border-[#16110c] rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-[#b8805a]" />
-            <input type="password" placeholder="Mot de passe" value={password} onChange={e => setPassword(e.target.value)}
-              onKeyPress={e => e.key === 'Enter' && submit()}
-              className="bg-[#0c0a07] border border-[#16110c] rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-[#b8805a]" />
+  <div class="section-title" style="margin-top:40px;font-size:18px;">🏢 Exclusivités Entreprise</div>
+  <div class="enterprise-list">
+    <div>👤 Gestionnaire de compte dédié</div>
+    <div>📈 SLA garanti</div>
+    <div>🔐 SSO (Google Workspace, Azure AD, Okta)</div>
+    <div>👥 Gestion des équipes &amp; rôles</div>
+    <div>📋 Journal d'audit</div>
+    <div>🧾 Facturation multi-entités</div>
+    <div>🚀 Déploiement assisté</div>
+    <div>🎓 Formation personnalisée</div>
+    <div>🖥️ Hébergement dédié (option)</div>
+    <div>🎧 Support VIP 24/7</div>
+  </div>
 
-            {error && <p className="text-red-400 text-xs">{error}</p>}
+  <div class="eco-title font-display gold-text">Écosystème LuminZenith AI</div>
+  <div class="eco-grid">
+    <div class="eco-card"><div class="ic">💼</div><h4>Business</h4><p>CRM, factures, comptabilité, juridique, RH</p></div>
+    <div class="eco-card"><div class="ic">🎨</div><h4>Création</h4><p>Logos, UI/UX, images IA, vidéos IA, flyers</p></div>
+    <div class="eco-card"><div class="ic">🎵</div><h4>Studio IA</h4><p>Beats, mixage, mastering, prompts musicaux</p></div>
+    <div class="eco-card"><div class="ic">💻</div><h4>Développement</h4><p>Sites, apps, API, GitHub, code</p></div>
+    <div class="eco-card"><div class="ic">📈</div><h4>Finance</h4><p>Budget, fiscalité, trading, simulations</p></div>
+    <div class="eco-card"><div class="ic">⚙️</div><h4>Automatisation</h4><p>Workflows, connecteurs, rappels, IA</p></div>
+    <div class="eco-card"><div class="ic">📞</div><h4>Communication</h4><p>Messages, appels, visio, réunions</p></div>
+    <div class="eco-card"><div class="ic">🔒</div><h4>Sécurité</h4><p>Chiffrement E2EE, protection avancée</p></div>
+    <div class="eco-card"><div class="ic">☁️</div><h4>Cloud</h4><p>Synchronisation web, mobile, desktop</p></div>
+  </div>
 
-            <button onClick={submit} disabled={loading}
-              className="mt-2 py-3 rounded-lg font-semibold text-[#150f0a] text-sm shadow-[0_0_16px_rgba(184,128,90,0.4)] hover:shadow-[0_0_26px_rgba(184,128,90,0.7)] transition-all disabled:opacity-50"
-              style={{ background: 'linear-gradient(135deg,#f0e0c8,#d9b48f,#8f6a45,#6e4a35)' }}>
-              {loading ? 'Un instant...' : (mode === 'login' ? 'Se connecter' : "Créer mon compte")}
-            </button>
-          </div>
-
-          <p className="text-center text-white/70 text-xs mt-5">
-            {mode === 'login' ? "Pas encore de compte ?" : "Déjà un compte ?"}{' '}
-            <button onClick={() => setMode(mode === 'login' ? 'signup' : 'login')} className="text-white underline">
-              {mode === 'login' ? "S'inscrire" : "Se connecter"}
-            </button>
-          </p>
-        </div>
-      </div>
-    </>
-  );
-}
-
-function Sidebar({ onOpenConversations, onOpenProfil, member, onOpenAuth, onLogout }) {
-  const icons = {
-    home: <path d="M3 11l9-8 9 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />,
-    chat: <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z" />,
-    call: <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />,
-    activity: <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />,
-    profile: <><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></>,
-  };
-  const items = [
-    { key: 'home', label: 'Accueil', active: true },
-    { key: 'chat', label: 'Messages', onClick: onOpenConversations },
-    { key: 'call', label: 'Appels / Visio' },
-    { key: 'activity', label: 'Activité' },
-    { key: 'profile', label: 'Profil', onClick: onOpenProfil },
-  ];
-  return (
-    <div className="w-16 sm:w-64 shrink-0 flex flex-col py-6 border-r border-[#140f0b]" style={{ background: '#020102' }}>
-      <div className="flex items-center gap-3 px-3 sm:px-5 pb-5 mb-4 border-b border-[#140f0b] justify-center sm:justify-start">
-        <div className="w-11 h-11 shrink-0 rounded-xl border border-[#16110c] flex items-center justify-center" style={{ background: '#0c0a07' }}>
-          <img src="LuminZenith AI.png" alt="logo" className="w-8 h-8 object-contain" />
-        </div>
-        <div className="hidden sm:block min-w-0">
-          <div className="font-display text-[#d9b48f] font-semibold text-sm leading-tight truncate">LuminZenith AI</div>
-          <div className="text-white/70 text-[9px] tracking-widest truncate font-display">LA LUMIÈRE AU SOMMET</div>
-        </div>
-      </div>
-      {items.map((it, i) => (
-        <div key={i} onClick={it.onClick}
-          className={`flex items-center gap-3 px-3 sm:px-5 py-3 cursor-pointer text-sm border-l-2 justify-center sm:justify-start transition-colors
-            ${it.active ? 'border-[#b8805a] text-white bg-[#b8805a]/10' : 'border-transparent text-stone-500 hover:text-white hover:bg-[#b8805a]/5'}`}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 drop-shadow-[0_0_4px_rgba(184,128,90,0.4)]">
-            {icons[it.key]}
-          </svg>
-          <span className="hidden sm:inline truncate">{it.label}</span>
-        </div>
-      ))}
-
-      <div className="hidden sm:block mt-6 mx-5 p-4 rounded-xl border border-[#16110c]" style={{ background: '#0c0a07' }}>
-        <div className="text-white text-sm font-display mb-1">Explore LuminZenith</div>
-        <div className="text-white/80 text-xs leading-relaxed mb-3">Business, création, automatisation — dis-moi ce sur quoi tu travailles.</div>
-        <button onClick={onOpenConversations} className="w-full py-2 rounded-lg text-xs font-semibold text-[#150f0a]"
-          style={{ background: 'linear-gradient(135deg,#f0e0c8,#d9b48f,#8f6a45,#6e4a35)' }}>
-          Voir mes conversations
-        </button>
-      </div>
-
-      <div className="mt-4 sm:mt-6 px-3 sm:px-5">
-        {member ? (
-          <div className="hidden sm:flex flex-col gap-2 p-4 rounded-xl border border-[#16110c]" style={{ background: '#0c0a07' }}>
-            <span className="inline-block w-fit text-[10px] tracking-wide px-2 py-0.5 rounded-full border border-[#b8805a] text-[#b8805a]">CONNECTÉ</span>
-            <div className="text-white text-xs truncate">{member.auth?.email || member.email}</div>
-            <button onClick={onLogout} className="text-[11px] text-white/70 hover:text-white text-left mt-1">
-              Déconnexion
-            </button>
-          </div>
-        ) : (
-          <button onClick={onOpenAuth}
-            className="w-full py-2 rounded-lg text-[11px] sm:text-xs font-semibold text-[#150f0a]"
-            style={{ background: 'linear-gradient(135deg,#f0e0c8,#d9b48f,#8f6a45,#6e4a35)' }}>
-            Se connecter
-          </button>
-        )}
-      </div>
+  <div class="footer">
+    <div class="trust">
+      <div><b>🔒 Sécurité maximale</b>Chiffrement de bout en bout garanti</div>
+      <div><b>🚀 Mises à jour</b>Nouvelles fonctionnalités chaque semaine</div>
+      <div><b>🎧 Support dédié</b>Une équipe à ton succès</div>
+      <div><b>🌍 Disponible partout</b>Web, mobile, desktop synchronisés</div>
     </div>
-  );
-}
+    <button class="gold-btn cta">Rejoins LuminZenith AI et atteins ton sommet →</button>
+  </div>
 
-
-function ConversationsPanel({ open, onClose, current, onSelect }) {
-  const [menuOpenId, setMenuOpenId] = useState(null);
-  const [showArchived, setShowArchived] = useState(false);
-  if (!open) return null;
-  const all = getConversationsList().slice().reverse();
-  const archivedCount = all.filter(c => c.archive).length;
-  const base = showArchived ? all.filter(c => c.archive) : all.filter(c => !c.archive);
-  const list = [...base.filter(c => c.favori), ...base.filter(c => !c.favori)];
-
-  function handleAction(action, id) {
-    setMenuOpenId(null);
-    if (action === 'renommer') renommerConversation(id);
-    if (action === 'favori') toggleFavoriConversation(id);
-    if (action === 'archiver') toggleArchiveConversation(id);
-    if (action === 'partager') {
-      const conv = getConversationsList().find(c => c.id === id);
-      partagerConversation(id, conv ? conv.titre : '');
-    }
-    if (action === 'supprimer') {
-      supprimerConversation(id);
-      if (id === current) {
-        const nouvelId = creerNouvelleConversation();
-        onSelect(nouvelId);
-      }
-    }
-  }
-
-  return (
-    <>
-      <div onClick={() => { onClose(); setMenuOpenId(null); }} className="fixed inset-0 bg-black/70 backdrop-blur-sm z-30" />
-      <div className="fixed top-0 left-16 sm:left-64 w-64 max-w-[75vw] h-full z-40 p-4 border-r border-[#140f0b] overflow-y-auto"
-        style={{ background: '#040302' }}>
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="font-display text-white text-lg">{showArchived ? 'Archivées' : 'Conversations'}</h3>
-          {archivedCount > 0 && (
-            <button onClick={() => setShowArchived(!showArchived)} className="text-[10px] text-white/70 hover:text-white underline">
-              {showArchived ? 'Retour' : `Archives (${archivedCount})`}
-            </button>
-          )}
-        </div>
-        {list.length === 0 && <p className="text-stone-600 text-sm">{showArchived ? 'Aucune conversation archivée.' : 'Aucune conversation encore.'}</p>}
-        {list.map(c => (
-          <div key={c.id} className="relative mb-2">
-            <div onClick={() => { onSelect(c.id); setMenuOpenId(null); }}
-              className={`p-3 pr-9 rounded-lg cursor-pointer text-sm border transition-colors truncate flex items-center gap-1
-                ${c.id === current ? 'border-[#b8805a] text-white shadow-[0_0_12px_rgba(184,128,90,0.25)]' : 'border-[#140f0b] text-stone-300 bg-black/40 hover:border-[#7a5f45]'}`}>
-              {c.favori && <span className="text-[#b8805a] shrink-0">★</span>}
-              <span className="truncate">{c.titre}</span>
-            </div>
-            <button onClick={(e) => { e.stopPropagation(); setMenuOpenId(menuOpenId === c.id ? null : c.id); }}
-              className="absolute top-2 right-1.5 w-6 h-6 rounded-md flex items-center justify-center text-[#7a5f45] hover:text-[#d9b48f] hover:bg-[#b8805a]/10">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2" /><circle cx="12" cy="12" r="2" /><circle cx="19" cy="12" r="2" /></svg>
-            </button>
-            {menuOpenId === c.id && (
-              <div onClick={(e) => e.stopPropagation()}
-                className="absolute right-0 top-9 z-50 w-44 rounded-lg border border-[#16110c] overflow-hidden shadow-lg"
-                style={{ background: '#0c0a07' }}>
-                <button onClick={() => handleAction('favori', c.id)}
-                  className="w-full text-left px-3 py-2 text-xs text-white hover:bg-[#b8805a]/10">
-                  {c.favori ? '★ Désépingler' : '☆ Épingler'}
-                </button>
-                <button onClick={() => handleAction('renommer', c.id)}
-                  className="w-full text-left px-3 py-2 text-xs text-white hover:bg-[#b8805a]/10 border-t border-[#140f0b]">
-                  ✎ Renommer
-                </button>
-                <button onClick={() => handleAction('partager', c.id)}
-                  className="w-full text-left px-3 py-2 text-xs text-white hover:bg-[#b8805a]/10 border-t border-[#140f0b]">
-                  ↗ Partager
-                </button>
-                <button onClick={() => handleAction('archiver', c.id)}
-                  className="w-full text-left px-3 py-2 text-xs text-white hover:bg-[#b8805a]/10 border-t border-[#140f0b]">
-                  {c.archive ? '⇧ Désarchiver' : '⇩ Archiver'}
-                </button>
-                <button onClick={() => handleAction('supprimer', c.id)}
-                  className="w-full text-left px-3 py-2 text-xs text-red-400 hover:bg-red-500/10 border-t border-[#140f0b]">
-                  🗑 Supprimer
-                </button>
-              </div>
-            )}
-
-          </div>
-        ))}
-      </div>
-    </>
-  );
-}
-
-const PLANS_AFFICHAGE = [
-  { cle: 'aube', nom: 'Aube', prix: 'Gratuit', description: '26 messages / 6h', gratuit: true },
-  { cle: 'eclat', nom: 'Éclat', prix: '12,99€/mois', description: '3 000 messages/mois' },
-  { cle: 'halo', nom: 'Halo', prix: '27,99€/mois', description: '6 000 messages/mois + modules avancés' },
-  { cle: 'zenith', nom: 'Zénith', prix: '59,99€/mois', description: '12 000 messages/mois + automatisations' },
-];
-
-function PaywallPanel({ open, onClose, userId, email, forfaitActuel, onLancerCheckout, onInitialiserStripe, bloquant }) {
-  if (!open) return null;
-  return (
-    <>
-      <div onClick={onClose} className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50" />
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className={`relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-2xl border p-6 ${bloquant ? 'border-red-500/40' : 'border-[#16110c]'}`}
-          style={{ background: 'linear-gradient(160deg,#0c0a07,#020102)' }}>
-          <button onClick={onClose} className="absolute top-4 right-4 text-white/70 hover:text-white text-xl">✕</button>
-          {bloquant ? (
-            <>
-              <h2 className="font-display text-white text-2xl mb-1 text-center">Limite de messages atteinte</h2>
-              <p className="text-red-400/90 text-sm text-center mb-6">Tu as utilisé tous les messages inclus dans ton forfait actuel. Choisis un forfait supérieur pour continuer à discuter.</p>
-            </>
-          ) : (
-            <>
-              <h2 className="font-display text-white text-2xl mb-1 text-center">Choisis ton forfait</h2>
-              <p className="text-white/60 text-sm text-center mb-6">Messagerie chiffrée et appels inclus sur toutes les formules.</p>
-            </>
-          )}
-          <div className="grid sm:grid-cols-2 gap-3">
-            {PLANS_AFFICHAGE.map(p => (
-              <div key={p.cle} className={`rounded-xl border p-4 flex flex-col gap-2 ${forfaitActuel === p.cle ? 'border-[#b8805a]' : 'border-[#16110c]'}`} style={{ background: '#0c0a07' }}>
-                <div className="text-white font-semibold">{p.nom}</div>
-                <div className="text-[#dcaaa0] text-lg font-display">{p.prix}</div>
-                <div className="text-white/60 text-xs flex-1">{p.description}</div>
-                {forfaitActuel === p.cle ? (
-                  <span className="text-center text-xs text-[#b8805a] py-2">Forfait actuel</span>
-                ) : p.gratuit ? (
-                  <span className="text-center text-xs text-white/40 py-2">—</span>
-                ) : (
-                  <button onClick={() => onLancerCheckout(p.cle)}
-                    className="py-2 rounded-lg text-xs font-semibold text-[#150f0a]"
-                    style={{ background: 'linear-gradient(135deg,#f5e8d0,#d9b48f,#8f6a45,#6e4a35)' }}>
-                    Choisir
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
-          <button onClick={onInitialiserStripe} className="w-full mt-6 text-[10px] text-white/30 hover:text-white/60 underline">
-            (Admin) Initialiser les produits Stripe — à faire une seule fois
-          </button>
-        </div>
-      </div>
-    </>
-  );
-}
-
-function ProfilPanel({ open, onClose, member, forfait, quota, onOpenPaywall, onOpenAuth, onLogout }) {
-  const email = member?.auth?.email || member?.email || null;
-  const initiale = email ? email[0].toUpperCase() : '?';
-
-  if (!open) return null;
-  const infosForfait = PLANS_AFFICHAGE.find(p => p.cle === forfait) || PLANS_AFFICHAGE[0];
-  return (
-    <>
-      <div onClick={onClose} className="fixed inset-0 bg-black/70 backdrop-blur-sm z-30" />
-      <div className="fixed top-0 left-16 sm:left-64 w-72 max-w-[80vw] h-full z-40 p-4 border-r border-[#16110c] overflow-y-auto"
-        style={{ background: '#040302' }}>
-        <h3 className="font-display text-white text-lg mb-4">Profil</h3>
-
-
-        {member ? (
-          <>
-            <div className="flex items-center gap-3 p-3 rounded-lg border border-[#16110c] mb-4" style={{ background: '#0c0a07' }}>
-              <div className="w-10 h-10 shrink-0 rounded-full flex items-center justify-center font-semibold text-[#150f0a]"
-                style={{ background: 'linear-gradient(135deg,#f5e8d0,#d9b48f,#8f6a45,#6e4a35)' }}>
-                {initiale}
-              </div>
-              <div className="min-w-0">
-                <div className="text-white text-sm truncate">{email}</div>
-                <span className="text-[10px] tracking-wide px-2 py-0.5 rounded-full border border-[#b8805a] text-[#b8805a] inline-block mt-1 uppercase">{infosForfait.nom}</span>
-              </div>
-            </div>
-
-            {quota && (
-              <div className="p-3 rounded-lg border border-[#16110c] mb-4" style={{ background: '#0c0a07' }}>
-                <div className="flex justify-between text-xs text-white/80 mb-1">
-                  <span>Messages utilisés</span>
-                  <span>{quota.count} / {quota.cap}</span>
-                </div>
-                <div className="w-full h-1.5 rounded-full bg-[#1a130f] overflow-hidden">
-                  <div className="h-full rounded-full" style={{ width: Math.min(100, (quota.count / quota.cap) * 100) + '%', background: 'linear-gradient(90deg,#d9b48f,#b8805a)' }} />
-                </div>
-              </div>
-            )}
-
-            <button onClick={onOpenPaywall}
-              className="w-full flex items-center justify-between px-3 py-3 rounded-lg border border-[#16110c] text-white text-sm mb-2 hover:border-[#b8805a] transition-colors">
-              Changer de forfait
-              <span className="text-white/40">›</span>
-            </button>
-            <button onClick={() => alert("Réglages à venir.")}
-              className="w-full flex items-center justify-between px-3 py-3 rounded-lg border border-[#16110c] text-white text-sm mb-2 hover:border-[#b8805a] transition-colors">
-              Paramètres
-              <span className="text-white/40">›</span>
-            </button>
-            <button onClick={() => alert("Langue : Français (seule langue disponible pour le moment).")}
-              className="w-full flex items-center justify-between px-3 py-3 rounded-lg border border-[#16110c] text-white text-sm mb-2 hover:border-[#b8805a] transition-colors">
-              Langue
-              <span className="text-white/40">›</span>
-            </button>
-            <button onClick={() => window.open('mailto:layevbeats@gmail.com', '_blank')}
-              className="w-full flex items-center justify-between px-3 py-3 rounded-lg border border-[#16110c] text-white text-sm mb-4 hover:border-[#b8805a] transition-colors">
-              Obtenir de l'aide
-              <span className="text-white/40">›</span>
-            </button>
-
-            <button onClick={() => { onLogout(); onClose(); }}
-              className="w-full py-2 rounded-lg text-xs font-semibold text-red-400 border border-red-500/30 hover:bg-red-500/10 transition-colors">
-              Se déconnecter
-            </button>
-          </>
-        ) : (
-          <>
-            <p className="text-white/70 text-sm mb-4">Connecte-toi pour accéder à ton profil, ton forfait et tes réglages.</p>
-            <button onClick={() => { onOpenAuth(); onClose(); }}
-              className="w-full py-3 rounded-lg text-sm font-semibold text-[#150f0a]"
-              style={{ background: 'linear-gradient(135deg,#f5e8d0,#d9b48f,#8f6a45,#6e4a35)' }}>
-              Se connecter
-            </button>
-          </>
-        )}
-      </div>
-    </>
-  );
-}
-
-function Hero() {
-  return (
-    <div className="relative flex flex-col items-center justify-center text-center py-12 px-4 border-b border-[#140f0b]/60 overflow-hidden shrink-0">
-      <StarField count={100} shootingCount={7} />
-      <div className="relative w-80 h-80 sm:w-96 sm:h-96 flex items-center justify-center mb-3">
-        <div className="glow-ring absolute inset-0 rounded-full blur-3xl"
-          style={{ background: 'radial-gradient(circle, rgba(217,180,143,0.45), transparent 70%)' }} />
-        <img src="LuminZenith AI.png" alt="LuminZenith AI"
-          className="relative w-full h-full object-contain z-10"
-          style={{ mixBlendMode: 'screen' }} />
-      </div>
-      <h2 className="font-display text-shine text-xl sm:text-2xl font-bold relative z-10 uppercase">LuminZenith AI</h2>
-      <p className="text-white/70 text-xs tracking-[3px] uppercase mt-1 relative z-10 font-display">La lumière au sommet</p>
-    </div>
-  );
-}
-
-const QUICK_ACTIONS = [
-  { key: 'business', label: 'Business & Compta', prompt: "Aide-moi sur le business et la stratégie : " },
-  { key: 'social', label: 'Réseaux Sociaux', prompt: "Aide-moi sur les réseaux sociaux : " },
-  { key: 'invest', label: 'Investissement & Trading', prompt: "Aide-moi sur l'investissement : " },
-  { key: 'design', label: 'Création & Design', prompt: "Aide-moi sur la création et le design : " },
-  { key: 'automation', label: 'Automatisation', prompt: "Aide-moi à automatiser : " },
-  { key: 'school', label: 'Études Scolaires', prompt: "Aide-moi sur mes études scolaires : " },
-];
-
-const QUICK_ACTION_ICONS = {
-  business: <><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></>,
-  social: <><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.6" y1="10.5" x2="15.4" y2="6.5" /><line x1="8.6" y1="13.5" x2="15.4" y2="17.5" /></>,
-  invest: <><polyline points="23 6 13.5 15.5 8.5 10.5 1 18" /><polyline points="17 6 23 6 23 12" /></>,
-  design: <><circle cx="13.5" cy="6.5" r="0.5" /><circle cx="17.5" cy="10.5" r="0.5" /><circle cx="8.5" cy="7.5" r="0.5" /><circle cx="6.5" cy="12.5" r="0.5" /><path d="M12 2a10 10 0 1 0 10 10c0-1.1-.9-2-2-2h-3a2 2 0 0 1-2-2v-.5a2.5 2.5 0 0 1 2.5-2.5H18a2 2 0 0 0 2-2c0-2.4-3.6-3-8-3z" /></>,
-  automation: <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />,
-  school: <><path d="M22 10L12 4 2 10l10 6 10-6z" /><path d="M6 12.5V17c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5" /><line x1="22" y1="10" x2="22" y2="17" /></>,
-};
-
-
-function App() {
-  const [showSplash, setShowSplash] = useState(true);
-  const [convOpen, setConvOpen] = useState(false);
-  const [profilOpen, setProfilOpen] = useState(false);
-  const [authOpen, setAuthOpen] = useState(false);
-  const [member, setMember] = useState(null);
-  const [conversationId, setConversationId] = useState(getCurrentConversationId());
-  const [messages, setMessages] = useState([
-    { role: 'assistant', content: "Bonjour ! Je suis LuminZenith AI. Comment puis-je vous aider aujourd'hui ?", heure: heureActuelle() }
-  ]);
-  const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [attachedFile, setAttachedFile] = useState(null);
-  const [listening, setListening] = useState(false);
-  const [cameraOpen, setCameraOpen] = useState(false);
-  const [forfait, setForfait] = useState('aube');
-  const [quotaInfo, setQuotaInfo] = useState(null);
-  const [paywallOpen, setPaywallOpen] = useState(false);
-  const [blocageActif, setBlocageActif] = useState(false);
-  const videoRef = useRef(null);
-  const canvasRef = useRef(null);
-  const streamRef = useRef(null);
-  const anonymousIdRef = useRef(getAnonymousId());
-  const userId = member?.id || anonymousIdRef.current;
-  const email = member?.auth?.email || member?.email || null;
-  const scrollRef = useRef(null);
-  const textareaRef = useRef(null);
-  const fileInputRef = useRef(null);
-  const recognitionRef = useRef(null);
-
-  async function rafraichirForfait() {
-    try {
-      const r = await fetch(WORKER, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'obtenirForfait', userId })
-      });
-      const d = await r.json();
-      setForfait(d.plan || 'aube');
-      if (d.quota && d.details) setQuotaInfo({ ...d.quota, cap: d.details.cap });
-    } catch (e) {}
-  }
-
-  useEffect(() => { rafraichirForfait(); }, [userId]);
-
-  async function lancerCheckout(cle) {
-    try {
-      const r = await fetch(WORKER, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'creerCheckout', userId, plan: cle, email })
-      });
-      const data = await r.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        alert(data.error || "Impossible de démarrer le paiement.");
-      }
-    } catch (e) {
-      alert("Erreur de connexion au service de paiement.");
-    }
-  }
-
-  async function initialiserStripe() {
-    if (!window.confirm("Créer les 3 produits payants sur Stripe maintenant ? À ne faire qu'une seule fois.")) return;
-    try {
-      const r = await fetch(WORKER, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'initialiserStripe' })
-      });
-      const data = await r.json();
-      alert(data.ok ? "Produits Stripe créés avec succès." : (data.error || "Erreur."));
-    } catch (e) {
-      alert("Erreur de connexion.");
-    }
-  }
-
-  function handleInputChange(e) {
-    setInput(e.target.value);
-    const el = e.target;
-    el.style.height = 'auto';
-    el.style.height = Math.min(el.scrollHeight, 240) + 'px';
-  }
-
-  function handleFileSelect(e) {
-    const file = e.target.files && e.target.files[0];
-    if (!file) return;
-    const isVideo = file.type.startsWith('video/');
-    const reader = new FileReader();
-    reader.onload = () => {
-      setAttachedFile({ dataUrl: reader.result, type: isVideo ? 'video' : 'image', name: file.name });
-    };
-    reader.readAsDataURL(file);
-    e.target.value = '';
-  }
-
-  function removeAttachment() {
-    setAttachedFile(null);
-  }
-
-  async function openCamera() {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-      streamRef.current = stream;
-      setCameraOpen(true);
-      setTimeout(() => {
-        if (videoRef.current) videoRef.current.srcObject = stream;
-      }, 0);
-    } catch (e) {
-      alert("Impossible d'accéder à la caméra. Vérifie que l'accès est autorisé pour ce site.");
-    }
-  }
-
-  function closeCamera() {
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(t => t.stop());
-      streamRef.current = null;
-    }
-    setCameraOpen(false);
-  }
-
-  function capturePhoto() {
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    if (!video || !canvas) return;
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-    const dataUrl = canvas.toDataURL('image/png');
-    setAttachedFile({ dataUrl, type: 'image', name: 'photo.png' });
-    closeCamera();
-  }
-
-  function toggleMic() {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      alert("La dictée vocale n'est pas prise en charge par ce navigateur.");
-      return;
-    }
-    if (listening) {
-      recognitionRef.current && recognitionRef.current.stop();
-      setListening(false);
-      return;
-    }
-    const recognition = new SpeechRecognition();
-    recognition.lang = 'fr-FR';
-    recognition.continuous = true;
-    recognition.interimResults = false;
-    recognition.onresult = (event) => {
-      let texteRecu = '';
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        texteRecu += event.results[i][0].transcript;
-      }
-      setInput(prev => {
-        const nouveau = (prev ? prev + ' ' : '') + texteRecu;
-        setTimeout(() => {
-          if (textareaRef.current) {
-            textareaRef.current.style.height = 'auto';
-            textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 240) + 'px';
-          }
-        }, 0);
-        return nouveau;
-      });
-    };
-    recognition.onend = () => setListening(false);
-    recognition.onerror = (event) => {
-      setListening(false);
-      const messages = {
-        'not-allowed': "L'accès au micro a été refusé. Autorise le micro pour ce site dans les réglages du navigateur.",
-        'audio-capture': "Aucun micro détecté sur cet appareil.",
-        'network': "Le service de reconnaissance vocale n'a pas pu être joint (connexion réseau).",
-        'service-not-allowed': "Le service de dictée vocale est désactivé ou bloqué sur cet appareil."
-      };
-      alert(messages[event.error] || ("Erreur du micro : " + event.error));
-    };
-    recognitionRef.current = recognition;
-    try {
-      recognition.start();
-      setListening(true);
-    } catch (e) {
-      alert("Impossible de démarrer le micro : " + e.message);
-      setListening(false);
-    }
-  }
-
-  useEffect(() => {
-    const checkMember = async () => {
-      try {
-        if (window.$memberstackDom) {
-          const res = await window.$memberstackDom.getCurrentMember();
-          if (res && res.data) setMember(res.data);
-        }
-      } catch (e) {}
-    };
-    setTimeout(checkMember, 800);
-  }, []);
-
-  useEffect(() => { chargerHistorique(); }, [conversationId, userId]);
-
-  useEffect(() => {
-    memberIdActuel = member?.id || null;
-    if (!member?.id) return;
-    chargerListeServeur(member.id).then(listeServeur => {
-      const listeLocale = getConversationsList();
-      const idsServeur = new Set(listeServeur.map(c => c.id));
-      const fusion = [...listeServeur, ...listeLocale.filter(c => !idsServeur.has(c.id))];
-      saveConversationsList(fusion);
-    });
-  }, [member]);
-  useEffect(() => { scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight); }, [messages, loading]);
-
-  async function chargerHistorique() {
-    try {
-      const r = await fetch(WORKER, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [], userId, conversationId, chargerSeulement: true })
-      });
-      const data = await r.json();
-      if (data.historique && data.historique.length > 0) {
-        setMessages(data.historique);
-      } else {
-        setMessages([{ role: 'assistant', content: "Bonjour ! Je suis LuminZenith AI. Comment puis-je vous aider aujourd'hui ?", heure: heureActuelle() }]);
-      }
-    } catch (e) { console.log('Pas d\'historique existant.'); }
-  }
-
-  function mettreAJourTitreConversation(premierMessage) {
-    const list = getConversationsList();
-    const conv = list.find(c => c.id === conversationId);
-    if (conv && conv.titre === 'Nouvelle conversation') {
-      conv.titre = premierMessage.substring(0, 30) + (premierMessage.length > 30 ? '...' : '');
-      saveConversationsList(list);
-    }
-  }
-
-  async function envoyer(texteOverride) {
-    const texte = (texteOverride ?? input).trim();
-    if (!texte && !attachedFile) return;
-    const fichierEnvoye = attachedFile;
-    const nouvMessage = { role: 'user', content: texte, attachment: fichierEnvoye, heure: heureActuelle() };
-    const nouvHist = [...messages, nouvMessage];
-    setMessages(nouvHist);
-    setInput('');
-    setAttachedFile(null);
-    if (textareaRef.current) textareaRef.current.style.height = 'auto';
-    mettreAJourTitreConversation(texte || (fichierEnvoye ? fichierEnvoye.name : 'Pièce jointe'));
-    setLoading(true);
-    const messagesPourAPI = nouvHist.map(m => ({
-      role: m.role,
-      content: m.content && m.content.trim() ? m.content : (m.attachment ? '(pièce jointe envoyée)' : '')
-    })).filter(m => m.content);
-    try {
-      const r = await fetch(WORKER, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: messagesPourAPI, userId, conversationId, image: fichierEnvoye ? fichierEnvoye.dataUrl : undefined })
-      });
-      const rep = await r.text();
-      if (rep === '__QUOTA_LIMIT__') {
-        setBlocageActif(true);
-        setPaywallOpen(true);
-      } else {
-        setMessages(h => [...h, { role: 'assistant', content: rep, heure: heureActuelle() }]);
-      }
-      rafraichirForfait();
-    } catch (e) {
-      setMessages(h => [...h, { role: 'assistant', content: 'Erreur de connexion.', heure: heureActuelle() }]);
-    }
-    setLoading(false);
-  }
-
-  function nouvelleConv() {
-    const id = creerNouvelleConversation();
-    setConversationId(id);
-    setConvOpen(false);
-  }
-  function ouvrirConversation(id) {
-    localStorage.setItem('luminzenith_current_conv', id);
-    setConversationId(id);
-    setConvOpen(false);
-  }
-  function formatMsg(text) {
-    return text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
-  }
-
-  async function handleLogout() {
-    try {
-      if (window.$memberstackDom) await window.$memberstackDom.logout();
-    } catch (e) {}
-    setMember(null);
-  }
-
-  return (
-    <div className="flex h-screen w-full text-white overflow-hidden">
-      {showSplash && <Splash onDone={() => setShowSplash(false)} />}
-      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} onAuthSuccess={setMember} />
-      {cameraOpen && (
-        <>
-          <div onClick={closeCamera} className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50" />
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div className="relative w-full max-w-lg rounded-2xl border border-[#16110c] p-5 flex flex-col items-center gap-4"
-              style={{ background: 'linear-gradient(160deg,#0b0805,#020102)' }}>
-              <button onClick={closeCamera} className="absolute top-3 right-3 text-white/70 hover:text-white text-xl">✕</button>
-              <video ref={videoRef} autoPlay playsInline className="w-full rounded-lg bg-black" />
-              <canvas ref={canvasRef} className="hidden" />
-              <button onClick={capturePhoto}
-                className="px-6 py-3 rounded-lg font-semibold text-[#150f0a] text-sm shadow-[0_0_16px_rgba(184,128,90,0.4)] hover:shadow-[0_0_26px_rgba(184,128,90,0.7)] transition-all"
-                style={{ background: 'linear-gradient(135deg,#f0e0c8,#d9b48f,#8f6a45,#6e4a35)' }}>
-                Capturer
-              </button>
-            </div>
-          </div>
-        </>
-      )}
-      <Sidebar onOpenConversations={() => setConvOpen(true)} onOpenProfil={() => setProfilOpen(true)} member={member} onOpenAuth={() => setAuthOpen(true)} onLogout={handleLogout} />
-      <ConversationsPanel open={convOpen} onClose={() => setConvOpen(false)} current={conversationId} onSelect={ouvrirConversation} />
-      <ProfilPanel open={profilOpen} onClose={() => setProfilOpen(false)} member={member} forfait={forfait} quota={quotaInfo}
-        onOpenPaywall={() => { setBlocageActif(false); setPaywallOpen(true); }} onOpenAuth={() => setAuthOpen(true)} onLogout={handleLogout} />
-      <PaywallPanel open={paywallOpen} onClose={() => { setPaywallOpen(false); setBlocageActif(false); }} userId={userId} email={email}
-        forfaitActuel={forfait} onLancerCheckout={lancerCheckout} onInitialiserStripe={initialiserStripe} bloquant={blocageActif} />
-
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden" style={{ background: 'radial-gradient(circle at 50% 0%,#080604 0%,#000 60%)' }}>
-        <header className="relative flex items-center justify-center py-4 px-14 sm:px-16 border-b border-[#140f0b] shadow-lg shrink-0"
-          style={{ background: '#040302' }}>
-          <button onClick={() => setConvOpen(true)}
-            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 border border-[#7a5f45] text-white text-[11px] sm:text-xs px-2 sm:px-3 py-2 rounded-lg hover:border-[#b8805a] transition-colors whitespace-nowrap">
-            ☰ <span className="hidden sm:inline">Conversations</span>
-          </button>
-          <span className="font-display text-shine text-sm sm:text-xl font-bold truncate max-w-full uppercase">✦ LuminZenith AI</span>
-          <button onClick={nouvelleConv}
-            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-[11px] sm:text-xs font-semibold px-2 sm:px-3 py-2 rounded-lg text-[#150f0a] shadow-[0_0_14px_rgba(184,128,90,0.4)] hover:shadow-[0_0_22px_rgba(184,128,90,0.7)] transition-shadow whitespace-nowrap"
-            style={{ background: 'linear-gradient(135deg,#f0e0c8,#d9b48f,#8f6a45,#6e4a35)' }}>
-            + <span className="hidden sm:inline">Nouvelle conversation</span>
-          </button>
-        </header>
-
-        <div className="overflow-y-auto overflow-x-hidden flex-1 flex flex-col min-h-0">
-          <Hero />
-
-          <div className="flex gap-3 overflow-x-auto overflow-y-hidden px-5 py-4 border-b border-[#140f0b]/50 shrink-0">
-            {QUICK_ACTIONS.map((qa, i) => (
-              <div key={i} onClick={() => setInput(qa.prompt)}
-                className="min-w-[130px] shrink-0 flex flex-col items-center gap-2 text-center rounded-xl border border-[#16110c] px-3 py-4 cursor-pointer text-white text-xs hover:border-[#b8805a] hover:shadow-[0_0_18px_rgba(184,128,90,0.3)] hover:-translate-y-0.5 transition-all"
-                style={{ background: '#0c0a07' }}>
-                <div className="w-10 h-10 rounded-lg border border-[#16110c] flex items-center justify-center">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b8805a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    {QUICK_ACTION_ICONS[qa.key]}
-                  </svg>
-                </div>
-                <span className="leading-tight">{qa.label}</span>
-              </div>
-            ))}
-          </div>
-
-          <div ref={scrollRef} className="flex-1 px-5 sm:px-10 py-5 flex flex-col gap-4 min-w-0 max-w-5xl mx-auto w-full">
-            {messages.map((m, i) => (
-              <div key={i} className={`flex items-end gap-2 ${m.role === 'user' ? 'self-end flex-row-reverse' : 'self-start'}`}>
-                <div className={`w-8 h-8 shrink-0 rounded-lg border flex items-center justify-center overflow-hidden ${m.role === 'user' ? 'border-slate-700 bg-slate-800' : 'border-[#16110c]'}`}
-                  style={m.role === 'assistant' ? { background: '#0c0a07' } : {}}>
-                  {m.role === 'assistant'
-                    ? <img src="LuminZenith AI.png" alt="LZ" className="w-6 h-6 object-contain" />
-                    : <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e0c9a8" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>}
-                </div>
-                <div className={`max-w-[500px] w-fit px-4 py-3 rounded-2xl text-sm leading-relaxed break-words flex flex-col gap-2
-                    ${m.role === 'user'
-                      ? 'bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700'
-                      : 'border border-[#16110c] text-white'}`}
-                  style={m.role === 'assistant' ? { background: '#0c0a07' } : {}}>
-                  {m.role === 'assistant' && <span className="text-[#b8805a] text-xs font-semibold">LuminZenith AI</span>}
-                  {m.attachment && m.attachment.type === 'image' && (
-                    <img src={m.attachment.dataUrl} alt={m.attachment.name} className="max-w-[260px] max-h-[260px] rounded-lg object-contain" />
-                  )}
-                  {m.attachment && m.attachment.type === 'video' && (
-                    <video src={m.attachment.dataUrl} controls className="max-w-[260px] max-h-[260px] rounded-lg" />
-                  )}
-                  {m.content && <span dangerouslySetInnerHTML={{ __html: formatMsg(m.content) }} />}
-                  {m.heure && <span className="text-[10px] text-white/60 self-end">{m.heure}</span>}
-                </div>
-              </div>
-            ))}
-            {loading && <div className="self-start text-[#6e4a35] italic text-sm px-4">LuminZenith réfléchit...</div>}
-          </div>
-        </div>
-
-        <div className="border-t border-[#140f0b] shrink-0" style={{ background: '#020102' }}>
-          {quotaInfo && !blocageActif && (quotaInfo.count / quotaInfo.cap) >= 0.9 && (
-            <div className="flex items-center justify-between gap-3 px-4 pt-3 text-xs">
-              <span className="text-amber-400/90">⚠ Tu approches de la limite de ton forfait ({quotaInfo.count}/{quotaInfo.cap} messages).</span>
-              <button onClick={() => setPaywallOpen(true)} className="text-[#dcaaa0] underline shrink-0">Changer de forfait</button>
-            </div>
-          )}
-          {attachedFile && (
-            <div className="flex items-center gap-3 px-4 pt-3">
-              <div className="relative">
-                {attachedFile.type === 'image' ? (
-                  <img src={attachedFile.dataUrl} alt={attachedFile.name} className="w-16 h-16 object-cover rounded-lg border border-[#16110c]" />
-                ) : (
-                  <video src={attachedFile.dataUrl} className="w-16 h-16 object-cover rounded-lg border border-[#16110c]" />
-                )}
-                <button onClick={removeAttachment}
-                  className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-black border border-[#16110c] text-[#d9b48f] text-xs flex items-center justify-center">✕</button>
-              </div>
-              <span className="text-white/80 text-xs truncate">{attachedFile.name}</span>
-            </div>
-          )}
-          <div className="flex gap-2 sm:gap-3 p-4 items-end">
-            <input type="file" accept="image/*,video/*" ref={fileInputRef} onChange={handleFileSelect} className="hidden" />
-
-            <button onClick={() => fileInputRef.current && fileInputRef.current.click()} title="Joindre une photo ou vidéo"
-              className="shrink-0 w-11 h-11 rounded-lg border border-[#16110c] text-[#b8805a] flex items-center justify-center hover:border-[#b8805a] transition-colors">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
-              </svg>
-            </button>
-            <button onClick={openCamera} title="Prendre une photo"
-              className="shrink-0 w-11 h-11 rounded-lg border border-[#16110c] text-[#b8805a] flex items-center justify-center hover:border-[#b8805a] transition-colors">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                <circle cx="12" cy="13" r="4" />
-              </svg>
-            </button>
-            <button onClick={toggleMic} title="Dicter un message"
-              className={`shrink-0 w-11 h-11 rounded-lg border flex items-center justify-center transition-colors ${listening ? 'border-red-500 text-red-400 animate-pulse' : 'border-[#16110c] text-[#b8805a] hover:border-[#b8805a]'}`}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                <line x1="12" y1="19" x2="12" y2="23" />
-                <line x1="8" y1="23" x2="16" y2="23" />
-              </svg>
-            </button>
-
-            <textarea ref={textareaRef} value={input}
-              onChange={handleInputChange}
-              onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); envoyer(); } }}
-              placeholder="Écrivez votre message..."
-              rows={2}
-              style={{ maxHeight: '240px', overflowY: 'auto' }}
-              className="flex-1 min-w-0 resize-none bg-[#0c0a07] border border-[#16110c] rounded-lg px-4 py-3 text-sm text-white leading-relaxed focus:outline-none focus:border-[#b8805a] focus:shadow-[0_0_14px_rgba(184,128,90,0.25)]" />
-            <button onClick={() => envoyer()}
-              className="shrink-0 px-4 sm:px-6 py-3 rounded-lg font-semibold text-[#150f0a] text-sm shadow-[0_0_16px_rgba(184,128,90,0.4)] hover:shadow-[0_0_26px_rgba(184,128,90,0.7)] hover:-translate-y-0.5 transition-all"
-              style={{ background: 'linear-gradient(135deg,#f0e0c8,#d9b48f,#8f6a45,#6e4a35)' }}>
-              Envoyer
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-</script>
+</div>
 </body>
 </html>
