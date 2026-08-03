@@ -40,9 +40,9 @@ body{margin:0!important;padding:0!important;width:100%!important;max-width:100%!
   color:#ffffff;font-weight:600;transition:all .2s;border:1.5px solid #8f5f3d;
   background:linear-gradient(145deg,#020102 0%,#1a130f 45%,#3d2818 75%,#1a130f 100%);
   box-shadow:0 0 10px rgba(143,95,61,0.2), inset 0 1px 0 rgba(220,195,150,0.15);
-  text-shadow:0 1px 2px rgba(0,0,0,0.6);
 }
 .btn-gold-outline:hover{border-color:#dcc396;box-shadow:0 0 18px rgba(143,95,61,0.5), inset 0 1px 0 rgba(220,195,150,0.25);}
+.btn-text-shine{background:linear-gradient(90deg,#d8d8d8,#ffffff,#f5f0e8,#ffffff,#d8d8d8);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 4s linear infinite;}
 @keyframes shineStar{0%,100%{opacity:.4;transform:scale(0.8) rotate(0deg);text-shadow:0 0 4px rgba(184,144,95,0.4);}50%{opacity:1;transform:scale(1.3) rotate(20deg);text-shadow:0 0 12px rgba(220,195,150,0.9);}}
 .shining-star{display:inline-block;animation:shineStar 1.1s ease-in-out infinite;}
 </style>
@@ -279,7 +279,7 @@ function AuthModal({ open, onClose, onAuthSuccess }) {
 
             <button onClick={submit} disabled={loading}
               className="btn-gold-outline mt-2 py-3 rounded-lg font-semibold text-sm transition-all disabled:opacity-50">
-              {loading ? 'Un instant...' : (mode === 'login' ? 'Se connecter' : "Créer mon compte")}
+              <span className="btn-text-shine">{loading ? 'Un instant...' : (mode === 'login' ? 'Se connecter' : "Créer mon compte")}</span>
             </button>
           </div>
 
@@ -336,7 +336,7 @@ function Sidebar({ onOpenConversations, onOpenProfil, onOpenPaywall, member, for
         <div className="text-white text-sm font-display mb-1">Ton potentiel</div>
         <div className="text-white/80 text-xs leading-relaxed mb-3">Découvre ce que LuminZenith peut débloquer pour toi avec un forfait supérieur.</div>
         <button onClick={onOpenPaywall} className="btn-gold-outline w-full py-2 rounded-lg text-xs font-semibold">
-          Voir plus
+          <span className="btn-text-shine">Voir plus</span>
         </button>
       </div>
 
@@ -355,7 +355,7 @@ function Sidebar({ onOpenConversations, onOpenProfil, onOpenPaywall, member, for
         ) : (
           <button onClick={onOpenAuth}
             className="btn-gold-outline w-full py-2 rounded-lg text-[11px] sm:text-xs font-semibold">
-            Se connecter
+            <span className="btn-text-shine">Se connecter</span>
           </button>
         )}
       </div>
@@ -491,7 +491,7 @@ function PaywallPanel({ open, onClose, userId, email, forfaitActuel, onLancerChe
                 ) : (
                   <button onClick={() => onLancerCheckout(p.cle)}
                     className="btn-gold-outline py-2 rounded-lg text-xs font-semibold">
-                    Choisir
+                    <span className="btn-text-shine">Choisir</span>
                   </button>
                 )}
               </div>
@@ -576,7 +576,7 @@ function ProfilPanel({ open, onClose, member, forfait, quota, onOpenPaywall, onO
             <p className="text-white/70 text-sm mb-4">Connecte-toi pour accéder à ton profil, ton forfait et tes réglages.</p>
             <button onClick={() => { onOpenAuth(); onClose(); }}
               className="btn-gold-outline w-full py-3 rounded-lg text-sm font-semibold">
-              Se connecter
+              <span className="btn-text-shine">Se connecter</span>
             </button>
           </>
         )}
@@ -930,7 +930,7 @@ function App() {
               <canvas ref={canvasRef} className="hidden" />
               <button onClick={capturePhoto}
                 className="btn-gold-outline px-6 py-3 rounded-lg font-semibold text-sm transition-all">
-                Capturer
+                <span className="btn-text-shine">Capturer</span>
               </button>
             </div>
           </div>
@@ -954,7 +954,7 @@ function App() {
           <div className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
             <button onClick={nouvelleConv}
               className="btn-gold-outline text-[11px] sm:text-xs font-semibold px-2 sm:px-3 py-2 rounded-lg whitespace-nowrap">
-              + <span className="hidden sm:inline">Nouvelle conversation</span>
+              <span className="btn-text-shine">+ <span className="hidden sm:inline">Nouvelle conversation</span></span>
             </button>
           </div>
         </header>
@@ -1069,7 +1069,7 @@ function App() {
               className="flex-1 min-w-0 resize-none bg-[#0c0a07] border border-[#16110c] rounded-lg px-4 py-3 text-sm text-white leading-relaxed focus:outline-none focus:border-[#8f5f3d] focus:shadow-[0_0_14px_rgba(143,95,61,0.25)]" />
             <button onClick={() => envoyer()}
               className="btn-gold-outline shrink-0 px-4 sm:px-6 py-3 rounded-lg font-semibold text-sm hover:-translate-y-0.5 transition-all">
-              Envoyer
+              <span className="btn-text-shine">Envoyer</span>
             </button>
           </div>
         </div>
