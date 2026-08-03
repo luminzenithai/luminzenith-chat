@@ -56,6 +56,23 @@ const { useState, useEffect, useRef, useMemo } = React;
 const WORKER = 'https://luminzenithai-api.luminzenithai.workers.dev';
 let memberIdActuel = null;
 
+const MESSAGES_MOTIVATION = [
+  "Chaque grande réussite commence par une seule action aujourd'hui.",
+  "Ton potentiel ne demande qu'à être exploité — avance, une étape à la fois.",
+  "La discipline d'aujourd'hui construit le succès de demain.",
+  "Tu n'as pas besoin de tout voir, juste de faire le prochain pas.",
+  "Les meilleurs résultats viennent de la régularité, pas de la perfection.",
+  "Ce que tu construis aujourd'hui, personne ne pourra te l'enlever demain.",
+  "Chaque obstacle est une occasion de progresser un peu plus.",
+  "Ton ambition mérite ton énergie du jour.",
+  "Le succès se construit dans les petites décisions du quotidien.",
+  "Aujourd'hui est une nouvelle occasion de te rapprocher de ton objectif.",
+];
+function messageDuJour() {
+  const jour = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
+  return MESSAGES_MOTIVATION[jour % MESSAGES_MOTIVATION.length];
+}
+
 function heureActuelle() {
   return new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 }
@@ -638,6 +655,15 @@ function App() {
   const [cameraOpen, setCameraOpen] = useState(false);
   const [forfait, setForfait] = useState('aube');
   const [quotaInfo, setQuotaInfo] = useState(null);
+  const [motivationActive, setMotivationActive] = useState(() => localStorage.getItem('luminzenith_motivation') !== 'off');
+
+  function toggleMotivation() {
+    setMotivationActive(prev => {
+      const nouveau = !prev;
+      localStorage.setItem('luminzenith_motivation', nouveau ? 'on' : 'off');
+      return nouveau;
+    });
+  }
   const [paywallOpen, setPaywallOpen] = useState(false);
   const [blocageActif, setBlocageActif] = useState(false);
   const videoRef = useRef(null);
@@ -1077,9 +1103,18 @@ function App() {
 
       {member && (
         <div className="hidden md:flex w-72 shrink-0 flex-col gap-4 p-5 border-l border-[#140f0b] overflow-y-auto" style={{ background: '#040302' }}>
-          <div className="border border-[#8f5f3d] rounded-xl px-4 py-3 flex items-center gap-2 justify-center">
-            <span className="text-[#b8905f]">💎</span>
-            <span className="font-display text-xs text-white uppercase tracking-wide">Vision : 1 milliard</span>
+          <div className="border border-[#8f5f3d] rounded-xl px-4 py-3" style={{ background: '#0c0a07' }}>
+            <div className="flex items-center justify-between mb-2">
+              <span className="font-display text-xs text-white uppercase tracking-wide flex items-center gap-2">
+                <span className="text-[#b8905f]">✦</span> Motivation du jour
+              </span>
+              <button onClick={toggleMotivation}
+                className={`relative w-9 h-5 rounded-full shrink-0 transition-colors ${motivationActive ? 'bg-[#8f5f3d]' : 'bg-[#1a130f]'}`}
+                title={motivationActive ? "Désactiver" : "Activer"}>
+                <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${motivationActive ? 'left-4' : 'left-0.5'}`} />
+              </button>
+            </div>
+            {motivationActive && <p className="text-white/80 text-xs leading-relaxed">{messageDuJour()}</p>}
           </div>
 
           <div className="border border-[#16110c] rounded-xl p-5 flex flex-col items-center text-center" style={{ background: '#0c0a07' }}>
